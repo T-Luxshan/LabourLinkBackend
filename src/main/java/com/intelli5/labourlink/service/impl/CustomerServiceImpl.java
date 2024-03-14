@@ -1,5 +1,6 @@
 package com.intelli5.labourlink.service.impl;
 
+import com.intelli5.labourlink.Exception.ResourceNotFoundException;
 import com.intelli5.labourlink.entity.Customer;
 import com.intelli5.labourlink.repository.CustomerRepository;
 import com.intelli5.labourlink.service.CustomerService;
@@ -23,6 +24,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer getCustomerById(String email) {
+        Customer customer=customerRepository.findById(email).orElseThrow(() -> new ResourceNotFoundException("Employee is exit with give id :" + email));
         return null;
     }
 
