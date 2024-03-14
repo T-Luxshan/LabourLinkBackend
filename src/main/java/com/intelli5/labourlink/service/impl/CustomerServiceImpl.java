@@ -1,7 +1,6 @@
 package com.intelli5.labourlink.service.impl;
 
 import com.intelli5.labourlink.entity.Customer;
-import com.intelli5.labourlink.entity.UserId;
 import com.intelli5.labourlink.repository.CustomerRepository;
 import com.intelli5.labourlink.service.CustomerService;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer getCustomerById(UserId userId) {
+    public Customer getCustomerById(String email) {
         return null;
     }
 
@@ -33,7 +32,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer updateCustomer(UserId userId, Customer customer) {
+    public Customer updateCustomer(String email, Customer customer) {
         return null;
     }
 

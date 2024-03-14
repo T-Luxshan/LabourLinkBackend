@@ -1,7 +1,6 @@
 package com.intelli5.labourlink.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +12,9 @@ import lombok.extern.apachecommons.CommonsLog;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Customer extends User {
+
 
     @Column(nullable = false)
     private String address;
