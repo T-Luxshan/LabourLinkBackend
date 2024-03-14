@@ -22,5 +22,4 @@ public class Labour extends User{
 
     private List<String> jobRole;
 
-
 }
