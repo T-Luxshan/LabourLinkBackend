@@ -17,7 +17,7 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
-    //Build Add Customer REST API
+    //Build Add Customer REST API//
     @PostMapping
     public ResponseEntity<Customer> createEmployee(@RequestBody Customer customer){
         Customer savedEmployee=customerService.createCustomer(customer);
