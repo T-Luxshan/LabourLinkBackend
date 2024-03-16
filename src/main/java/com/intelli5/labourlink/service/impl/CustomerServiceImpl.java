@@ -51,8 +51,17 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void deleteCustomer(String email) {
-        Customer Customer = customerRepository.findById(email)
+        Customer customer = customerRepository.findById(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found for given email: " + email));
         customerRepository.deleteById(email);
+    }
+
+    @Override
+    public void updateCustomerPassword(String email, String password){
+        Customer customer = customerRepository.findById(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found for given email: " + email));
+
+        customer.setPassword(password);
+        customerRepository.save(customer);
     }
 }

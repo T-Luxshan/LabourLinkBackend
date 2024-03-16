@@ -45,7 +45,14 @@ public class CustomerController {
 
     }
 
-    @DeleteMapping("{email}")
+    //Build Put Customer REST API to updatePassword
+    @PutMapping("/changePassword/{email}")
+    public ResponseEntity<String> updateCustomerPassword(@PathVariable("email") String email,@RequestBody String password){
+        customerService.updateCustomerPassword(email, password);
+        return ResponseEntity.ok("Customer Password Updated successfully");
+    }
+
+    @DeleteMapping("/{email}")
     public ResponseEntity<String> deleteCustomer(@PathVariable("email") String email){
         customerService.deleteCustomer(email);
         return ResponseEntity.ok("Employee deleted successfully");

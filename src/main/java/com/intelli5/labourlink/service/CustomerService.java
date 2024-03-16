@@ -14,5 +14,7 @@ public interface CustomerService {
 
     Customer updateCustomer(String email,Customer customer);
 
+    void updateCustomerPassword(String email,String password);
+
     void deleteCustomer(String email);
 }
