@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.springframework.security.core.userdetails.UserDetails;
 
 
 import java.io.Serializable;
@@ -15,7 +16,7 @@ import java.util.List;
 
 @MappedSuperclass
 @Data
-public abstract class User implements Serializable {
+public abstract class User implements Serializable, UserDetails {
 
     @Id
     @Column(unique = true,nullable = false)

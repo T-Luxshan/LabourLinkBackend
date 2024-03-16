@@ -1,6 +1,6 @@
 //package com.intelli5.labourlink.config;
 //
-//import com.luxshan.authentication.auth.service.AuthFilterService;
+//import com.intelli5.labourlink.service.AuthFilterService;
 //import lombok.RequiredArgsConstructor;
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;
