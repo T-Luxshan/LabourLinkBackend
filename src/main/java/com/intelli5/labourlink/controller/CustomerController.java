@@ -1,5 +1,6 @@
 package com.intelli5.labourlink.controller;
 
+import com.intelli5.labourlink.dto.PasswordDTO;
 import com.intelli5.labourlink.entity.Customer;
 import com.intelli5.labourlink.service.CustomerService;
 import lombok.AllArgsConstructor;
@@ -47,8 +48,8 @@ public class CustomerController {
 
     //Build Put Customer REST API to updatePassword
     @PutMapping("/changePassword/{email}")
-    public ResponseEntity<String> updateCustomerPassword(@PathVariable("email") String email,@RequestBody String password){
-        customerService.updateCustomerPassword(email, password);
+    public ResponseEntity<String> updateCustomerPassword(@PathVariable("email") String email, @RequestBody PasswordDTO password){
+        customerService.updateCustomerPassword(email, password.getNewPassword());
         return ResponseEntity.ok("Customer Password Updated successfully");
     }
 
