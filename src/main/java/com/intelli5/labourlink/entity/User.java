@@ -18,6 +18,7 @@ import java.util.List;
 //@Entity
 //@Data
 //@Inheritance(strategy = InheritanceType.JOINED)
+//
 public abstract class User implements Serializable {
 
     @Id
