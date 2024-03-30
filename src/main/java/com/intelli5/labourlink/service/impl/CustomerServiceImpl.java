@@ -24,22 +24,42 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer getCustomerById(String email) {
-        Customer customer=customerRepository.findById(email).orElseThrow(() -> new ResourceNotFoundException("Employee is exit with give id :" + email));
-        return null;
+        Customer customer=customerRepository.findById(email).orElseThrow(() -> new ResourceNotFoundException("Customer is exit with give id :" + email));
+        return customer;
     }
 
     @Override
     public List<Customer> getAllCustomer() {
-        return null;
+        List<Customer>allCustomers=customerRepository.findAll();
+        return allCustomers;
     }
 
     @Override
-    public Customer updateCustomer(String email, Customer customer) {
-        return null;
+    public Customer updateCustomer(String email, Customer updateCustomer) {
+        Customer existingCustomer = customerRepository.findById(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found for given email: " + email));
+
+        existingCustomer.setName(updateCustomer.getName());
+        existingCustomer.setAddress(updateCustomer.getAddress());
+        existingCustomer.setMobileNumber(updateCustomer.getMobileNumber());
+
+        Customer newUpdatedCustomer=customerRepository.save(existingCustomer);
+        return newUpdatedCustomer;
     }
 
     @Override
-    public void deleteEmployee(Long employeeId) {
+    public void deleteCustomer(String email) {
+        Customer customer = customerRepository.findById(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found for given email: " + email));
+        customerRepository.deleteById(email);
+    }
 
+    @Override
+    public void updateCustomerPassword(String email, String password){
+        Customer customer = customerRepository.findById(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found for given email: " + email));
+
+        customer.setPassword(password);
+        customerRepository.save(customer);
     }
 }
