@@ -37,4 +37,6 @@ public abstract class User implements Serializable {
     @Column(unique = true)
     private String mobileNumber;
 
+
+
 }

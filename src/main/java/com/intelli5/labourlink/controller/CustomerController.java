@@ -4,8 +4,12 @@ import com.intelli5.labourlink.dto.PasswordDTO;
 import com.intelli5.labourlink.entity.Customer;
 import com.intelli5.labourlink.service.CustomerService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,11 +23,13 @@ public class CustomerController {
     private final CustomerService customerService;
 
     //Build Add Customer REST API//
-    @PostMapping
-    public ResponseEntity<Customer> createEmployee(@RequestBody Customer customer){
-        Customer savedEmployee=customerService.createCustomer(customer);
-        return new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);
+    @PostMapping("/customer")
+    public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) {
+        Customer savedCustomer = customerService.createCustomer(customer);
+        return new ResponseEntity<>(savedCustomer, HttpStatus.CREATED);
     }
+
+
 
     //Build Get Customer REST API
     @GetMapping("{email}")
@@ -33,7 +39,7 @@ public class CustomerController {
     }
 
     //Build Get Customer REST API
-    @GetMapping()
+    @GetMapping("/customers")
     public ResponseEntity<List<Customer>> getAllCustomer(){
         List<Customer> AllCustomers=customerService.getAllCustomer();
         return ResponseEntity.ok(AllCustomers);

@@ -2,6 +2,7 @@ package com.intelli5.labourlink.service.impl;
 
 import com.intelli5.labourlink.Exception.ResourceNotFoundException;
 import com.intelli5.labourlink.entity.Customer;
+import com.intelli5.labourlink.entity.Status;
 import com.intelli5.labourlink.repository.CustomerRepository;
 import com.intelli5.labourlink.service.CustomerService;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ public class CustomerServiceImpl implements CustomerService {
         this.customerRepository=customerRepository;
     }
     @Override
-    public Customer createCustomer(Customer customer){
+    public Customer createCustomer(Customer customer){;
         Customer savedCustomer=customerRepository.save(customer);
         return savedCustomer;
     }
@@ -62,4 +63,5 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setPassword(password);
         customerRepository.save(customer);
     }
+
 }
