@@ -28,11 +28,5 @@ public class RefreshToken {
     private Instant expirationTime;
 
     @OneToOne
-    private Admin admin;
-
-    @OneToOne
-    private Customer customer;
-
-    @OneToOne
-    private Labour labour;
+    private User user;
 }

@@ -1,12 +1,10 @@
 package com.intelli5.labourlink.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,11 +23,5 @@ public class ForgotPassword {
     private Date expirationTime;
 
     @OneToOne
-    private Admin admin;
-
-    @OneToOne
-    private Customer customer;
-
-    @OneToOne
-    private Labour labour;
+    private User user;
 }

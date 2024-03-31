@@ -14,10 +14,8 @@ public class RegisterRequest {
     private String name;
     private String email;
     private String password;
-    private String confirmPassword;
     private String mobileNumber;
+    private String address;
     private String nic;
-
-
 
 }
