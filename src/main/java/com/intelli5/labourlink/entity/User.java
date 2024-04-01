@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,7 +25,10 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor
 @AllArgsConstructor
+//@Builder
 public  class User implements UserDetails {
+
+
 
     @Id
     @Column(unique = true,nullable = false)
@@ -44,6 +48,9 @@ public  class User implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     UserRole role;
+
+    @OneToOne(mappedBy = "user")
+    private RefreshToken refreshToken;
 
     private boolean isEnabled = true;
     private boolean isAccountNonExpired = true;

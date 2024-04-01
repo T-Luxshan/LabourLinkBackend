@@ -17,5 +17,6 @@ public class RegisterRequest {
     private String mobileNumber;
     private String address;
     private String nic;
+    private String companyId;
 
 }
