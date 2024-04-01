@@ -22,7 +22,6 @@ import java.util.Optional;
 @Configuration
 public class ApplicationConfig {
 
-//    private final UserRepository userRepository;
 
     private final AdminRepository adminRepository;
     private final CustomerRepository customerRepository;
