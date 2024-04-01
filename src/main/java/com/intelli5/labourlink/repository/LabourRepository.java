@@ -1,5 +1,8 @@
 package com.intelli5.labourlink.repository;
 
-public interface LabourRepository {
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface LabourRepository extends UserRepository{
 
 }

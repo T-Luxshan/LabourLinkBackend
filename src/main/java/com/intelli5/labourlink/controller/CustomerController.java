@@ -2,6 +2,7 @@ package com.intelli5.labourlink.controller;
 
 import com.intelli5.labourlink.dto.PasswordDTO;
 import com.intelli5.labourlink.entity.Customer;
+import com.intelli5.labourlink.entity.User;
 import com.intelli5.labourlink.service.CustomerService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -34,8 +35,8 @@ public class CustomerController {
 
     //Build Get Customer REST API
     @GetMapping()
-    public ResponseEntity<List<Customer>> getAllCustomer(){
-        List<Customer> AllCustomers=customerService.getAllCustomer();
+    public ResponseEntity<List<User>> getAllCustomer(){
+        List<User> AllCustomers=customerService.getAllCustomer();
         return ResponseEntity.ok(AllCustomers);
     }
 

@@ -1,6 +1,7 @@
 package com.intelli5.labourlink.service;
 
 import com.intelli5.labourlink.entity.Customer;
+import com.intelli5.labourlink.entity.User;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public interface CustomerService {
 
     Customer getCustomerById(String email);
 
-    List<Customer> getAllCustomer();
+    List<User> getAllCustomer();
 
     Customer updateCustomer(String email,Customer customer);
 

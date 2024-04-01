@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 import java.io.Serializable;
@@ -13,13 +15,13 @@ import java.util.List;
 
 
 
-@MappedSuperclass
+
+@Entity
 @Data
-//@Entity
-//@Data
-//@Inheritance(strategy = InheritanceType.JOINED)
-//
-public abstract class User implements Serializable {
+@Inheritance(strategy = InheritanceType.JOINED)
+@NoArgsConstructor
+@AllArgsConstructor
+public  class User {
 
     @Id
     @Column(unique = true,nullable = false)

@@ -2,6 +2,7 @@ package com.intelli5.labourlink.service.impl;
 
 import com.intelli5.labourlink.Exception.ResourceNotFoundException;
 import com.intelli5.labourlink.entity.Customer;
+import com.intelli5.labourlink.entity.User;
 import com.intelli5.labourlink.repository.CustomerRepository;
 import com.intelli5.labourlink.service.CustomerService;
 import org.springframework.stereotype.Service;
@@ -24,19 +25,19 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer getCustomerById(String email) {
-        Customer customer=customerRepository.findById(email).orElseThrow(() -> new ResourceNotFoundException("Customer is exit with give id :" + email));
+        Customer customer= (Customer) customerRepository.findById(email).orElseThrow(() -> new ResourceNotFoundException("Customer is exit with give id :" + email));
         return customer;
     }
 
     @Override
-    public List<Customer> getAllCustomer() {
-        List<Customer>allCustomers=customerRepository.findAll();
+    public List<User> getAllCustomer() {
+        List<User> allCustomers=customerRepository.findAll();
         return allCustomers;
     }
 
     @Override
     public Customer updateCustomer(String email, Customer updateCustomer) {
-        Customer existingCustomer = customerRepository.findById(email)
+        Customer existingCustomer = (Customer) customerRepository.findById(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found for given email: " + email));
 
         existingCustomer.setName(updateCustomer.getName());
@@ -49,14 +50,14 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void deleteCustomer(String email) {
-        Customer customer = customerRepository.findById(email)
+        Customer customer = (Customer) customerRepository.findById(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found for given email: " + email));
         customerRepository.deleteById(email);
     }
 
     @Override
     public void updateCustomerPassword(String email, String password){
-        Customer customer = customerRepository.findById(email)
+        Customer customer = (Customer) customerRepository.findById(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found for given email: " + email));
 
         customer.setPassword(password);
