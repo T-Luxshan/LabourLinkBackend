@@ -15,6 +15,10 @@ import java.util.List;
 
 @MappedSuperclass
 @Data
+//@Entity
+//@Data
+//@Inheritance(strategy = InheritanceType.JOINED)
+//
 public abstract class User implements Serializable {
 
     @Id
