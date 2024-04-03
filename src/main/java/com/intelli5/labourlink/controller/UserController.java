@@ -1,5 +1,7 @@
 package com.intelli5.labourlink.controller;
 
+import com.intelli5.labourlink.entity.Customer;
+import com.intelli5.labourlink.entity.Labour;
 import com.intelli5.labourlink.entity.User;
 import com.intelli5.labourlink.repository.UserRepository;
 import com.intelli5.labourlink.service.UserService;
@@ -41,6 +43,33 @@ public class UserController {
 //        userService.disconnect(user, labourRepository); // Disconnect user from labourRepository
 //        return user;
 //    }
+
+    @MessageMapping("/user.add")
+    @SendTo("/user/public")
+    public User addUser(@Payload User user) {
+        if (user instanceof Customer) {
+            userService.saveUser(user, customerRepository); // Save user to customerRepository
+        } else if (user instanceof Labour) {
+            userService.saveUser(user, labourRepository); // Save user to labourRepository
+        } else {
+            // Handle other user types if needed
+        }
+        return user;
+    }
+
+    @MessageMapping("/user.disconnect")
+    @SendTo("/user/public")
+    public User disconnectUser(@Payload User user) {
+        if (user instanceof Customer) {
+            userService.disconnect(user, customerRepository); // Disconnect user from customerRepository
+        } else if (user instanceof Labour) {
+            userService.disconnect(user, labourRepository); // Disconnect user from labourRepository
+        } else {
+            // Handle other user types if needed
+        }
+        return user;
+    }
+
 
     @GetMapping("/users")
     public ResponseEntity<List<User>> findConnectedUsers() {
