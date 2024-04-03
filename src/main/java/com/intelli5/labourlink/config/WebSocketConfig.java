@@ -15,8 +15,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws");//This endpoint allows clients to connect to the server using WebSocket for real-time communication.
-        registry.addEndpoint("/ws").withSockJS();//provides a fallback mechanism for environments where WebSocket is not supported
+//        registry.addEndpoint("/ws").setAllowedOriginPatterns("*");//This endpoint allows clients to connect to the server using WebSocket for real-time communication.
+        registry.addEndpoint("/ws").setAllowedOriginPatterns("*").withSockJS();//provides a fallback mechanism for environments where WebSocket is not supported
     }
 
     @Override
