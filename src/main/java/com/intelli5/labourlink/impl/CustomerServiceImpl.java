@@ -1,4 +1,4 @@
-package com.intelli5.labourlink.service.impl;
+package com.intelli5.labourlink.impl;
 
 import com.intelli5.labourlink.Exception.ResourceNotFoundException;
 import com.intelli5.labourlink.entity.Customer;

@@ -1,5 +1,6 @@
 package com.intelli5.labourlink.entity;
 
+import com.intelli5.labourlink.Enum.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -38,5 +39,8 @@ public  class User {
     @NotBlank(message = "Field can not be empty")
     @Column(unique = true)
     private String mobileNumber;
+
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
 
 }

@@ -1,5 +1,6 @@
 package com.intelli5.labourlink.entity;
 
+import com.intelli5.labourlink.Enum.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +15,6 @@ import lombok.extern.apachecommons.CommonsLog;
 @AllArgsConstructor
 @Builder
 public class Customer extends User {
-
 
     @Column(nullable = false)
     private String address;
