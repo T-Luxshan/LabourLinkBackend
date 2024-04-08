@@ -18,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @RequestMapping("/user")
 @RestController
-@CrossOrigin("http://localhost:3000/")
+@CrossOrigin("http://localhost:3000/user-detail")
 public class userDetailController {
     @Autowired
     private userDetailService userdetailservice;

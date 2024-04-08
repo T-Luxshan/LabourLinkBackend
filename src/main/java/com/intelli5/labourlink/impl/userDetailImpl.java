@@ -12,6 +12,7 @@ public class userDetailImpl implements userDetailService {
     @Autowired
     private userDetailRepo userdetailrepo;
     public List<User> findAll() {
+
         return userdetailrepo.findAll();
     }
 
