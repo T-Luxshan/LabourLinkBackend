@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -44,4 +45,5 @@ public  class User {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 private LocalDate joinDate;
+private LocalTime joinTime;
 }
