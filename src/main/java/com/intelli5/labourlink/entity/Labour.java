@@ -1,9 +1,7 @@
 package com.intelli5.labourlink.entity;
 
 import com.intelli5.labourlink.Enum.UserRole;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;
 
@@ -11,7 +9,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -23,7 +23,16 @@ public class Labour extends User{
     @Column(name = "nic",nullable = false,unique = true)
     private String nic;
 
-    @ElementCollection
-    private List<String> jobRole;
+    @ManyToMany
+    @JoinTable(
+            name = "Labour_Job",
+            joinColumns = @JoinColumn(name = "labour_id"),
+            inverseJoinColumns = @JoinColumn(name = "job_id")
+    )
+    private Set<Job> jobs = new HashSet<>();
+
+    @OneToMany(mappedBy = "labour", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Appointment> appointments;
+
 
 }

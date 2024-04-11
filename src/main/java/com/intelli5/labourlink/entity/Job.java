@@ -1,10 +1,13 @@
 package com.intelli5.labourlink.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -12,8 +15,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Job {
     @Id
-    private String JobId;
-    private String JobName;
-    private String Description;
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+private Long jobId;
 
+    private String jobName;
+    private String description;
+    @ManyToMany(mappedBy = "jobs")
+    private Set<Labour> labours = new HashSet<>();
+
+    @OneToMany(mappedBy = "job")
+    private List<Appointment> appointments;
 }

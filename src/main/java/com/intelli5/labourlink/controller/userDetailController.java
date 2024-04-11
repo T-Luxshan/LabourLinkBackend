@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @RequestMapping("/user")
 @RestController
-@CrossOrigin(origins = "http://localhost:3001")
+@CrossOrigin(origins = "http://localhost:3000")
 
 public class userDetailController {
     @Autowired
@@ -26,9 +26,13 @@ public class userDetailController {
         return new ResponseEntity<>(userdetailservice.findAll(), HttpStatus.OK);
     }
     @GetMapping("/{email}")
-    @CrossOrigin(origins = "http://localhost:3001")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<User> findByEmail(@PathVariable String email) {
         User user = userdetailservice.getUserByEmail(email);
-        return new ResponseEntity<> (user, HttpStatus.NOT_FOUND);
+        if (user != null) {
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }
