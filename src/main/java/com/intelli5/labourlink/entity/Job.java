@@ -1,6 +1,7 @@
 package com.intelli5.labourlink.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,8 +16,9 @@ import java.util.Set;
 @NoArgsConstructor
 public class Job {
     @Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-private Long jobId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
+    private Long jobId;
 
     private String jobName;
     private String description;
@@ -24,5 +26,7 @@ private Long jobId;
     private Set<Labour> labours = new HashSet<>();
 
     @OneToMany(mappedBy = "job")
-    private List<Appointment> appointments;
+    private List<Appointment> appointment;
+
+
 }

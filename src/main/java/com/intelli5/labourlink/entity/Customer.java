@@ -22,5 +22,5 @@ public class Customer extends User {
     private String address;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Appointment> appointments;
+    private List<Appointment> appointment;
 }
