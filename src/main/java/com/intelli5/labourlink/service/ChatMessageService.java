@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,11 +21,13 @@ public class ChatMessageService {
                 .orElseThrow(); // You can create your own dedicated exception
         chatMessage.setChatId(chatId);
         repository.save(chatMessage);
+        System.out.println("message is : "+ chatMessage);
         return chatMessage;
+
     }
 
     public List<ChatMessage> findChatMessages(String senderId, String recipientId) {
-        var chatId = chatRoomService.getChatRoomId(senderId, recipientId, false);
-        return chatId.map(repository::findByChatId).orElse(new ArrayList<>());
+        Optional<String> chatIdOptional = chatRoomService.getChatRoomId(senderId, recipientId, false);
+        return chatIdOptional.map(chatId -> repository.findByChatId(chatId)).orElse(new ArrayList<>());
     }
 }
