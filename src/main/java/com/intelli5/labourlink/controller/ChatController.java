@@ -19,6 +19,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class ChatController {
 
     private final SimpMessagingTemplate simpMessagingTemplate; // Autowire SimpMessagingTemplate
