@@ -39,4 +39,8 @@ public  class User {
     @Column(unique = true)
     private String mobileNumber;
 
+    private Status status;
+
+
+
 }
