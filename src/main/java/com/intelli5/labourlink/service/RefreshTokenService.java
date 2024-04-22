@@ -12,8 +12,6 @@ import com.intelli5.labourlink.entity.User;
 @Service
 public class RefreshTokenService {
 
-//    private final UserRepository userRepository;
-
     private final RefreshTokenRepository refreshTokenRepository;
     private final CustomerRepository customerRepository;
     private final LabourRepository labourRepository;
@@ -38,7 +36,7 @@ public class RefreshTokenService {
         RefreshToken refreshToken = user.getRefreshToken();
 
         if(refreshToken == null){
-            long refreshTokenValidity = 30*1000; //before value 5*60*60*10000;
+            long refreshTokenValidity = 7*24*60*60*1000; //7 days;
             refreshToken = RefreshToken.builder()
                     .refreshToken(UUID.randomUUID().toString())
                     .expirationTime(Instant.now().plusMillis(refreshTokenValidity))
@@ -59,7 +57,7 @@ public class RefreshTokenService {
         RefreshToken refreshToken = user.getRefreshToken();
 
         if(refreshToken == null){
-            long refreshTokenValidity = 30*1000; //before value 5*60*60*10000;
+            long refreshTokenValidity = 30 * 60 * 1000; //before value 5*60*60*10000;
             refreshToken = RefreshToken.builder()
                     .refreshToken(UUID.randomUUID().toString())
                     .expirationTime(Instant.now().plusMillis(refreshTokenValidity))

@@ -88,14 +88,6 @@ public class ForgotPasswordController {
             case LABOUR -> labourRepository.findByEmail(email)
                     .orElseThrow(() -> new UsernameNotFoundException("Provide a valid email"));
         };
-//        switch (role){
-//            case ADMIN:
-//                User user = adminRepository.findByEmail(email)
-//                        .orElseThrow(() -> new UsernameNotFoundException("Provide a valid email"));
-//
-//        }
-//        User user = userRepository.findByEmail(email)
-//                .orElseThrow(() -> new UsernameNotFoundException("Provide a valid email"));
 
         ForgotPassword fp = forgotPasswordRepository.findByOtpAndUser(otp, user)
                 .orElseThrow(() -> new RuntimeException("Invalid OTP for " + email));

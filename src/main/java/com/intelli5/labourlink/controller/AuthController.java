@@ -1,5 +1,6 @@
 package com.intelli5.labourlink.controller;
 
+import com.intelli5.labourlink.Exception.CustomerRegistrationException;
 import com.intelli5.labourlink.entity.RefreshToken;
 import com.intelli5.labourlink.entity.User;
 import com.intelli5.labourlink.service.AuthService;
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth/")
+//@CrossOrigin("*")
 public class AuthController {
 
     private final AuthService authService;
@@ -35,7 +38,7 @@ public class AuthController {
     }
 
     @PostMapping("/register/customer")
-    public ResponseEntity<AuthResponse> registerCustomer(@RequestBody RegisterRequest registerRequest){
+    public ResponseEntity<AuthResponse> registerCustomer(@RequestBody RegisterRequest registerRequest) throws CustomerRegistrationException {
         return ResponseEntity.ok(authService.registerCustomer(registerRequest));
     }
 

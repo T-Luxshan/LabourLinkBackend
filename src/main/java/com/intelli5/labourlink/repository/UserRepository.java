@@ -18,4 +18,6 @@ public interface UserRepository extends JpaRepository<User,String> {
     @Modifying
     @Query("update User u set u.password = ?2 where u.email = ?1")
     void updatePassword(String email, String password);
+
+    boolean existsByEmail(String email);
 }

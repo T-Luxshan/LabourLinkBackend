@@ -2,6 +2,7 @@ package com.intelli5.labourlink.service;
 
 import com.intelli5.labourlink.entity.Customer;
 import com.intelli5.labourlink.entity.User;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -11,6 +12,9 @@ public interface CustomerService {
 
     Customer getCustomerById(String email);
 
+
+
+
     List<User> getAllCustomer();
 
     Customer updateCustomer(String email,Customer customer);
@@ -18,4 +22,5 @@ public interface CustomerService {
     void updateCustomerPassword(String email,String password);
 
     void deleteCustomer(String email);
+
 }

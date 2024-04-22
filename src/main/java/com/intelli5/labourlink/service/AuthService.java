@@ -1,5 +1,7 @@
 package com.intelli5.labourlink.service;
 
+import com.intelli5.labourlink.Exception.CustomerRegistrationException;
+import com.intelli5.labourlink.Exception.UserExistException;
 import com.intelli5.labourlink.entity.*;
 import com.intelli5.labourlink.repository.AdminRepository;
 import com.intelli5.labourlink.repository.CustomerRepository;
@@ -9,6 +11,7 @@ import com.intelli5.labourlink.utils.AuthResponse;
 import com.intelli5.labourlink.utils.LoginRequest;
 import com.intelli5.labourlink.utils.RegisterRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,7 +20,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService {
+public class AuthService{
 
     private final PasswordEncoder passwordEncoder;
 
@@ -28,26 +31,36 @@ public class AuthService {
     private final LabourRepository labourRepository;
     private final AdminRepository adminRepository;
 
-    public AuthResponse registerCustomer(RegisterRequest registerRequest){
+    public AuthResponse registerCustomer(RegisterRequest registerRequest) throws CustomerRegistrationException {
 
-                 var user = new Customer();
-                 user.setEmail(registerRequest.getEmail());
-                 user.setName(registerRequest.getName());
-                 user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-                 user.setMobileNumber(registerRequest.getMobileNumber());
-                 user.setAddress(registerRequest.getAddress());
-                 user.setRole(UserRole.CUSTOMER);
+        try {
+            // Check if the customer already exists
+//            if (customerRepository.existsByEmail(registerRequest.getEmail())) {
+//                throw new UserExistException("Customer with email " + registerRequest.getEmail() + " already exists.");
+//            }
+
+            var user = new Customer();
+            user.setEmail(registerRequest.getEmail());
+            user.setName(registerRequest.getName());
+            user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+            user.setMobileNumber(registerRequest.getMobileNumber());
+            user.setAddress(registerRequest.getAddress());
+            user.setRole(UserRole.CUSTOMER);
 
 
-        User savedUser = customerRepository.save(user);
-        var accessToken = jwtService.generateToken(savedUser);
-        var refreshToken = refreshTokenService.createRefreshTokenCustomer(savedUser.getEmail());
+            User savedUser = customerRepository.save(user);
+            var accessToken = jwtService.generateToken(savedUser);
+            var refreshToken = refreshTokenService.createRefreshTokenCustomer(savedUser.getEmail());
 
-        return AuthResponse.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken.getRefreshToken())
-                .build();
+            return AuthResponse.builder()
+                    .accessToken(accessToken)
+                    .refreshToken(refreshToken.getRefreshToken())
+                    .build();
+        }
+        catch (DataIntegrityViolationException ex) {
 
+            throw new CustomerRegistrationException("Customer registration failed: " + ex.getMessage());
+        }
     }
 
     public AuthResponse registerLabour(RegisterRequest registerRequest){
