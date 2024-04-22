@@ -7,6 +7,7 @@ import java.util.List;
 public interface userDetailService {
      User getUserByEmail(String email) ;
 
-
     List<User> findAll();
+
+    void moveDataToArchive(String email);// doubt...................
 }

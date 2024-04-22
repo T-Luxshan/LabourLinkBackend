@@ -25,6 +25,14 @@ public class userDetailController {
     public ResponseEntity<List<User>> getAllUser() {
         return new ResponseEntity<>(userdetailservice.findAll(), HttpStatus.OK);
     }
+  //-------------------Dashboard box: 1 ......and .......User detail box : 1-------------------
+    @GetMapping("/count")
+    public ResponseEntity<Integer> getAllUserCount() {
+        List<User> userList = userdetailservice.findAll();
+        int userCount = userList.size();
+        return new ResponseEntity <>(userCount, HttpStatus.OK);
+    }
+
     @GetMapping("/{email}")
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<User> findByEmail(@PathVariable String email) {
@@ -34,5 +42,12 @@ public class userDetailController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    // doubt...................
+    @DeleteMapping("/remove/{email}")
+    public ResponseEntity<String> moveToArchive(@PathVariable String email) {
+        userdetailservice.moveDataToArchive(email);
+        return ResponseEntity.ok("Data moved to archive successfully");
     }
 }

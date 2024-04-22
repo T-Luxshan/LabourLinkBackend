@@ -21,7 +21,7 @@ public class Appointment {
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn( referencedColumnName = "email")
+    @JoinColumn(referencedColumnName = "email")
     private Customer customer;
 
     @ManyToOne
@@ -36,15 +36,16 @@ public class Appointment {
 
     private String description;
 
-    private boolean isDelivered=false;
+    private boolean isDelivered = false;
 
-    private boolean isCancelled=false;
+    private boolean isCancelled = false;
 
     private double taskRevenue;
 
     private LocalDate appointmentFixedDate;
     private LocalTime appointmentFixedTime;
 
-    private LocalDate AppointmentMadeDate=LocalDate.now();
+    private LocalDate AppointmentMadeDate = LocalDate.now();
+
 
 }

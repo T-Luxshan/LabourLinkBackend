@@ -1,7 +1,6 @@
 package com.intelli5.labourlink.service;
 
 import com.intelli5.labourlink.dto.AppointmentDTO;
-import com.intelli5.labourlink.entity.Appointment;
 
 import java.util.List;
 
@@ -14,5 +13,9 @@ public interface AppointmentService {
 
     double sumByRevenue();
 
-
+    List<Object[]> jobVsTotalAppointment();
+    List<Object[]> findCancelledJobAppointmentCounts();
+    List<Object[]> findActiveCustomerCount();
+    List<Object[]> findActiveLabourCount();
+    List<Object[]>  findAppointmentsCountWithDay();
 }

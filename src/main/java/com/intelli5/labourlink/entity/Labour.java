@@ -22,17 +22,19 @@ public class Labour extends User{
 
     @Column(name = "nic",nullable = false,unique = true)
     private String nic;
-
+/*
+    @Lob
+    private byte[] pdfDocument;*/
     @ManyToMany
     @JoinTable(
             name = "Labour_Job",
             joinColumns = @JoinColumn(name = "labour_id"),
-            inverseJoinColumns = @JoinColumn(name = "job_id")
+            inverseJoinColumns = @JoinColumn(name = "job_id",referencedColumnName = "jobId")
     )
     private Set<Job> jobs = new HashSet<>();
 
     @OneToMany(mappedBy = "labour", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Appointment> appointments;
+    private List<Appointment> appointment;
 
 
 }

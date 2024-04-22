@@ -5,9 +5,9 @@ import com.intelli5.labourlink.entity.Appointment;
 import com.intelli5.labourlink.repository.AppointmentRepo;
 import com.intelli5.labourlink.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,7 +79,27 @@ if(appointment.isDelivered()){
         return appointmentDtos;
     }
     public  double sumByRevenue() {
+
         return  appointmentRepo.sumTaskRevenue();
     }
+public List<Object[]> jobVsTotalAppointment(){
+   return appointmentRepo.findJobAppointmentCounts();
+}
+    public List<Object[]> findCancelledJobAppointmentCounts(){
+        return appointmentRepo.findCancelledJobAppointmentCounts();
+    }
+    public List<Object[]> findActiveCustomerCount(){
+        LocalDate startDate = LocalDate.now().minusDays(7);
+        return appointmentRepo.findActiveCustomerCount(startDate);
+    }
 
+    public List<Object[]> findActiveLabourCount(){
+        LocalDate startDate = LocalDate.now().minusDays(7);
+        return appointmentRepo.findActiveLabourCount(startDate);
+    }
+
+    public List<Object[]> findAppointmentsCountWithDay(){
+        LocalDate startDate = LocalDate.now().minusDays(7);
+        return appointmentRepo.findAppointmentsCountWithDay(startDate);
+    }
 }

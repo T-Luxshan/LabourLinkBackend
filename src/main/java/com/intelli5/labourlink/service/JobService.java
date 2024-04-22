@@ -2,6 +2,12 @@ package com.intelli5.labourlink.service;
 
 import com.intelli5.labourlink.entity.Job;
 
+import java.util.List;
+
 public interface JobService {
     void createJob(Job job);
+
+    List<Job> findAll();
+    //List<Object[]>getLabourJobCountsWithId();
+   // List<Object[]> demandJobDetail();
 }
