@@ -20,7 +20,7 @@ public class LabourLinkBackendApplication {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/*") // Adjust the mapping pattern as needed
-                        .allowedOrigins("http://localhost:3000") // Allow requests from this origin
+                        .allowedOrigins("*") // Allow requests from this origin
                         .allowedMethods("GET", "POST", "PUT", "DELETE") // Allowed HTTP methods
                         .allowedHeaders("*"); // Allowed headers
             }
