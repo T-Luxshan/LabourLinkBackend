@@ -72,6 +72,7 @@ public class AuthService{
         user.setMobileNumber(registerRequest.getMobileNumber());
         user.setNic(registerRequest.getNic());
         user.setRole(UserRole.LABOUR);
+        user.setEnabled(false);
 
         User savedUser = labourRepository.save(user);
         var accessToken = jwtService.generateToken(savedUser);

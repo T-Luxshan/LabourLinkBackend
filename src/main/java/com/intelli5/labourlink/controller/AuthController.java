@@ -3,6 +3,8 @@ package com.intelli5.labourlink.controller;
 import com.intelli5.labourlink.Exception.CustomerRegistrationException;
 import com.intelli5.labourlink.entity.RefreshToken;
 import com.intelli5.labourlink.entity.User;
+import com.intelli5.labourlink.entity.UserRole;
+import com.intelli5.labourlink.repository.CustomerRepository;
 import com.intelli5.labourlink.service.AuthService;
 import com.intelli5.labourlink.service.JwtService;
 import com.intelli5.labourlink.service.RefreshTokenService;
@@ -11,11 +13,9 @@ import com.intelli5.labourlink.utils.LoginRequest;
 import com.intelli5.labourlink.utils.RefreshTokenRequest;
 import com.intelli5.labourlink.utils.RegisterRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/auth/")
@@ -26,10 +26,16 @@ public class AuthController {
     private final JwtService jwtService;
     private final RefreshTokenService refreshTokenService;
 
-    public AuthController(AuthService authService, JwtService jwtService, RefreshTokenService refreshTokenService) {
+    private final CustomerRepository customerRepository;
+
+
+    public AuthController(AuthService authService, JwtService jwtService, RefreshTokenService refreshTokenService,
+
+                          CustomerRepository customerRepository) {
         this.authService = authService;
         this.jwtService = jwtService;
         this.refreshTokenService = refreshTokenService;
+        this.customerRepository = customerRepository;
     }
 
     @PostMapping("/register/admin")
@@ -73,5 +79,10 @@ public class AuthController {
                 .accessToken(accessToken)
                 .refreshToken(refreshToken.getRefreshToken())
                 .build());
+    }
+    @GetMapping("/getRole/{email}")
+    public ResponseEntity<UserRole> getCustomerByEmail(@PathVariable String email ){
+        Optional<User> user = customerRepository.findByEmail(email);
+        return ResponseEntity.ok(user.get().getRole());
     }
 }
