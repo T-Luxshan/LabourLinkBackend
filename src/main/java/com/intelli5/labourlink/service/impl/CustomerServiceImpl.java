@@ -29,6 +29,8 @@ public class CustomerServiceImpl implements CustomerService {
         return customer;
     }
 
+
+
     @Override
     public List<User> getAllCustomer() {
         List<User> allCustomers=customerRepository.findAll();
@@ -55,6 +57,8 @@ public class CustomerServiceImpl implements CustomerService {
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found for given email: " + email));
         customerRepository.deleteById(email);
     }
+
+
 
     @Override
     public void updateCustomerPassword(String email, String password){

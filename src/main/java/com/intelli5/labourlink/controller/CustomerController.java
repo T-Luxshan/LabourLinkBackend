@@ -7,11 +7,12 @@ import com.intelli5.labourlink.service.CustomerService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin("*")
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/customer")
@@ -27,11 +28,28 @@ public class CustomerController {
     }
 
     //Build Get Customer REST API
+    @GetMapping("/user")
+    public ResponseEntity<Customer> getCustomerByToken(){
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+
+//        try {
+            Customer customer = customerService.getCustomerById(currentPrincipalName);
+            return ResponseEntity.ok(customer);
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching customer details: " + e.getMessage());
+//        }
+    }
+
     @GetMapping("{email}")
-    public ResponseEntity<Customer> getCustomerById(@PathVariable("email") String email){
-        Customer customer=customerService.getCustomerById(email);
+    public ResponseEntity<Customer> getCustomerById(@PathVariable String email){
+        Customer customer = customerService.getCustomerById(email);
         return ResponseEntity.ok(customer);
     }
+
+
+
 
     //Build Get Customer REST API
     @GetMapping()
