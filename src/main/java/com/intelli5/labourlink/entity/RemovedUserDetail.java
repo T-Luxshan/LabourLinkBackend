@@ -1,0 +1,41 @@
+package com.intelli5.labourlink.entity;
+
+import com.intelli5.labourlink.Enum.UserRole;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+@Entity
+@Data
+@Inheritance(strategy = InheritanceType.JOINED)
+@NoArgsConstructor
+@AllArgsConstructor
+public class RemovedUserDetail {
+    @Id
+    @NotNull
+    @Email(message = "Please enter valid email")
+    private String email;
+
+    @NotBlank(message = "Field can not be empty")
+    private String name;
+
+    @NotBlank(message = "Field can not be empty")
+    @Size(min = 5, message = "The password must have at least 5 characters")
+    private String password;
+
+    @NotBlank(message = "Field can not be empty")
+    @Column(unique = true)
+    private String mobileNumber;
+
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+    private LocalDate joinDate;
+    private LocalTime joinTime;
+}
