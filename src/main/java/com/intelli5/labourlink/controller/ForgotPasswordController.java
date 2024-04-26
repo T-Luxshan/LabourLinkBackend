@@ -22,7 +22,6 @@ import java.util.Random;
 @RequestMapping("/forgotPassword")
 public class ForgotPasswordController {
 
-//    private final UserRepository userRepository;
 
     private final AdminRepository adminRepository;
     private final CustomerRepository customerRepository;
@@ -40,7 +39,6 @@ public class ForgotPasswordController {
         this.adminRepository = adminRepository;
         this.customerRepository = customerRepository;
         this.labourRepository = labourRepository;
-//        this.userRepository = userRepository;
         this.emailService = emailService;
         this.forgotPasswordRepository = forgotPasswordRepository;
         this.passwordEncoder = passwordEncoder;
