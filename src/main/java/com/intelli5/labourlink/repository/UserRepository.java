@@ -1,5 +1,6 @@
 package com.intelli5.labourlink.repository;
 
+import com.intelli5.labourlink.entity.Status;
 import com.intelli5.labourlink.entity.User;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -7,6 +8,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
 
+import java.util.List;
 import java.util.Optional;
 
 @NoRepositoryBean
@@ -20,4 +22,6 @@ public interface UserRepository extends JpaRepository<User,String> {
     void updatePassword(String email, String password);
 
     boolean existsByEmail(String email);
+
+    List<User> findAllByStatus(Status status);
 }
