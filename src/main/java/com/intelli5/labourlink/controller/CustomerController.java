@@ -55,10 +55,6 @@ public class CustomerController {
                 .build());
     }
 
-
-
-
-    //Build Get Customer REST API
     @GetMapping()
     public ResponseEntity<List<UserDTO>> getAllCustomer(){
         List<User> AllCustomers=customerService.getAllCustomer();
