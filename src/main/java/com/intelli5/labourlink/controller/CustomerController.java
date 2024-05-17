@@ -50,7 +50,6 @@ public class CustomerController {
 
 
 
-
     //Build Get Customer REST API
     @GetMapping()
     public ResponseEntity<List<User>> getAllCustomer(){
@@ -62,7 +61,6 @@ public class CustomerController {
     public ResponseEntity<Customer> updateCustomer(@PathVariable("email") String email, @RequestBody Customer updatedCustomer){
         Customer customer=customerService.updateCustomer(email,updatedCustomer);
         return ResponseEntity.ok(customer);
-
     }
 
     //Build Put Customer REST API to updatePassword
@@ -77,5 +75,6 @@ public class CustomerController {
         customerService.deleteCustomer(email);
         return ResponseEntity.ok("Employee deleted successfully");
     }
+
 
 }

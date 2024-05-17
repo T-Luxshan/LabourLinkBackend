@@ -23,4 +23,5 @@ public interface CustomerService {
 
     void deleteCustomer(String email);
 
+    void updateCustomerStatus(String email, Customer updatedCustomer);
 }

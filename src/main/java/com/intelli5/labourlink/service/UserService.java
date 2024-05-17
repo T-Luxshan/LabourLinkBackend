@@ -41,29 +41,6 @@ public class UserService {
         return repository.findAllByStatus(Status.ONLINE);
     }
 
-
-//    public User getUserById(String email, @Qualifier("customerRepository") UserRepository repository) {
-//        User user = repository.findById(email).orElseThrow(() -> new ResourceNotFoundException("User does not exist with the given id: " + email));
-//        return user;
-//    }
-//
-//    public User getUserById(String email, @Qualifier("customerRepository") UserRepository customerRepository, @Qualifier("laborRepository") UserRepository laborRepository) {
-//        // Try to find the user in the customer repository
-//        Optional<User> customerUserOptional = customerRepository.findById(email);
-//        if (customerUserOptional.isPresent()) {
-//            return customerUserOptional.get();
-//        }
-//
-//        // Try to find the user in the labor repository
-//        Optional<User> laborUserOptional = laborRepository.findById(email);
-//        if (laborUserOptional.isPresent()) {
-//            return laborUserOptional.get();
-//        }
-//
-//        // If the user is not found in either repository, throw an exception
-//        throw new ResourceNotFoundException("User does not exist with the given id: " + email);
-//    }
-
     public User getCustomerById(String email) {
         // Try to find the user in the customer repository
         Optional<User> customerUserOptional = customerRepository.findById(email);
@@ -86,28 +63,6 @@ public class UserService {
         throw new ResourceNotFoundException("User does not exist with the given id: " + email);
     }
 
-
-
-//    public User updateUser(String email, User updateUser, UserRepository repository) {
-//        User existingUser = repository.findById(email)
-//                .orElseThrow(() -> new ResourceNotFoundException("User not found for given email: " + email));
-//
-//        // Check the type of updateUser and update accordingly
-//        if (updateUser instanceof Customer) {
-//            Customer updatedCustomer = (Customer) updateUser;
-//            // Cast updateUser to Customer and update fields accordingly
-//            existingUser.setStatus(updatedCustomer.getStatus());
-//        } else if (updateUser instanceof Labour) {
-//            Labour updatedLabour = (Labour) updateUser;
-//            // Cast updateUser to Labour and update fields accordingly
-//            // Update Labour-specific fields if any
-//            existingUser.setStatus(updatedLabour.getStatus());
-//        }
-//
-//        User newUpdatedUser = repository.save(existingUser);
-//        return newUpdatedUser;
-//    }
-
     public User updateCustomer(String email, User updateUser) {
         User existingUser = customerRepository.findById(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found for given email: " + email));
@@ -123,9 +78,4 @@ public class UserService {
         existingUser.setStatus(updateUser.getStatus());
         return labourRepository.save(existingUser);
     }
-
-
-
-
-
 }

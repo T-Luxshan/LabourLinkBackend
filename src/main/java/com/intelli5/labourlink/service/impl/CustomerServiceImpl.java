@@ -25,7 +25,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer getCustomerById(String email) {
-        Customer customer= (Customer) customerRepository.findById(email).orElseThrow(() -> new ResourceNotFoundException("Customer is exit with give id :" + email));
+        Customer customer= (Customer) customerRepository.findById(email).orElseThrow(() -> new ResourceNotFoundException("Customer is not exit with give id :" + email));
         return customer;
     }
 
@@ -67,5 +67,20 @@ public class CustomerServiceImpl implements CustomerService {
 
         customer.setPassword(password);
         customerRepository.save(customer);
+    }
+
+
+    @Override
+    public void updateCustomerStatus(String email, Customer updatedCustomer) {
+        // Fetch the existing customer from the database based on the email
+        Customer existingCustomer = (Customer) customerRepository.findById(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found for given email: " + email));
+
+
+        // Update the status of the existing customer with the status from the updated customer
+        existingCustomer.setStatus(updatedCustomer.getStatus());
+
+        // Save the updated customer back to the database
+        customerRepository.save(existingCustomer);
     }
 }
