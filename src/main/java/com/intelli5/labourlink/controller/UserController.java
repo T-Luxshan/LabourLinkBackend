@@ -2,6 +2,8 @@ package com.intelli5.labourlink.controller;
 
 import com.intelli5.labourlink.Exception.ResourceNotFoundException;
 import com.intelli5.labourlink.dto.ConnectedUsersDTO;
+import com.intelli5.labourlink.dto.UserDTO;
+import com.intelli5.labourlink.dto.UserStatusUpdateDTO;
 import com.intelli5.labourlink.entity.Customer;
 import com.intelli5.labourlink.entity.Labour;
 import com.intelli5.labourlink.entity.User;
@@ -91,6 +93,61 @@ public class UserController {
 
         return ResponseEntity.ok(connectedUsersDTOs);
     }
+
+    @GetMapping("{email}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable("email") String email) {
+        try {
+            // Retrieve user from customerRepository via userService
+            User userFromCustomerRepo = userService.getCustomerById(email);
+
+            // Retrieve user from laborRepository via userService
+            User userFromLaborRepo = userService.getLaborById(email);
+
+            // Create a UserDTO object from the retrieved user
+            UserDTO userDTO;
+            if (userFromLaborRepo != null) {
+                userDTO = new UserDTO(userFromLaborRepo.getName(), userFromLaborRepo.getEmail(), userFromLaborRepo.getMobileNumber(), userFromLaborRepo.getStatus());
+            } else {
+                userDTO = new UserDTO(userFromCustomerRepo.getName(), userFromCustomerRepo.getEmail(), userFromCustomerRepo.getMobileNumber(), userFromCustomerRepo.getStatus());
+            }
+
+            // Return ResponseEntity with the created UserDTO
+            return ResponseEntity.ok(userDTO);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("{email}")
+    public ResponseEntity<UserDTO> updateUserStatus(@PathVariable("email") String email, @RequestBody UserStatusUpdateDTO updateUserStatusDTO) {
+        try {
+            // Update user in customer repository
+            User updatedCustomer = userService.updateCustomer(email, updateUserStatusDTO);
+            return ResponseEntity.ok(convertToDTO(updatedCustomer));
+        } catch (ResourceNotFoundException e1) {
+            try {
+                // Update user in labor repository
+                User updatedLabor = userService.updateLabor(email, updateUserStatusDTO);
+                return ResponseEntity.ok(convertToDTO(updatedLabor));
+            } catch (ResourceNotFoundException e2) {
+                return ResponseEntity.notFound().build();
+            }
+        }
+    }
+
+    // Helper method to convert User to UserDTO
+    private UserDTO convertToDTO(User user) {
+        return new UserDTO(user.getName(), user.getEmail(), user.getMobileNumber(), user.getStatus());
+    }
+
+
+
+
+
+
+
+
+
 
 
 }

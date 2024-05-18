@@ -1,15 +1,14 @@
 package com.intelli5.labourlink.dto;
 
-import lombok.Builder;
-import lombok.Data;
-
+import com.intelli5.labourlink.entity.Status;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class ChatMessageDTO {
-    private String message;
+@NoArgsConstructor
+public class UserStatusUpdateDTO {
+    private Status status;
 }
