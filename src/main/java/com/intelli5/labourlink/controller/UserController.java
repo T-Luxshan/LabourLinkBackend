@@ -75,12 +75,12 @@ public class UserController {
         List<User> customerUsers = userService.findConnectedUsers(customerRepository);
         connectedUsers.addAll(customerUsers);
 
-        // Retrieve connected users from the labour repository
-        List<User> labourUsers = userService.findConnectedUsers(labourRepository);
-        for (User labourUser : labourUsers) {
+        // Retrieve connected users from the labor repository
+        List<User> laborUsers = userService.findConnectedUsers(labourRepository);
+        for (User laborUser : laborUsers) {
             // Check if the user already exists in the connectedUsers list based on email
-            if (!connectedUsers.stream().anyMatch(u -> u.getEmail().equals(labourUser.getEmail()))) {
-                connectedUsers.add(labourUser);
+            if (connectedUsers.stream().noneMatch(u -> u.getEmail().equals(laborUser.getEmail()))) {
+                connectedUsers.add(laborUser);
             }
         }
 
@@ -88,11 +88,15 @@ public class UserController {
         List<ConnectedUsersDTO> connectedUsersDTOs = connectedUsers.stream()
                 .map(user -> ConnectedUsersDTO.builder()
                         .name(user.getName())
+                        .email(user.getEmail())
+                        .mobileNumber(user.getMobileNumber())
+                        .status(user.getStatus())
                         .build())
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(connectedUsersDTOs);
     }
+
 
     @GetMapping("{email}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable("email") String email) {

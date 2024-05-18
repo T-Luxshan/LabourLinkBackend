@@ -51,12 +51,18 @@ public class ChatController {
 
         // Convert ChatMessage objects to ChatMessageDTO objects
         for (ChatMessage message : messageHistory) {
-            ChatMessageDTO messageDTO = new ChatMessageDTO(message.getContent());
+            ChatMessageDTO messageDTO = new ChatMessageDTO(
+                    message.getId(),
+                    message.getChatId(),
+                    message.getSenderId(),
+                    message.getRecipientId(),
+                    message.getContent(),
+                    message.getTimestamp()
+            );
             messageHistoryDTO.add(messageDTO);
         }
 
-        System.out.println("Old messages : " + messageHistoryDTO);
-
         return ResponseEntity.ok(messageHistoryDTO);
     }
+
 }
