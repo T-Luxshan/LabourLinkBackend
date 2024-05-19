@@ -17,7 +17,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+//@Builder
 public class Labour extends User{
 
     @Column(name = "nic",nullable = false,unique = true)
@@ -35,6 +35,7 @@ public class Labour extends User{
 
     @OneToMany(mappedBy = "labour", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Appointment> appointment;
+
 
 
 }

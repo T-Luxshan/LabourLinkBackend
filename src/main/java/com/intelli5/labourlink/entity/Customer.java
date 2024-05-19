@@ -1,6 +1,5 @@
 package com.intelli5.labourlink.entity;
 
-import com.intelli5.labourlink.Enum.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,9 +17,11 @@ import java.util.List;
 @Builder
 public class Customer extends User {
 
+
     @Column(nullable = false)
     private String address;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Appointment> appointment;
+
 }
