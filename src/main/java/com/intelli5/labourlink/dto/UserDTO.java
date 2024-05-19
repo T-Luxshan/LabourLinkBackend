@@ -1,5 +1,6 @@
 package com.intelli5.labourlink.dto;
 
+
 import com.intelli5.labourlink.entity.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,4 +14,5 @@ public class UserDTO {
     private String email;
     private String mobileNumber;
     private Status status;
+
 }

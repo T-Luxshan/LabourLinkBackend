@@ -2,7 +2,9 @@ package com.intelli5.labourlink.controller;
 
 import com.intelli5.labourlink.dto.CustomerDTO;
 import com.intelli5.labourlink.dto.PasswordDTO;
+
 import com.intelli5.labourlink.dto.UpdateCustomerDTO;
+
 import com.intelli5.labourlink.entity.Customer;
 import com.intelli5.labourlink.entity.User;
 import com.intelli5.labourlink.service.CustomerService;
@@ -13,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -22,7 +25,6 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
-    //Build Add Customer REST API//
     @PostMapping
     public ResponseEntity<Customer> createEmployee(@RequestBody Customer customer){
         Customer savedEmployee=customerService.createCustomer(customer);
@@ -53,10 +55,22 @@ public class CustomerController {
 
 
     //Build Get Customer REST API
+
     @GetMapping()
-    public ResponseEntity<List<User>> getAllCustomer(){
+    public ResponseEntity<List<UserDTO>> getAllCustomer(){
         List<User> AllCustomers=customerService.getAllCustomer();
-        return ResponseEntity.ok(AllCustomers);
+
+        List<UserDTO> userDTOs = new ArrayList<>();
+        for (User user : AllCustomers) {
+            UserDTO userDTO = UserDTO.builder()
+                    .email(user.getEmail())
+                    .name(user.getName())
+                    .mobileNumber(user.getMobileNumber())
+                    .role(String.valueOf(user.getRole()))
+                    .build();
+            userDTOs.add(userDTO);
+        }
+        return ResponseEntity.ok(userDTOs);
     }
 
     @PutMapping("{email}")
