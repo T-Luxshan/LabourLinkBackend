@@ -1,5 +1,6 @@
 package com.intelli5.labourlink.controller;
 
+import com.intelli5.labourlink.dto.ChatMessageDTO;
 import com.intelli5.labourlink.entity.ChatMessage;
 import com.intelli5.labourlink.entity.ChatNotification;
 import com.intelli5.labourlink.entity.ChatRoom;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -42,12 +44,25 @@ public class ChatController {
     }
 
     @GetMapping("/messages/{senderId}/{recipientId}")
-    public ResponseEntity<List<ChatMessage>> findChatMessages(@PathVariable String senderId,
-                                                              @PathVariable String recipientId) {
-        List<ChatMessage> messageHistory=chatMessageService.findChatMessages(senderId, recipientId);
-        System.out.println("Old messages : "+ messageHistory);
+    public ResponseEntity<List<ChatMessageDTO>> findChatMessages(@PathVariable String senderId,
+                                                                 @PathVariable String recipientId) {
+        List<ChatMessageDTO> messageHistoryDTO = new ArrayList<>();
+        List<ChatMessage> messageHistory = chatMessageService.findChatMessages(senderId, recipientId);
 
-        return ResponseEntity
-                .ok(messageHistory);
+        // Convert ChatMessage objects to ChatMessageDTO objects
+        for (ChatMessage message : messageHistory) {
+            ChatMessageDTO messageDTO = new ChatMessageDTO(
+                    message.getId(),
+                    message.getChatId(),
+                    message.getSenderId(),
+                    message.getRecipientId(),
+                    message.getContent(),
+                    message.getTimestamp()
+            );
+            messageHistoryDTO.add(messageDTO);
+        }
+
+        return ResponseEntity.ok(messageHistoryDTO);
     }
+
 }
