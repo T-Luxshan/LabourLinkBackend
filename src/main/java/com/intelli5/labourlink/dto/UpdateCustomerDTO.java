@@ -13,4 +13,5 @@ public class UpdateCustomerDTO {
     private String address;
     private String mobileNumber;
     private Status status;
+
 }
