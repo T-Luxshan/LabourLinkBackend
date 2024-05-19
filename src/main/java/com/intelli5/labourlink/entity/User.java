@@ -43,4 +43,5 @@ public  class User {
     private UserRole role;
 private LocalDate joinDate;
 private LocalTime joinTime;
+private boolean isPresent =true;
 }

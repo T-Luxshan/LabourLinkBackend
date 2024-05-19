@@ -1,5 +1,6 @@
 package com.intelli5.labourlink.controller;
 
+import com.intelli5.labourlink.entity.Appointment;
 import com.intelli5.labourlink.entity.User;
 import com.intelli5.labourlink.service.userDetailService;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,9 +34,8 @@ public class userDetailController {
         int userCount = userList.size();
         return new ResponseEntity <>(userCount, HttpStatus.OK);
     }
-
+//--------------------------------User:-User detail individual detail fetching -----------------
     @GetMapping("/{email}")
-    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<User> findByEmail(@PathVariable String email) {
         User user = userdetailservice.getUserByEmail(email);
         if (user != null) {
@@ -43,11 +44,24 @@ public class userDetailController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-    // doubt...................
-    @DeleteMapping("/remove/{email}")
-    public ResponseEntity<String> moveToArchive(@PathVariable String email) {
-        userdetailservice.moveDataToArchive(email);
-        return ResponseEntity.ok("Data moved to archive successfully");
+//--------------------------------User:-User detail individual detail Remove -----------------
+@PutMapping ("/{email}")
+public ResponseEntity<Void> findBy_Email(@PathVariable String email) {
+        try{
+             userdetailservice.getUserBy_Email(email);
+            return new ResponseEntity<>( HttpStatus.NO_CONTENT);
+        }catch(RuntimeException e) {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+}
+    //--------------------------------User:-User detail individual appointment detail fetching -----------------
+    @GetMapping("/appointment/{email}")
+    public ResponseEntity<List<Appointment>> find_By_Email(@PathVariable String email) {
+        try{
+            List<Appointment> appointments = userdetailservice.get_UserBy_Email(email);
+            return new ResponseEntity<>(appointments,HttpStatus.OK);
+        }catch(RuntimeException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

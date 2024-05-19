@@ -1,6 +1,8 @@
 package com.intelli5.labourlink.repository;
 
 import com.intelli5.labourlink.entity.Appointment;
+import com.intelli5.labourlink.entity.Customer;
+import com.intelli5.labourlink.entity.Labour;
 import com.intelli5.labourlink.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,6 +13,8 @@ import java.util.Date;
 import java.util.List;
 
 public interface AppointmentRepo extends JpaRepository<Appointment,String> {
+List<Appointment> findByCustomer(Customer customer);
+    List<Appointment> findByLabour(Labour labour);
 
     @Query("select SUM(a.taskRevenue) from Appointment a")
     Double sumTaskRevenue();

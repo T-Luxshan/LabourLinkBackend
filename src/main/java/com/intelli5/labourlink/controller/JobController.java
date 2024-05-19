@@ -23,11 +23,13 @@ import java.util.List;
 public class JobController {
 @Autowired
 private JobService jobservice;
+//-----------------------------------Job :- add job---------------------------------------
     @PostMapping
     public ResponseEntity<String> createJob(@RequestBody Job job){
         jobservice.createJob(job);
         return new ResponseEntity<>("Job Add", HttpStatus.CREATED );
     }
+    //----------------------------Job :-  box 01 - job count -------------------------------
     @GetMapping("/count")
     public ResponseEntity<Integer> getAllJobCount() {
        List<Job> JobCount=jobservice.findAll();
