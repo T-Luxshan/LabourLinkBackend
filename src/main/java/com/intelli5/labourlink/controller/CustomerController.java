@@ -5,6 +5,7 @@ import com.intelli5.labourlink.dto.PasswordDTO;
 
 import com.intelli5.labourlink.dto.UpdateCustomerDTO;
 
+import com.intelli5.labourlink.dto.UserDTO;
 import com.intelli5.labourlink.entity.Customer;
 import com.intelli5.labourlink.entity.User;
 import com.intelli5.labourlink.service.CustomerService;
@@ -56,22 +57,22 @@ public class CustomerController {
 
     //Build Get Customer REST API
 
-    @GetMapping()
-    public ResponseEntity<List<UserDTO>> getAllCustomer(){
-        List<User> AllCustomers=customerService.getAllCustomer();
-
-        List<UserDTO> userDTOs = new ArrayList<>();
-        for (User user : AllCustomers) {
-            UserDTO userDTO = UserDTO.builder()
-                    .email(user.getEmail())
-                    .name(user.getName())
-                    .mobileNumber(user.getMobileNumber())
-                    .role(String.valueOf(user.getRole()))
-                    .build();
-            userDTOs.add(userDTO);
-        }
-        return ResponseEntity.ok(userDTOs);
-    }
+//    @GetMapping()
+//    public ResponseEntity<List<UserDTO>> getAllCustomer(){
+//        List<User> AllCustomers=customerService.getAllCustomer();
+//
+//        List<UserDTO> userDTOs = new ArrayList<>();
+//        for (User user : AllCustomers) {
+//            UserDTO userDTO = UserDTO.builder()
+//                    .email(user.getEmail())
+//                    .name(user.getName())
+//                    .mobileNumber(user.getMobileNumber())
+//                    .role(String.valueOf(user.getRole()))
+//                    .build();
+//            userDTOs.add(userDTO);
+//        }
+//        return ResponseEntity.ok(userDTOs);
+//    }
 
     @PutMapping("{email}")
     public ResponseEntity<Customer> updateCustomer(@PathVariable("email") String email, @RequestBody UpdateCustomerDTO updatedCustomerDTO){
