@@ -22,8 +22,8 @@ public class Labour extends User{
     @Column(name = "nic",nullable = false,unique = true)
     private String nic;
 
+    private String documentUri;
+
     @ElementCollection
     private List<String> jobRole;
-
-
 }
