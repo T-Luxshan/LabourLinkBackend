@@ -1,14 +1,14 @@
 package com.intelli5.labourlink.dto;
 
-
+import com.intelli5.labourlink.entity.Status;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class CustomerDTO {
+@Builder
+public class ConnectedUsersDTO {
     private String name;
-    private String address;
     private String email;
     private String mobileNumber;
-    private String status;
-
+    private Status status;
 }
