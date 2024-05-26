@@ -1,4 +1,4 @@
-package com.intelli5.labourlink.impl;
+package com.intelli5.labourlink.service.impl;
 
 import com.intelli5.labourlink.dto.AppointmentDTO;
 import com.intelli5.labourlink.entity.Appointment;

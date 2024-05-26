@@ -51,8 +51,8 @@ public  class User implements UserDetails {
 private LocalDate joinDate;
 private LocalTime joinTime;
 private boolean isPresent =true;
-    @Enumerated(EnumType.STRING)
-    UserRole role;
+//    @Enumerated(EnumType.STRING)
+//    UserRole role;
 
     @OneToOne(mappedBy = "user")
     private RefreshToken refreshToken;
@@ -93,4 +93,7 @@ private boolean isPresent =true;
     }
 
     private Status status;
+
+    public void setRole(com.intelli5.labourlink.entity.UserRole userRole) {
+    }
 }

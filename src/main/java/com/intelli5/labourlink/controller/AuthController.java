@@ -1,9 +1,9 @@
 package com.intelli5.labourlink.controller;
 
+import com.intelli5.labourlink.Enum.UserRole;
 import com.intelli5.labourlink.Exception.CustomerRegistrationException;
 import com.intelli5.labourlink.entity.RefreshToken;
 import com.intelli5.labourlink.entity.User;
-import com.intelli5.labourlink.entity.UserRole;
 import com.intelli5.labourlink.repository.CustomerRepository;
 import com.intelli5.labourlink.service.AuthService;
 import com.intelli5.labourlink.service.JwtService;

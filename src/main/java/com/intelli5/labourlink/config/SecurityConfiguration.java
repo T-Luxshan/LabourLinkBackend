@@ -1,4 +1,4 @@
-package com.intelli5.labourlink.config;
+package com.intelli5.labourlink.Config;
 
 import com.intelli5.labourlink.service.AuthFilterService;
 import lombok.RequiredArgsConstructor;

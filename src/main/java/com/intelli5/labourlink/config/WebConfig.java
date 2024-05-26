@@ -1,4 +1,4 @@
-package com.intelli5.labourlink.config;
+package com.intelli5.labourlink.Config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
