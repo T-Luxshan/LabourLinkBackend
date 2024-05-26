@@ -165,4 +165,8 @@ public class AuthService{
                 .build();
     }
 
+    public boolean checkNicExists(String nic) {
+        return labourRepository.existsByNic(nic);
+    }
+
 }
