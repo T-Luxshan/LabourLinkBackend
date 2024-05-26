@@ -1,18 +1,18 @@
 package com.intelli5.labourlink.controller;
 
 import com.intelli5.labourlink.Exception.CustomerRegistrationException;
-import com.intelli5.labourlink.entity.JobRole;
-import com.intelli5.labourlink.entity.RefreshToken;
-import com.intelli5.labourlink.entity.User;
-import com.intelli5.labourlink.entity.UserRole;
+import com.intelli5.labourlink.entity.*;
 import com.intelli5.labourlink.repository.CustomerRepository;
+import com.intelli5.labourlink.repository.LabourRepository;
 import com.intelli5.labourlink.service.AuthService;
 import com.intelli5.labourlink.service.JwtService;
 import com.intelli5.labourlink.service.RefreshTokenService;
+import com.intelli5.labourlink.service.impl.LabourServiceImpl;
 import com.intelli5.labourlink.utils.AuthResponse;
 import com.intelli5.labourlink.utils.LoginRequest;
 import com.intelli5.labourlink.utils.RefreshTokenRequest;
 import com.intelli5.labourlink.utils.RegisterRequest;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,15 +30,23 @@ public class AuthController {
     private final RefreshTokenService refreshTokenService;
 
     private final CustomerRepository customerRepository;
+    private final LabourRepository labourRepository;
+
+
+
 
 
     public AuthController(AuthService authService, JwtService jwtService, RefreshTokenService refreshTokenService,
 
-                          CustomerRepository customerRepository) {
+                          CustomerRepository customerRepository,
+                          LabourRepository labourRepository
+                          ) {
         this.authService = authService;
         this.jwtService = jwtService;
         this.refreshTokenService = refreshTokenService;
         this.customerRepository = customerRepository;
+        this.labourRepository = labourRepository;
+
     }
 
     @PostMapping("/register/admin")
@@ -95,4 +103,8 @@ public class AuthController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/nicExist/{nic}")
+    public ResponseEntity<Boolean> isNICExist(@PathVariable String nic){
+        return ResponseEntity.ok(authService.checkNicExists(nic));
+    }
 }
