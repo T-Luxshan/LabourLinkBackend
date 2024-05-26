@@ -73,6 +73,8 @@ public class AuthService{
         user.setNic(registerRequest.getNic());
         user.setRole(UserRole.LABOUR);
         user.setEnabled(false);
+        user.setJobRole(registerRequest.getJobRole());
+        user.setDocumentUri(registerRequest.getDocumentUri());
 
         User savedUser = labourRepository.save(user);
         var accessToken = jwtService.generateToken(savedUser);

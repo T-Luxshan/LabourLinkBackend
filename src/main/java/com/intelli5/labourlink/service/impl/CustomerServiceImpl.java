@@ -1,10 +1,15 @@
 package com.intelli5.labourlink.service.impl;
 
 import com.intelli5.labourlink.Exception.ResourceNotFoundException;
+import com.intelli5.labourlink.dto.CustomerDTO;
+import com.intelli5.labourlink.dto.UpdateCustomerDTO;
 import com.intelli5.labourlink.entity.Customer;
+import com.intelli5.labourlink.entity.Status;
 import com.intelli5.labourlink.entity.User;
 import com.intelli5.labourlink.repository.CustomerRepository;
 import com.intelli5.labourlink.service.CustomerService;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,44 +17,82 @@ import java.util.List;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
+    @Autowired
     public CustomerRepository customerRepository;
 
-    public CustomerServiceImpl(CustomerRepository customerRepository){
-        this.customerRepository=customerRepository;
+    public CustomerServiceImpl(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
     }
+
     @Override
-    public Customer createCustomer(Customer customer){
-        Customer savedCustomer=customerRepository.save(customer);
+    public Customer createCustomer(Customer customer) {
+        Customer savedCustomer = customerRepository.save(customer);
         return savedCustomer;
     }
 
     @Override
-    public Customer getCustomerById(String email) {
-        Customer customer= (Customer) customerRepository.findById(email).orElseThrow(() -> new ResourceNotFoundException("Customer is not exit with give id :" + email));
-        return customer;
-    }
+    public CustomerDTO getCustomerById(String email) {
+        Customer customer = (Customer) customerRepository.findById(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer is not exist with given id :" + email));
 
+        // Convert Customer to CustomerDTO
+        CustomerDTO customerDTO = new CustomerDTO();
+        customerDTO.setName(customer.getName());
+        customerDTO.setAddress(customer.getAddress());
+        customerDTO.setEmail(customer.getEmail());
+        customerDTO.setMobileNumber(customer.getMobileNumber());
+        customerDTO.setStatus(customer.getStatus().name());
+
+        return customerDTO;
+    }
 
 
     @Override
     public List<User> getAllCustomer() {
-        List<User> allCustomers=customerRepository.findAll();
+        List<User> allCustomers = customerRepository.findAll();
         return allCustomers;
     }
 
     @Override
-    public Customer updateCustomer(String email, Customer updateCustomer) {
+    @Transactional
+    public Customer updateCustomer(String email, UpdateCustomerDTO updateCustomerDTO) {
+        // Fetch the existing customer by email
         Customer existingCustomer = (Customer) customerRepository.findById(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found for given email: " + email));
 
-        existingCustomer.setName(updateCustomer.getName());
-        existingCustomer.setAddress(updateCustomer.getAddress());
-        existingCustomer.setMobileNumber(updateCustomer.getMobileNumber());
-        existingCustomer.setStatus(updateCustomer.getStatus());
+        System.out.println(existingCustomer.getName());
 
-        Customer newUpdatedCustomer=customerRepository.save(existingCustomer);
-        return newUpdatedCustomer;
+
+        // Update the customer details based on the DTO
+        existingCustomer.setName(updateCustomerDTO.getName());
+        existingCustomer.setAddress(updateCustomerDTO.getAddress());
+        existingCustomer.setMobileNumber(updateCustomerDTO.getMobileNumber());
+        existingCustomer.setStatus(updateCustomerDTO.getStatus());
+
+        System.out.println(existingCustomer.getName());
+
+        // Save the updated customer
+        return customerRepository.save(existingCustomer);
     }
+
+//    @Override
+//    public Customer updateCustomer(String email, Customer updatedCustomer) {
+//        Customer existingCustomer = (Customer) customerRepository.findById(email)
+//                .orElseThrow(() -> new ResourceNotFoundException("Customer not found for given email: " + email));
+//
+//        System.out.println(existingCustomer);
+//        // Update the existing customer with the provided values
+//        existingCustomer.setName(updatedCustomer.getName());
+//        existingCustomer.setAddress(updatedCustomer.getAddress());
+//        existingCustomer.setMobileNumber(updatedCustomer.getMobileNumber());
+//        existingCustomer.setStatus(updatedCustomer.getStatus());
+//
+//        // Save the updated customer
+//        Customer newUpdatedCustomer = customerRepository.save(existingCustomer);
+//        return newUpdatedCustomer;
+//    }
+
+
 
     @Override
     public void deleteCustomer(String email) {
@@ -59,9 +102,8 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
 
-
     @Override
-    public void updateCustomerPassword(String email, String password){
+    public void updateCustomerPassword(String email, String password) {
         Customer customer = (Customer) customerRepository.findById(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found for given email: " + email));
 

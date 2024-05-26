@@ -2,6 +2,7 @@ package com.intelli5.labourlink.controller;
 
 import com.intelli5.labourlink.Enum.UserRole;
 import com.intelli5.labourlink.Exception.CustomerRegistrationException;
+import com.intelli5.labourlink.entity.JobRole;
 import com.intelli5.labourlink.entity.RefreshToken;
 import com.intelli5.labourlink.entity.User;
 import com.intelli5.labourlink.repository.CustomerRepository;
@@ -15,7 +16,10 @@ import com.intelli5.labourlink.utils.RegisterRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/auth/")
@@ -84,4 +88,11 @@ public class AuthController {
         Optional<User> user = customerRepository.findByEmail(email);
         return ResponseEntity.ok(user.get().getRole());
     }
+    @GetMapping("/getJobRoles")
+    public List<String> getJobRoles() {
+        return Arrays.stream(JobRole.values())
+                .map(Enum::name)
+                .collect(Collectors.toList());
+    }
+
 }

@@ -38,4 +38,8 @@ public class Labour extends User{
 
 
 
+    private String documentUri;
+
+    @ElementCollection
+    private List<String> jobRole;
 }

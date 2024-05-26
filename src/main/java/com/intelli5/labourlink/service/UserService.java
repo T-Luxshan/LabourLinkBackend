@@ -1,6 +1,7 @@
 package com.intelli5.labourlink.service;
 
 import com.intelli5.labourlink.Exception.ResourceNotFoundException;
+import com.intelli5.labourlink.dto.UserStatusUpdateDTO;
 import com.intelli5.labourlink.entity.Customer;
 import com.intelli5.labourlink.entity.Labour;
 import com.intelli5.labourlink.entity.Status;
@@ -47,9 +48,8 @@ public class UserService {
         if (customerUserOptional.isPresent()) {
             return customerUserOptional.get();
         }
-
-        // If the user is not found in the customer repository, throw an exception
-        throw new ResourceNotFoundException("User does not exist with the given id: " + email);
+        // If the user is not found in the customer repository, return null
+        return null;
     }
 
     public User getLaborById(String email) {
@@ -58,12 +58,31 @@ public class UserService {
         if (laborUserOptional.isPresent()) {
             return laborUserOptional.get();
         }
-
-        // If the user is not found in the labor repository, throw an exception
-        throw new ResourceNotFoundException("User does not exist with the given id: " + email);
+        // If the user is not found in the labor repository, return null
+        return null;
     }
 
-    public User updateCustomer(String email, User updateUser) {
+
+    public User updateCustomer(String email, UserStatusUpdateDTO updateUserStatusDTO) {
+        User existingUser = customerRepository.findById(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found for given email: " + email));
+
+        existingUser.setStatus(updateUserStatusDTO.getStatus());
+        return customerRepository.save(existingUser);
+    }
+
+    public User updateLabor(String email, UserStatusUpdateDTO updateUserStatusDTO) {
+        User existingUser = labourRepository.findById(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found for given email: " + email));
+
+        existingUser.setStatus(updateUserStatusDTO.getStatus());
+        return labourRepository.save(existingUser);
+    }
+
+
+
+
+    public User updateUser(String email, User updateUser) {
         User existingUser = customerRepository.findById(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found for given email: " + email));
 
@@ -71,11 +90,4 @@ public class UserService {
         return customerRepository.save(existingUser);
     }
 
-    public User updateLabor(String email, User updateUser) {
-        User existingUser = labourRepository.findById(email)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found for given email: " + email));
-
-        existingUser.setStatus(updateUser.getStatus());
-        return labourRepository.save(existingUser);
-    }
 }
