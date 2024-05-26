@@ -12,11 +12,12 @@ import lombok.extern.apachecommons.CommonsLog;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+//@Builder
 public class Customer extends User {
 
 
     @Column(nullable = false)
     private String address;
+
 
 }
