@@ -1,23 +1,22 @@
 package com.intelli5.labourlink.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
-import lombok.extern.apachecommons.CommonsLog;
+
+import java.sql.Time;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 //@Builder
-public class Customer extends User {
-
+public class Admin extends User{
 
     @Column(nullable = false)
-    private String address;
-
+    private String companyId;
 
 }

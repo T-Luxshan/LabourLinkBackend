@@ -1,6 +1,9 @@
 package com.intelli5.labourlink.controller;
 
 import com.intelli5.labourlink.Exception.ResourceNotFoundException;
+import com.intelli5.labourlink.dto.ConnectedUsersDTO;
+import com.intelli5.labourlink.dto.UserDTO;
+import com.intelli5.labourlink.dto.UserStatusUpdateDTO;
 import com.intelli5.labourlink.entity.Customer;
 import com.intelli5.labourlink.entity.Labour;
 import com.intelli5.labourlink.entity.User;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin("*")
 @RestController
@@ -34,20 +38,6 @@ public class UserController {
         this.labourRepository = labourRepository;
     }
 
-
-//    @MessageMapping("/user.addUser")
-//    @SendTo("/user/public")
-//    public User addUser(@Payload User user) {
-//        userService.saveUser(user, customerRepository); // Save user to customerRepository
-//        return user;
-//    }
-//
-//    @MessageMapping("/user.disconnectUser")
-//    @SendTo("/user/public")
-//    public User disconnectUser(@Payload User user) {
-//        userService.disconnect(user, labourRepository); // Disconnect user from labourRepository
-//        return user;
-//    }
 
     @MessageMapping("/user.add")
     @SendTo("/user/public")
@@ -77,7 +67,7 @@ public class UserController {
 
 
     @GetMapping("/users")
-    public ResponseEntity<List<User>> findConnectedUsers() {
+    public ResponseEntity<List<ConnectedUsersDTO>> findConnectedUsers() {
         // Find connected users from both repositories
         List<User> connectedUsers = new ArrayList<>();
 
@@ -85,37 +75,31 @@ public class UserController {
         List<User> customerUsers = userService.findConnectedUsers(customerRepository);
         connectedUsers.addAll(customerUsers);
 
-        // Retrieve connected users from the labour repository
-        List<User> labourUsers = userService.findConnectedUsers(labourRepository);
-        for (User labourUser : labourUsers) {
+        // Retrieve connected users from the labor repository
+        List<User> laborUsers = userService.findConnectedUsers(labourRepository);
+        for (User laborUser : laborUsers) {
             // Check if the user already exists in the connectedUsers list based on email
-            if (!connectedUsers.stream().anyMatch(u -> u.getEmail().equals(labourUser.getEmail()))) {
-                connectedUsers.add(labourUser);
+            if (connectedUsers.stream().noneMatch(u -> u.getEmail().equals(laborUser.getEmail()))) {
+                connectedUsers.add(laborUser);
             }
         }
 
-        return ResponseEntity.ok(connectedUsers);
+        // Convert User entities to ConnectedUsersDTOs
+        List<ConnectedUsersDTO> connectedUsersDTOs = connectedUsers.stream()
+                .map(user -> ConnectedUsersDTO.builder()
+                        .name(user.getName())
+                        .email(user.getEmail())
+                        .mobileNumber(user.getMobileNumber())
+                        .status(user.getStatus())
+                        .build())
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(connectedUsersDTOs);
     }
 
 
-//    @GetMapping("{email}")
-//    public ResponseEntity<User> getUserById(@PathVariable("email") String email) {
-//        // Retrieve user from customerRepository
-//        User userFromCustomerRepo = userService.getUserById(email, customerRepository);
-//
-//        // Retrieve user from labourRepository
-//        User userFromLabourRepo = userService.getUserById(email, labourRepository);
-//
-//        // Return ResponseEntity with the retrieved user
-//        if (userFromLabourRepo != null) {
-//            return ResponseEntity.ok(userFromLabourRepo);
-//        } else {
-//            return ResponseEntity.ok(userFromCustomerRepo);
-//        }
-//    }
-
     @GetMapping("{email}")
-    public ResponseEntity<User> getUserById(@PathVariable("email") String email) {
+    public ResponseEntity<UserDTO> getUserById(@PathVariable("email") String email) {
         try {
             // Retrieve user from customerRepository via userService
             User userFromCustomerRepo = userService.getCustomerById(email);
@@ -123,48 +107,51 @@ public class UserController {
             // Retrieve user from laborRepository via userService
             User userFromLaborRepo = userService.getLaborById(email);
 
-            // Return ResponseEntity with the retrieved user
-            // If user is found in labor repository, prioritize it
+            // Create a UserDTO object from the retrieved user
+            UserDTO userDTO;
             if (userFromLaborRepo != null) {
-                return ResponseEntity.ok(userFromLaborRepo);
+                userDTO = new UserDTO(userFromLaborRepo.getName(), userFromLaborRepo.getEmail(), userFromLaborRepo.getMobileNumber(), userFromLaborRepo.getStatus());
             } else {
-                return ResponseEntity.ok(userFromCustomerRepo);
+                userDTO = new UserDTO(userFromCustomerRepo.getName(), userFromCustomerRepo.getEmail(), userFromCustomerRepo.getMobileNumber(), userFromCustomerRepo.getStatus());
             }
+
+            // Return ResponseEntity with the created UserDTO
+            return ResponseEntity.ok(userDTO);
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
-
-//    @PutMapping("{email}")
-//    public ResponseEntity<User> updateUser(@PathVariable("email") String email, @RequestBody User updatedUser) {
-//        if (updatedUser instanceof Customer) {
-//            User updatedCustomer = userService.updateUser(email, updatedUser, customerRepository);
-//            return ResponseEntity.ok(updatedCustomer);
-//        } else if (updatedUser instanceof Labour) {
-//            User updatedLabour = userService.updateUser(email, updatedUser, labourRepository);
-//            return ResponseEntity.ok(updatedLabour);
-//        } else {
-//            // Handle other user types if needed
-//            return ResponseEntity.badRequest().build();
-//        }
-//    }
-
     @PutMapping("{email}")
-    public ResponseEntity<User> updateUserStatus(@PathVariable("email") String email, @RequestBody User updateUser) {
+    public ResponseEntity<UserDTO> updateUserStatus(@PathVariable("email") String email, @RequestBody UserStatusUpdateDTO updateUserStatusDTO) {
         try {
             // Update user in customer repository
-            User updatedCustomer = userService.updateCustomer(email, updateUser);
-            return ResponseEntity.ok(updatedCustomer);
+            User updatedCustomer = userService.updateCustomer(email, updateUserStatusDTO);
+            return ResponseEntity.ok(convertToDTO(updatedCustomer));
         } catch (ResourceNotFoundException e1) {
             try {
                 // Update user in labor repository
-                User updatedLabor = userService.updateLabor(email, updateUser);
-                return ResponseEntity.ok(updatedLabor);
+                User updatedLabor = userService.updateLabor(email, updateUserStatusDTO);
+                return ResponseEntity.ok(convertToDTO(updatedLabor));
             } catch (ResourceNotFoundException e2) {
                 return ResponseEntity.notFound().build();
             }
         }
     }
+
+    // Helper method to convert User to UserDTO
+    private UserDTO convertToDTO(User user) {
+        return new UserDTO(user.getName(), user.getEmail(), user.getMobileNumber(), user.getStatus());
+    }
+
+
+
+
+
+
+
+
+
+
 
 }
