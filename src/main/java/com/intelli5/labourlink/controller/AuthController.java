@@ -1,18 +1,20 @@
 package com.intelli5.labourlink.controller;
 
 import com.intelli5.labourlink.Exception.CustomerRegistrationException;
-import com.intelli5.labourlink.entity.*;
+import com.intelli5.labourlink.entity.JobRole;
+import com.intelli5.labourlink.entity.RefreshToken;
+import com.intelli5.labourlink.entity.User;
+import com.intelli5.labourlink.entity.UserRole;
 import com.intelli5.labourlink.repository.CustomerRepository;
 import com.intelli5.labourlink.repository.LabourRepository;
 import com.intelli5.labourlink.service.AuthService;
 import com.intelli5.labourlink.service.JwtService;
 import com.intelli5.labourlink.service.RefreshTokenService;
-import com.intelli5.labourlink.service.impl.LabourServiceImpl;
 import com.intelli5.labourlink.utils.AuthResponse;
 import com.intelli5.labourlink.utils.LoginRequest;
 import com.intelli5.labourlink.utils.RefreshTokenRequest;
 import com.intelli5.labourlink.utils.RegisterRequest;
-import org.springframework.beans.factory.annotation.Qualifier;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,17 +52,17 @@ public class AuthController {
     }
 
     @PostMapping("/register/admin")
-    public ResponseEntity<AuthResponse> registerAdmin(@RequestBody RegisterRequest registerRequest){
+    public ResponseEntity<AuthResponse> registerAdmin(@RequestBody @Valid RegisterRequest registerRequest){
         return ResponseEntity.ok(authService.registerAdmin(registerRequest));
     }
 
     @PostMapping("/register/customer")
-    public ResponseEntity<AuthResponse> registerCustomer(@RequestBody RegisterRequest registerRequest) throws CustomerRegistrationException {
+    public ResponseEntity<AuthResponse> registerCustomer(@RequestBody @Valid RegisterRequest registerRequest) throws CustomerRegistrationException {
         return ResponseEntity.ok(authService.registerCustomer(registerRequest));
     }
 
     @PostMapping("/register/labour")
-    public ResponseEntity<AuthResponse> registerLabour(@RequestBody RegisterRequest registerRequest){
+    public ResponseEntity<AuthResponse> registerLabour(@RequestBody @Valid RegisterRequest registerRequest){
         return ResponseEntity.ok(authService.registerLabour(registerRequest));
     }
 
