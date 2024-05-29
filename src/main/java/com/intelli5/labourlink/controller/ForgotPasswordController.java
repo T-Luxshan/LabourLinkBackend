@@ -55,6 +55,14 @@ public class ForgotPasswordController {
                     .orElseThrow(() -> new UsernameNotFoundException("Provide a valid email"));
         };
 
+        try{
+            ForgotPassword oldFp = forgotPasswordRepository.FindByUser(user)
+                    .orElseThrow(() -> new RuntimeException("Invalid OTP for " + email));
+            forgotPasswordRepository.deleteById(oldFp.getFpid());
+
+        }catch (Exception e){
+            System.out.println("Email did not exist earlier");
+        }
 
         int otp = otpGenerator();
         MailBody mailBody = MailBody.builder()
