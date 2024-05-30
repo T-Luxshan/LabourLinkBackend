@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Random;
 
 @RestController
@@ -42,6 +43,14 @@ public class ForgotPasswordController {
         this.emailService = emailService;
         this.forgotPasswordRepository = forgotPasswordRepository;
         this.passwordEncoder = passwordEncoder;
+    }
+    @GetMapping("/customerExist/{email}")
+    public ResponseEntity<Boolean> isCustomerExist(@PathVariable String email){
+        Optional<User> customer = customerRepository.findByEmail(email);
+        if (customer.isPresent())
+            return ResponseEntity.ok(true);
+        else
+            return ResponseEntity.ok(false);
     }
 
     @PostMapping("/verifyMail/{role}/{email}")

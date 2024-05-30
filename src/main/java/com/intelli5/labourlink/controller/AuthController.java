@@ -109,13 +109,4 @@ public class AuthController {
     public ResponseEntity<Boolean> isNICExist(@PathVariable String nic){
         return ResponseEntity.ok(authService.checkNicExists(nic));
     }
-
-    @GetMapping("/customerExist/{email}")
-    public ResponseEntity<Boolean> isCustomerExist(@PathVariable String email){
-        Optional<User> customer = customerRepository.findByEmail(email);
-        if (customer.isPresent())
-            return ResponseEntity.ok(true);
-        else
-            return ResponseEntity.ok(false);
-    }
 }
