@@ -72,7 +72,7 @@ public class AuthService{
         user.setMobileNumber(registerRequest.getMobileNumber());
         user.setNic(registerRequest.getNic());
         user.setRole(UserRole.LABOUR);
-        user.setEnabled(false);
+        user.setVerified(false);
         user.setJobRole(registerRequest.getJobRole());
         user.setDocumentUri(registerRequest.getDocumentUri());
 
