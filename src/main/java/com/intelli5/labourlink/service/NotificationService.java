@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -98,6 +99,17 @@ public class NotificationService {
         responseDTO.setMessage(notification.getMessage());
         responseDTO.setRecipient(notification.getRecipient());
         responseDTO.setCreatedAt(notification.getCreatedAt());
+        responseDTO.setRead(notification.getRead());
         return responseDTO;
+    }
+
+    public Notification updateNotificationReadStatus(Long id, Boolean read) {
+        Optional<Notification> notificationOptional = notificationRepository.findById(id);
+        if (notificationOptional.isPresent()) {
+            Notification notification = notificationOptional.get();
+            notification.setRead(read);
+            return notificationRepository.save(notification);
+        }
+        throw new RuntimeException("Notification not found with id " + id);
     }
 }

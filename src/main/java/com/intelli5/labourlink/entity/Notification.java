@@ -20,6 +20,9 @@ public class Notification {
     private String message;
     private String recipient;
 
+    @Column(name = "is_read")
+    private Boolean read = false;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

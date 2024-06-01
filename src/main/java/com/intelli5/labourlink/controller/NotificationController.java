@@ -1,7 +1,9 @@
 package com.intelli5.labourlink.controller;
 
+import com.intelli5.labourlink.dto.NotificationReadDTO;
 import com.intelli5.labourlink.dto.NotificationRequestDTO;
 import com.intelli5.labourlink.dto.NotificationResponseDTO;
+import com.intelli5.labourlink.entity.Notification;
 import com.intelli5.labourlink.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -44,5 +46,10 @@ public class NotificationController {
     public ResponseEntity<List<NotificationResponseDTO>> getNotificationsByRecipient(@PathVariable String recipient) {
         List<NotificationResponseDTO> notifications = notificationService.getNotificationsByRecipient(recipient);
         return ResponseEntity.ok(notifications);
+    }
+
+    @PatchMapping("/{id}/read")
+    public Notification updateNotificationReadStatus(@PathVariable Long id, @RequestBody NotificationReadDTO notificationReadDTO) {
+        return notificationService.updateNotificationReadStatus(id, notificationReadDTO.getRead());
     }
 }

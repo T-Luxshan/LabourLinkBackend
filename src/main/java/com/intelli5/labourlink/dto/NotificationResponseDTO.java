@@ -10,5 +10,6 @@ public class NotificationResponseDTO {
     private String title;
     private String message;
     private String recipient;
+    private Boolean read;
     private LocalDateTime createdAt;
 }
