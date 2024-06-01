@@ -10,6 +10,7 @@ import com.intelli5.labourlink.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import java.util.ArrayList;
 
 import java.util.List;
 import java.util.Optional;
@@ -62,9 +63,18 @@ public class UserService {
         return null;
     }
 
+    public User getUserById(String id) {
+        User user = getCustomerById(id);
+        if (user == null) {
+            user = getLaborById(id);
+        }
+        return user;
+    }
+
 
     public User updateCustomer(String email, UserStatusUpdateDTO updateUserStatusDTO) {
-        User existingUser = customerRepository.findById(email)
+        Optional<User> optionalUser = Optional.ofNullable(getUserById(email));
+        User existingUser = optionalUser
                 .orElseThrow(() -> new ResourceNotFoundException("User not found for given email: " + email));
 
         existingUser.setStatus(updateUserStatusDTO.getStatus());
@@ -88,6 +98,21 @@ public class UserService {
 
         existingUser.setStatus(updateUser.getStatus());
         return customerRepository.save(existingUser);
+    }
+
+    public List<User> getAllUsers() {
+        List<User> allUsers = new ArrayList<>();
+        allUsers.addAll(getAllCustomers());
+        allUsers.addAll(getAllLabors());
+        return allUsers;
+    }
+
+    public List<User> getAllCustomers() {
+        return customerRepository.findAll();
+    }
+
+    public List<User> getAllLabors() {
+        return labourRepository.findAll();
     }
 
 }
