@@ -72,7 +72,7 @@ public class AuthService{
         user.setMobileNumber(registerRequest.getMobileNumber());
         user.setNic(registerRequest.getNic());
         user.setRole(UserRole.LABOUR);
-        user.setEnabled(false);
+        user.setVerified(false);
         user.setJobRole(registerRequest.getJobRole());
         user.setDocumentUri(registerRequest.getDocumentUri());
 
@@ -163,6 +163,10 @@ public class AuthService{
                 .accessToken(accessToken)
                 .refreshToken(refreshToken.getRefreshToken())
                 .build();
+    }
+
+    public boolean checkNicExists(String nic) {
+        return labourRepository.existsByNic(nic);
     }
 
 }
