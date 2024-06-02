@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Qualifier("labourRepository")
 public interface LabourRepository extends UserRepository{
 
-    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN TRUE ELSE FALSE END FROM User u WHERE u.nic = :nic")
+    @Query("SELECT CASE WHEN COUNT(l) > 0 THEN TRUE ELSE FALSE END FROM Labour l WHERE l.nic = :nic")
     boolean existsByNic(@Param("nic") String nic);
 
     @Query("SELECT l FROM Labour l WHERE l.email = :email")
