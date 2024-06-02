@@ -26,7 +26,7 @@ public class LabourReviewController {
 
             return ResponseEntity.ok(labourReviewService.addReview(reviewRequest, currentPrincipalName));
         } catch (Exception e) {
-            return (ResponseEntity<String>) ResponseEntity.badRequest();
+            return ResponseEntity.badRequest().body("An error occurred while adding the review.");
         }
     }
 
