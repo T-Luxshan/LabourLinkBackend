@@ -59,8 +59,6 @@ public class LabourReviewService {
         try {
             LabourReview labourReview = labourReviewRepository.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException("Review not found exception"));
-            String labourName = labourRepository.findLabour(labourReview.getLabour().getEmail()).getName();
-            String customerName = customerRepository.findCustomer(labourReview.getCustomer().getEmail()).getName();
 
             return ReviewDTO.builder()
                     .Id(labourReview.getId())
@@ -68,8 +66,8 @@ public class LabourReviewService {
                     .workTitle(labourReview.getWorkTitle())
                     .description(labourReview.getDescription())
                     .rating(labourReview.getRating())
-                    .labourName(labourName)
-                    .customerName(customerName)
+                    .labourName(labourReview.getLabour().getName())
+                    .customerName(labourReview.getCustomer().getName())
                     .build();
         } catch (ResourceNotFoundException ignored){
                 return new ReviewDTO();
@@ -107,7 +105,6 @@ public class LabourReviewService {
         existingReview.setWorkTitle(reviewRequest.getWorkTitle());
         existingReview.setDescription(reviewRequest.getDescription());
         existingReview.setRating(reviewRequest.getRating());
-        reviewRequest.setRating(reviewRequest.getRating());
 
         LabourReview updatedReview = labourReviewRepository.save(existingReview);
 
