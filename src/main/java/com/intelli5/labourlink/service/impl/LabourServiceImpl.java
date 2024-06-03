@@ -1,10 +1,17 @@
 package com.intelli5.labourlink.service.impl;
 
 import com.intelli5.labourlink.Exception.ResourceNotFoundException;
+import com.intelli5.labourlink.dto.LabourDTO;
+import com.intelli5.labourlink.dto.UpdateCustomerDTO;
+import com.intelli5.labourlink.dto.UpdateLabourDTO;
+import com.intelli5.labourlink.repository.UserRepository;
+import com.intelli5.labourlink.entity.Customer;
 import com.intelli5.labourlink.entity.Labour;
 import com.intelli5.labourlink.entity.User;
 import com.intelli5.labourlink.repository.LabourRepository;
 import com.intelli5.labourlink.service.LabourService;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +19,8 @@ import java.util.List;
 @Service
 public class LabourServiceImpl implements LabourService {
 
-    private final LabourRepository labourRepository;
+    @Autowired
+    private LabourRepository labourRepository;
 
     public LabourServiceImpl(LabourRepository labourRepository) {
         this.labourRepository = labourRepository;
@@ -21,35 +29,68 @@ public class LabourServiceImpl implements LabourService {
     @Override
     public Labour createLabour(Labour labour) {
         return labourRepository.save(labour);
+//        Labour savedLabour = labourRepository.save(labour);
+//        return savedLabour;
     }
 
     @Override
-    public Labour getLabourById(String email) {
-        return (Labour) labourRepository.findById(email)
-                .orElseThrow(() -> new ResourceNotFoundException("Labour not found for given email: " + email));
+    public LabourDTO getLabourById(String email) {
+        Labour labour = (Labour) labourRepository.findById(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Labour is not exist with given id :" + email));
+
+        // Convert Labour to LabourDTO
+        LabourDTO labourDTO = new LabourDTO();
+        labourDTO.setName(labour.getName());
+//        labourDTO.setAddress(labour.getAddress());
+        labourDTO.setEmail(labour.getEmail());
+        labourDTO.setMobileNumber(labour.getMobileNumber());
+//        labourDTO.setStatus(labour.getStatus().name());
+
+        return labourDTO;
     }
 
     @Override
     public List<User> getAllLabour() {
         return labourRepository.findAll();
+//        List<User> allLabours = labourRepository.findAll();
+//        return allLabours;
     }
 
     @Override
-    public Labour updateLabour(String email, Labour updateLabour) {
+    @Transactional
+    public LabourDTO updateLabour(String email, UpdateLabourDTO updateLabourDTO) {
+
         Labour existingLabour = (Labour) labourRepository.findById(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Labour not found for given email: " + email));
 
-        existingLabour.setName(updateLabour.getName());
-        existingLabour.setNic(updateLabour.getNic());
-        existingLabour.setMobileNumber(updateLabour.getMobileNumber());
-        existingLabour.setStatus(updateLabour.getStatus());
 
-        return labourRepository.save(existingLabour);
+
+
+
+        existingLabour.setName(updateLabourDTO.getName());
+
+        existingLabour.setMobileNumber(updateLabourDTO.getMobileNumber());
+
+
+
+
+
+        Labour updatedLabour = labourRepository.save(existingLabour);
+        return convertToLabourDTO(updatedLabour);
+    }
+
+    private LabourDTO convertToLabourDTO(Labour labour) {
+        LabourDTO labourDTO = new LabourDTO();
+        labourDTO.setName(labour.getName());
+        labourDTO.setMobileNumber(labour.getMobileNumber());
+        return labourDTO;
     }
 
     @Override
     public void deleteLabour(String email) {
-        labourRepository.deleteById(email);
+        Labour labour = (Labour) labourRepository.findById(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Labour not found for given email: " + email));
+        labourRepository.delete(labour);
     }
 
     @Override
@@ -60,4 +101,20 @@ public class LabourServiceImpl implements LabourService {
         labour.setPassword(password);
         labourRepository.save(labour);
     }
+
+    @Override
+
+    public void updateLabourStatus(String email, Labour updatedLabour) {
+        // Fetch the existing labour from the database based on the email
+        Labour existingLabour = (Labour) labourRepository.findById(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found for given email: " + email));
+
+
+        // Update the status of the existing labour with the status from the updated labour
+        existingLabour.setStatus(updatedLabour.getStatus());
+
+        // Save the updated labour back to the database
+        labourRepository.save(existingLabour);
+    }
 }
+
