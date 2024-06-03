@@ -22,7 +22,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Labour extends User{ //Defines the Labour class, which extends User
-//@Builder
 
 
     @Column(name = "nic",nullable = false,unique = true) //Configures the nic field for database mapping
