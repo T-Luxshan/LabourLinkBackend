@@ -21,7 +21,7 @@ public class LabourController {
     private final LabourService labourService;
 
     //Build Add Labour REST API//
-    @PostMapping("createLabour")
+    @PostMapping("/createLabour")
     public ResponseEntity<Labour> createLabour(@RequestBody Labour labour){
         Labour savedLabour=labourService.createLabour(labour);
         return new ResponseEntity<>(savedLabour, HttpStatus.CREATED);
