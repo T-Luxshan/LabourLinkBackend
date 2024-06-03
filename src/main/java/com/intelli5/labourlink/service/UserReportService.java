@@ -10,6 +10,9 @@ import com.intelli5.labourlink.utils.ReportRequest;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class UserReportService {
 
@@ -48,19 +51,58 @@ public class UserReportService {
         try{
             UserReport report = userReportRepository.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException("Report not found"));
-            String reportedByName = userRepository.findById(report.getReportedBy().getEmail()).get().getName();
-            String reportedToName = userRepository.findById(report.getReportedTo().getEmail()).get().getName();
 
             return ReportDTO.builder()
                     .id(report.getId())
                     .title(report.getTitle())
                     .description(report.getDescription())
-                    .ReportedByName(reportedByName)
-                    .ReportedToName(reportedToName)
+                    .ReportedByName(report.getReportedBy().getName())
+                    .ReportedToName(report.getReportedTo().getName())
                     .build();
 
         }catch (ResourceNotFoundException resourceNotFoundException){
             return new ReportDTO();
         }
+    }
+
+    public ReportDTO updateReport(Integer id, ReportRequest request) {
+        try {
+            UserReport existingReport = userReportRepository.findById(id)
+                    .orElseThrow(()-> new ResourceNotFoundException("Report not found"));
+            existingReport.setTitle(request.getTitle());
+            existingReport.setDescription(request.getDescription());
+
+            userReportRepository.save(existingReport);
+            return ReportDTO.builder()
+                    .id(existingReport.getId())
+                    .title(existingReport.getTitle())
+                    .description(existingReport.getDescription())
+                    .ReportedByName(existingReport.getReportedBy().getName())
+                    .ReportedToName(existingReport.getReportedTo().getName())
+                    .build();
+        }
+        catch (ResourceNotFoundException resourceNotFoundException){
+            return new ReportDTO();
+        }
+
+    }
+
+    public List<ReportDTO> getAllReports() {
+        List<UserReport> allReports = userReportRepository.findAll();
+
+        List<ReportDTO> reportDTOs = new ArrayList<>();
+        for (UserReport report:
+             allReports) {
+            reportDTOs.add(
+                    ReportDTO.builder()
+                            .id(report.getId())
+                            .title(report.getTitle())
+                            .description(report.getDescription())
+                            .ReportedByName(report.getReportedBy().getName())
+                            .ReportedToName(report.getReportedTo().getName())
+                            .build()
+            );
+        }
+        return reportDTOs;
     }
 }
