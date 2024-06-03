@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -53,10 +54,15 @@ public class LabourReviewController {
         return ResponseEntity.ok(labourReviewService.updateReview(id, reviewRequest));
     }
 
-    @GetMapping("/getMyReviews/{email}")
-    public ResponseEntity<List<ReviewDTO>> getMyReviews(@PathVariable String email){
-        // TODO: check should I provide email or get email from token.
-        return ResponseEntity.ok(labourReviewService.getMyReviews(email));
+    @GetMapping("/getMyReviews")
+    public ResponseEntity<List<ReviewDTO>> getMyReviews(){
+        try{
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String currentPrincipalName = authentication.getName();
+            return ResponseEntity.ok(labourReviewService.getMyReviews(currentPrincipalName));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new ArrayList<>());
+        }
     }
 
     @GetMapping("/getAllReview")
