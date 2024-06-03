@@ -35,15 +35,10 @@ public class LabourServiceImpl implements LabourService {
         Labour labour = (Labour) labourRepository.findById(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Labour is not exist with given id :" + email));
 
-        // Convert Labour to LabourDTO
-        LabourDTO labourDTO = new LabourDTO();
-        labourDTO.setName(labour.getName());
-//        labourDTO.setAddress(labour.getAddress());
-        labourDTO.setEmail(labour.getEmail());
-        labourDTO.setMobileNumber(labour.getMobileNumber());
-//        labourDTO.setStatus(labour.getStatus().name());
 
-        return labourDTO;
+
+
+        return convertToLabourDTO(labour);
     }
 
     @Override
@@ -65,7 +60,10 @@ public class LabourServiceImpl implements LabourService {
 
 
         existingLabour.setName(updateLabourDTO.getName());
-
+        existingLabour.setNic(updateLabourDTO.getNic());
+        existingLabour.setDocumentUri(updateLabourDTO.getDocumentUri());
+//        existingLabour.setEmail(updateLabourDTO.getEmail());
+        existingLabour.setJobRole(updateLabourDTO.getJobRole());
         existingLabour.setMobileNumber(updateLabourDTO.getMobileNumber());
 
 
@@ -79,10 +77,13 @@ public class LabourServiceImpl implements LabourService {
     private LabourDTO convertToLabourDTO(Labour labour) {
         LabourDTO labourDTO = new LabourDTO();
         labourDTO.setName(labour.getName());
+        labourDTO.setNic(labour.getNic());
+        labourDTO.setDocumentUri(labour.getDocumentUri());
+        labourDTO.setEmail(labour.getEmail());
+        labourDTO.setJobRole(labour.getJobRole());
         labourDTO.setMobileNumber(labour.getMobileNumber());
         return labourDTO;
     }
-
     @Override
     public void deleteLabour(String email) {
         Labour labour = (Labour) labourRepository.findById(email)
