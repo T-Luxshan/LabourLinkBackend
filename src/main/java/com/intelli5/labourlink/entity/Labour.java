@@ -10,9 +10,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-//Import the List interface from the Java Collection Frameworks
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
