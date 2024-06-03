@@ -23,7 +23,7 @@ import java.util.List;
 @Builder
 public class Labour extends User{ //Defines the Labour class, which extends User
 //@Builder
-public class Labour extends User{
+
 
     @Column(name = "nic",nullable = false,unique = true) //Configures the nic field for database mapping
     private String nic;
