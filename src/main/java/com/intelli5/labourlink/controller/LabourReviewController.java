@@ -55,6 +55,7 @@ public class LabourReviewController {
 
     @GetMapping("/getMyReviews/{email}")
     public ResponseEntity<List<ReviewDTO>> getMyReviews(@PathVariable String email){
+        // TODO: check should I provide email or get email from token.
         return ResponseEntity.ok(labourReviewService.getMyReviews(email));
     }
 

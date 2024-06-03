@@ -1,6 +1,7 @@
 package com.intelli5.labourlink.service;
 
 import com.intelli5.labourlink.Exception.ResourceNotFoundException;
+import com.intelli5.labourlink.dto.ReportDTO;
 import com.intelli5.labourlink.entity.User;
 import com.intelli5.labourlink.entity.UserReport;
 import com.intelli5.labourlink.repository.UserReportRepository;
@@ -36,5 +37,30 @@ public class UserReportService {
         userReportRepository.save(userReport);
 
         return "Report added successfully";
+    }
+
+    public String deleteReport(Integer id) {
+        userReportRepository.deleteById(id);
+        return "Report deleted successfully";
+    }
+
+    public ReportDTO getReportById(Integer id) {
+        try{
+            UserReport report = userReportRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Report not found"));
+            String reportedByName = userRepository.findById(report.getReportedBy().getEmail()).get().getName();
+            String reportedToName = userRepository.findById(report.getReportedTo().getEmail()).get().getName();
+
+            return ReportDTO.builder()
+                    .id(report.getId())
+                    .title(report.getTitle())
+                    .description(report.getDescription())
+                    .ReportedByName(reportedByName)
+                    .ReportedToName(reportedToName)
+                    .build();
+
+        }catch (ResourceNotFoundException resourceNotFoundException){
+            return new ReportDTO();
+        }
     }
 }
