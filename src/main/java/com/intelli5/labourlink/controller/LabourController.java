@@ -2,20 +2,14 @@ package com.intelli5.labourlink.controller;
 
 import com.intelli5.labourlink.dto.LabourDTO;
 import com.intelli5.labourlink.dto.PasswordDTO;
-import com.intelli5.labourlink.dto.UpdateCustomerDTO;
 import com.intelli5.labourlink.dto.UpdateLabourDTO;
-import com.intelli5.labourlink.entity.Customer;
 import com.intelli5.labourlink.entity.Labour;
-import com.intelli5.labourlink.entity.User;
 import com.intelli5.labourlink.service.LabourService;
 import lombok.AllArgsConstructor;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.logging.Logger;
 
 
 @CrossOrigin("*")
