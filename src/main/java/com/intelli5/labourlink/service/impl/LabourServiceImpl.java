@@ -2,10 +2,7 @@ package com.intelli5.labourlink.service.impl;
 
 import com.intelli5.labourlink.Exception.ResourceNotFoundException;
 import com.intelli5.labourlink.dto.LabourDTO;
-import com.intelli5.labourlink.dto.UpdateCustomerDTO;
 import com.intelli5.labourlink.dto.UpdateLabourDTO;
-import com.intelli5.labourlink.repository.UserRepository;
-import com.intelli5.labourlink.entity.Customer;
 import com.intelli5.labourlink.entity.Labour;
 import com.intelli5.labourlink.entity.User;
 import com.intelli5.labourlink.repository.LabourRepository;
