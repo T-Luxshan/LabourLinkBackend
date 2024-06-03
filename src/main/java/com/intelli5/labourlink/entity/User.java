@@ -87,4 +87,9 @@ public  class User implements UserDetails {
 
     private Status status;
 
+//   Todo need to check
+//    public Status getStatus() {
+//        return this.status != null ? this.status : Status.OFFLINE;
+//    }
+
 }
