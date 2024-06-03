@@ -2,9 +2,7 @@
 package com.intelli5.labourlink.entity;
 
 //Import necessary JPA annotations for database mapping
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 
 //Import Lombok annotations to reduce boilerplate code
 import lombok.AllArgsConstructor;
@@ -14,6 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 //Import the List interface from the Java Collection Frameworks
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -30,5 +29,7 @@ public class Labour extends User{ //Defines the Labour class, which extends User
     private String documentUri;
 
     @ElementCollection
-    private List<String> jobRole;
+    @Enumerated(EnumType.STRING) // Specify the enum type
+    private List<JobRole> jobRole;
+
 }
