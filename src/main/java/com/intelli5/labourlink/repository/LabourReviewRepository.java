@@ -14,4 +14,7 @@ public interface LabourReviewRepository extends JpaRepository<LabourReview, Inte
     List<LabourReview> findAllByEmailAndJobRole(Labour labour, String jobRole);
 
     List<LabourReview> findByLabour(Labour labour);
+
+    @Query("SELECT ROUND(AVG(lr.rating),1) FROM LabourReview lr WHERE lr.labour = ?1")
+    Double getRating(Labour labour);
 }

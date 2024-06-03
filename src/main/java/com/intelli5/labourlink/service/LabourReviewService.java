@@ -159,4 +159,13 @@ public class LabourReviewService {
         }
         return allReviewDTO;
     }
+
+    public Double getRating(String email) {
+        try {
+            Labour labour = labourRepository.findLabour(email);
+            return labourReviewRepository.getRating(labour);
+        } catch (Exception e){
+            return 0.0;
+        }
+    }
 }

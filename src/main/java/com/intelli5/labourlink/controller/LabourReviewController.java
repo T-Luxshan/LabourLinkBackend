@@ -61,12 +61,29 @@ public class LabourReviewController {
             String currentPrincipalName = authentication.getName();
             return ResponseEntity.ok(labourReviewService.getMyReviews(currentPrincipalName));
         } catch (Exception e) {
-            return ResponseEntity.ok(new ArrayList<>());
+            return ResponseEntity.badRequest().body(new ArrayList<>());
         }
     }
 
     @GetMapping("/getAllReview")
     public ResponseEntity<List<ReviewDTO>> getAllReviews(){
         return ResponseEntity.ok(labourReviewService.getAllReviews());
+    }
+
+    @GetMapping("/rating")
+    public ResponseEntity<Double> getRating(){
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String currentPrincipalName = authentication.getName();
+            return ResponseEntity.ok(labourReviewService.getRating(currentPrincipalName));
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(-1.0);
+        }
+    }
+
+    @GetMapping("/rating/{email}")
+    public ResponseEntity<Double> getRating(@PathVariable String email){
+            return ResponseEntity.ok(labourReviewService.getRating(email));
     }
 }
