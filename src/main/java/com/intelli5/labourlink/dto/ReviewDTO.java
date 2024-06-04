@@ -18,7 +18,7 @@ import java.io.Serializable;
 public class ReviewDTO implements Serializable {
     Integer Id;
     String jobRole;
-    String workTitle;
+//    String workTitle;
     String description;
     Double rating;
     String customerName;

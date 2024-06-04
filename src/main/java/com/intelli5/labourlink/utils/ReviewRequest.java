@@ -8,7 +8,7 @@ import lombok.*;
 @Builder
 public class ReviewRequest {
     private String jobRole;
-    private String workTitle;
+//    private String workTitle;
     private String description;
     private Double rating;
     private String labourEmail;

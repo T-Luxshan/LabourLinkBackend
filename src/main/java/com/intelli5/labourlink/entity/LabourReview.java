@@ -18,7 +18,7 @@ public class LabourReview {
     @NonNull
     private String jobRole;
     @NonNull
-    private String workTitle;
+//    private String workTitle;
     private String description;
     @NonNull
     private Double rating;
