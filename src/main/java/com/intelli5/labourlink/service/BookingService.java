@@ -41,6 +41,7 @@ public class BookingService {
             Booking savedBooking = bookingRepository.save(booking);
 
             return convertToBookingResponseDTO(savedBooking);
+
         } else {
             throw new RuntimeException("Labour or Customer not found");
         }
