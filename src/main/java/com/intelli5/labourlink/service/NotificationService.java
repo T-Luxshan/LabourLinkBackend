@@ -112,4 +112,8 @@ public class NotificationService {
         }
         throw new RuntimeException("Notification not found with id " + id);
     }
+
+    public void deleteNotification(Long id) {
+        notificationRepository.deleteById(id);
+    }
 }

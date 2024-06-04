@@ -7,16 +7,21 @@ import com.intelli5.labourlink.entity.Notification;
 import com.intelli5.labourlink.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/notifications")
+@CrossOrigin("*")
 public class NotificationController {
 
     @Autowired
     private NotificationService notificationService;
+
+    @Autowired
+    private SimpMessagingTemplate template;
 
     @PostMapping("/send")
     public ResponseEntity<String> sendNotification(@RequestBody NotificationRequestDTO request) {
@@ -27,6 +32,7 @@ public class NotificationController {
     @PostMapping("/sendToAll")
     public ResponseEntity<String> sendNotificationsToAllUsers(@RequestBody NotificationRequestDTO request) {
         notificationService.sendNotificationsToAll(request);
+        template.convertAndSend("/topic/notifications", request);
         return ResponseEntity.ok("Notifications sent to all users successfully");
     }
 
@@ -52,4 +58,12 @@ public class NotificationController {
     public Notification updateNotificationReadStatus(@PathVariable Long id, @RequestBody NotificationReadDTO notificationReadDTO) {
         return notificationService.updateNotificationReadStatus(id, notificationReadDTO.getRead());
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteNotification(@PathVariable Long id) {
+        notificationService.deleteNotification(id);
+        return ResponseEntity.ok("Notification deleted successfully");
+    }
+
+
 }
