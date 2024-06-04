@@ -1,8 +1,6 @@
 package com.intelli5.labourlink.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;
 
@@ -26,4 +24,7 @@ public class Labour extends User{
 
     @ElementCollection
     private List<String> jobRole;
+
+    @OneToOne(mappedBy = "labour", cascade = CascadeType.ALL)
+    private LabourLocations labourLocation;
 }
