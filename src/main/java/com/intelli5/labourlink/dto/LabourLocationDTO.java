@@ -12,5 +12,4 @@ public class LabourLocationDTO {
     private double latitude;
     private double longitude;
     private String labourId;
-
 }
