@@ -19,16 +19,16 @@ public class LabourReviewController {
     @Autowired
     LabourReviewService labourReviewService;
     @PostMapping("/addReview")
-    public ResponseEntity<String> addReview(@RequestBody ReviewRequest reviewRequest){
+    public ResponseEntity<ReviewDTO> addReview(@RequestBody ReviewRequest reviewRequest){
 
-        try {
+//        try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String currentPrincipalName = authentication.getName();
 
             return ResponseEntity.ok(labourReviewService.addReview(reviewRequest, currentPrincipalName));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("An error occurred while adding the review.");
-        }
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body("An error occurred while adding the review.");
+//        }
     }
 
     @DeleteMapping("/deleteReviewById/{id}")

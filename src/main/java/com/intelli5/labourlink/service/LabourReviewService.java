@@ -30,23 +30,33 @@ public class LabourReviewService {
         this.labourReviewRepository = labourReviewRepository;
     }
 
-    public String addReview(ReviewRequest reviewRequest, String customerEmail) {
+    public ReviewDTO addReview(ReviewRequest reviewRequest, String customerEmail) {
 
         Customer customer = customerRepository.findCustomer(customerEmail);
         Labour labour = labourRepository.findLabour(reviewRequest.getLabourEmail());
 
         LabourReview review = LabourReview.builder()
                 .jobRole(reviewRequest.getJobRole())
-                .workTitle(reviewRequest.getWorkTitle())
+//                .workTitle(reviewRequest.getWorkTitle())
                 .description(reviewRequest.getDescription())
                 .rating(reviewRequest.getRating())
                 .customer(customer)
                 .labour(labour)
                 .build();
 
-        labourReviewRepository.save(review);
+        LabourReview labourReview = labourReviewRepository.save(review);
 
-        return "Review added successfully";
+        return ReviewDTO.builder()
+                .Id(labourReview.getId())
+                .jobRole(labourReview.getJobRole())
+//                    .workTitle(labourReview.getWorkTitle())
+                .description(labourReview.getDescription())
+                .rating(labourReview.getRating())
+                .labourName(labourReview.getLabour().getName())
+                .customerName(labourReview.getCustomer().getName())
+                .build();
+
+//        return "Review added successfully";
     }
 
     public ResponseEntity<String> deleteReview(Integer id) {
@@ -63,7 +73,7 @@ public class LabourReviewService {
             return ReviewDTO.builder()
                     .Id(labourReview.getId())
                     .jobRole(labourReview.getJobRole())
-                    .workTitle(labourReview.getWorkTitle())
+//                    .workTitle(labourReview.getWorkTitle())
                     .description(labourReview.getDescription())
                     .rating(labourReview.getRating())
                     .labourName(labourReview.getLabour().getName())
@@ -84,7 +94,7 @@ public class LabourReviewService {
                     ReviewDTO.builder()
                             .Id(review.getId())
                             .jobRole(review.getJobRole())
-                            .workTitle(review.getWorkTitle())
+//                            .workTitle(review.getWorkTitle())
                             .description(review.getDescription())
                             .rating(review.getRating())
                             .labourName(review.getLabour().getName())
@@ -102,7 +112,7 @@ public class LabourReviewService {
                 .orElseThrow(()-> new ResourceNotFoundException("Review not found exception"));
 
         existingReview.setJobRole(reviewRequest.getJobRole());
-        existingReview.setWorkTitle(reviewRequest.getWorkTitle());
+//        existingReview.setWorkTitle(reviewRequest.getWorkTitle());
         existingReview.setDescription(reviewRequest.getDescription());
         existingReview.setRating(reviewRequest.getRating());
 
@@ -111,7 +121,7 @@ public class LabourReviewService {
         return ReviewDTO.builder()
                 .Id(updatedReview.getId())
                 .jobRole(updatedReview.getJobRole())
-                .workTitle(updatedReview.getWorkTitle())
+//                .workTitle(updatedReview.getWorkTitle())
                 .description(updatedReview.getDescription())
                 .rating(updatedReview.getRating())
                 .labourName(updatedReview.getLabour().getName())
@@ -129,7 +139,7 @@ public class LabourReviewService {
                     ReviewDTO.builder()
                             .Id(review.getId())
                             .jobRole(review.getJobRole())
-                            .workTitle(review.getWorkTitle())
+//                            .workTitle(review.getWorkTitle())
                             .description(review.getDescription())
                             .rating(review.getRating())
                             .labourName(review.getLabour().getName())
@@ -149,7 +159,7 @@ public class LabourReviewService {
                     ReviewDTO.builder()
                             .Id(review.getId())
                             .jobRole(review.getJobRole())
-                            .workTitle(review.getWorkTitle())
+//                            .workTitle(review.getWorkTitle())
                             .description(review.getDescription())
                             .rating(review.getRating())
                             .labourName(review.getLabour().getName())
