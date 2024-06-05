@@ -33,4 +33,6 @@ public class Booking {
     private LocalTime startTime;
 
     private BookingStage bookingStage;
+
+    private String jobDescription;
 }

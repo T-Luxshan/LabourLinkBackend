@@ -14,4 +14,5 @@ public class BookingRequestDTO {
     private LocalDate date;
     private LocalTime startTime;
     private BookingStage bookingStage;
+    private String jobDescription;
 }
