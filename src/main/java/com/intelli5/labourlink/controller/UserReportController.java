@@ -19,13 +19,13 @@ public class UserReportController {
     UserReportService userReportService;
 
     @PostMapping("/user")
-    public ResponseEntity<String> reportUser(@RequestBody ReportRequest reportRequest){
+    public ResponseEntity<ReportDTO> reportUser(@RequestBody ReportRequest reportRequest){
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String currentPrincipalName = authentication.getName();
-            return ResponseEntity.ok(userReportService.addReview(currentPrincipalName, reportRequest));
+            return ResponseEntity.ok(userReportService.addReport(currentPrincipalName, reportRequest));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("An error occurred while adding the review.");
+            return ResponseEntity.badRequest().body(new ReportDTO());
         }
     }
 

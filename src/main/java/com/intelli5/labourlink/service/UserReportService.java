@@ -25,7 +25,7 @@ public class UserReportService {
         this.userReportRepository = userReportRepository;
     }
 
-    public String addReview(String email, ReportRequest reportRequest) {
+    public ReportDTO addReport(String email, ReportRequest reportRequest) {
         User reportedByUser = userRepository.findById(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
         User reportedToUser = userRepository.findById(reportRequest.getReportedTo())
@@ -37,9 +37,17 @@ public class UserReportService {
                 .ReportedBy(reportedByUser)
                 .ReportedTo(reportedToUser)
                 .build();
-        userReportRepository.save(userReport);
+        userReport = userReportRepository.save(userReport);
 
-        return "Report added successfully";
+        return ReportDTO.builder()
+                .id(userReport.getId())
+                .title(userReport.getTitle())
+                .description(userReport.getDescription())
+                .ReportedByName(userReport.getReportedBy().getName())
+                .ReportedToName(userReport.getReportedTo().getName())
+                .build();
+
+//        return "Report added successfully";
     }
 
     public String deleteReport(Integer id) {
