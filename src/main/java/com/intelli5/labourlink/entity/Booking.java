@@ -32,5 +32,5 @@ public class Booking {
 
     private LocalTime startTime;
 
-    private LocalTime endTime;
+    private BookingStage bookingStage;
 }
