@@ -15,4 +15,6 @@ public interface LabourRepository extends UserRepository{
 
     @Query("SELECT CASE WHEN COUNT(u) > 0 THEN TRUE ELSE FALSE END FROM User u WHERE u.nic = :nic")
     boolean existsByNic(@Param("nic") String nic);
+
+
 }

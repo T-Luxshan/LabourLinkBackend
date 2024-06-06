@@ -2,6 +2,7 @@ package com.intelli5.labourlink.repository;
 
 import com.intelli5.labourlink.entity.Status;
 import com.intelli5.labourlink.entity.User;
+import com.intelli5.labourlink.entity.UserRole;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -23,5 +24,5 @@ public interface UserRepository extends JpaRepository<User,String> {
 
     boolean existsByEmail(String email);
 
-    List<User> findAllByStatus(Status status);
+    List<User> findAllByStatusAndRole(Status status, UserRole role);
 }
