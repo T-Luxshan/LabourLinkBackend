@@ -1,6 +1,7 @@
 package com.intelli5.labourlink.controller;
 
 import com.intelli5.labourlink.dto.LabourLocationDTO;
+import com.intelli5.labourlink.entity.JobRole;
 import com.intelli5.labourlink.service.LabourLocationsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,11 @@ public class LabourLocationsController {
     public ResponseEntity<List<LabourLocationDTO>> getAllLabourLocations() {
         List<LabourLocationDTO> labourLocationsList = labourLocationsService.getAllLabourLocations();
         return ResponseEntity.ok(labourLocationsList);
+    }
+
+    @GetMapping("/labours/{jobRole}/locations")
+    public List<LabourLocationDTO> getLocationsByJobRole(@PathVariable JobRole jobRole) {
+        return labourLocationsService.findLocationsByJobRole(jobRole);
     }
 
     @PutMapping("/{id}")

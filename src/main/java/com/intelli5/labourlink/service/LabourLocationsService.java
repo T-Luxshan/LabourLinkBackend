@@ -1,6 +1,7 @@
 package com.intelli5.labourlink.service;
 
 import com.intelli5.labourlink.dto.LabourLocationDTO;
+import com.intelli5.labourlink.entity.JobRole;
 import com.intelli5.labourlink.entity.Labour;
 import com.intelli5.labourlink.entity.LabourLocations;
 import com.intelli5.labourlink.repository.LabourLocationsRepository;
@@ -51,6 +52,25 @@ public class LabourLocationsService {
 
     public void deleteLabourLocation(Long id) {
         labourLocationsRepository.deleteById(id);
+    }
+
+
+
+
+
+    public List<LabourLocationDTO> findLocationsByJobRole(JobRole jobRole) {
+        List<LabourLocations> locations = labourLocationsRepository.findByLabourJobRole(jobRole);
+        return locations.stream()
+                .map(labourLocation -> {
+                    LabourLocationDTO dto = new LabourLocationDTO();
+                    dto.setId(labourLocation.getId());
+                    dto.setLatitude(labourLocation.getLatitude());
+                    dto.setLongitude(labourLocation.getLongitude());
+                    dto.setLabourId(labourLocation.getLabour().getEmail()); // Set Labour ID instead of email
+
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 
     private LabourLocationDTO convertToDTO(LabourLocations labourLocations) {

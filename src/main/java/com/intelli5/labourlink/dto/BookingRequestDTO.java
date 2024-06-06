@@ -1,5 +1,6 @@
 package com.intelli5.labourlink.dto;
 
+import com.intelli5.labourlink.entity.BookingStage;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -12,5 +13,6 @@ public class BookingRequestDTO {
     private String customerId;
     private LocalDate date;
     private LocalTime startTime;
-    private LocalTime endTime;
+    private BookingStage bookingStage;
+    private String jobDescription;
 }
