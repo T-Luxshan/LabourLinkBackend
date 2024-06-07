@@ -1,6 +1,6 @@
 package com.intelli5.labourlink.entity;
 
-import com.intelli5.labourlink.Enum.UserRole;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -95,5 +95,6 @@ private boolean isPresent =true;
     private Status status;
 
     public void setRole(com.intelli5.labourlink.entity.UserRole userRole) {
+        this.role=userRole;
     }
 }

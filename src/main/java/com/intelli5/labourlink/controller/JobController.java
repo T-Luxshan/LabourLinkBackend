@@ -17,7 +17,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/job")
 public class JobController {

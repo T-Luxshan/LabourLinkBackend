@@ -1,10 +1,11 @@
 package com.intelli5.labourlink.controller;
 
-import com.intelli5.labourlink.Enum.UserRole;
+
 import com.intelli5.labourlink.Exception.CustomerRegistrationException;
 import com.intelli5.labourlink.entity.JobRole;
 import com.intelli5.labourlink.entity.RefreshToken;
 import com.intelli5.labourlink.entity.User;
+import com.intelli5.labourlink.entity.UserRole;
 import com.intelli5.labourlink.repository.CustomerRepository;
 import com.intelli5.labourlink.service.AuthService;
 import com.intelli5.labourlink.service.JwtService;
@@ -22,7 +23,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/auth/")
+@RequestMapping("/api/v1/auth")
 public class AuthController {
 
     private final AuthService authService;

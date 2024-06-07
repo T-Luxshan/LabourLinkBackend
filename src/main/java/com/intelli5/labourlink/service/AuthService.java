@@ -11,6 +11,7 @@ import com.intelli5.labourlink.utils.AuthResponse;
 import com.intelli5.labourlink.utils.LoginRequest;
 import com.intelli5.labourlink.utils.RegisterRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,6 +19,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService{
@@ -96,6 +98,8 @@ public class AuthService{
         user.setMobileNumber(registerRequest.getMobileNumber());
         user.setCompanyId(registerRequest.getCompanyId());
         user.setRole(UserRole.ADMIN);
+
+        log.info("user is"+user.getRole().toString());
 
 
         User savedUser = adminRepository.save(user);

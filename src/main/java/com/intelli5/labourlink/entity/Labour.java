@@ -1,6 +1,6 @@
 package com.intelli5.labourlink.entity;
 
-import com.intelli5.labourlink.Enum.UserRole;
+
 import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;

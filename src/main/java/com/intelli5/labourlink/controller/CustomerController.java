@@ -5,6 +5,7 @@ import com.intelli5.labourlink.dto.PasswordDTO;
 
 import com.intelli5.labourlink.dto.UpdateCustomerDTO;
 
+import com.intelli5.labourlink.dto.UserDTO;
 import com.intelli5.labourlink.entity.Customer;
 import com.intelli5.labourlink.entity.User;
 import com.intelli5.labourlink.service.CustomerService;
