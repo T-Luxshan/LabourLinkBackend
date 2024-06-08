@@ -1,9 +1,12 @@
 package com.intelli5.labourlink.repository;
 
 
+import com.intelli5.labourlink.entity.Labour;
 import com.intelli5.labourlink.entity.LabourProfile;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,6 +19,11 @@ public interface LabourProfileRepository extends JpaRepository<LabourProfile, St
   List<LabourProfile> findByGender(String gender);
   List<LabourProfile> findByLanguagesIn(List<String> languages);
   List<LabourProfile> findByLocation(String location);
-  Optional<LabourProfile> findLabour(String email);
+//  @Query("SELECT l FROM Labour l WHERE l.email = :email")
+//  Optional<LabourProfile> findLabour(String email);
 
+  Optional<Object> findByLabour(Labour labour);
+
+  @Transactional
+  void deleteByLabour(Labour labour);
 }

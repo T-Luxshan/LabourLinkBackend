@@ -101,6 +101,7 @@ public class LabourServiceImpl implements LabourService {
     }
 
     @Override
+
     public void updateLabourStatus(String email, Labour updatedLabour) {
         // Fetch the existing labour from the database based on the email
         Labour existingLabour = (Labour) labourRepository.findById(email)
@@ -114,3 +115,4 @@ public class LabourServiceImpl implements LabourService {
         labourRepository.save(existingLabour);
     }
 }
+
