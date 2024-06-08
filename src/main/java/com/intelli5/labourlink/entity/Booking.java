@@ -35,4 +35,6 @@ public class Booking {
     private BookingStage bookingStage;
 
     private String jobDescription;
+
+    private JobRole jobRole;
 }
