@@ -14,8 +14,6 @@ public interface CustomerService {
     CustomerDTO getCustomerById(String email);
 
 
-
-
     List<User> getAllCustomer();
 
 //    Customer updateCustomer(String email,Customer customer);

@@ -22,6 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/customer")
+@CrossOrigin("*")
 public class CustomerController {
 
     private final CustomerService customerService;
@@ -39,12 +40,15 @@ public class CustomerController {
 //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //        String currentPrincipalName = authentication.getName();
 //
-////        try {
+//        Customer customer = customerService.getCustomerById(currentPrincipalName);
+//        return ResponseEntity.ok(customer);
+
+//        try {
 //            Customer customer = customerService.getCustomerById(currentPrincipalName);
 //            return ResponseEntity.ok(customer);
-////        } catch (Exception e) {
-////            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching customer details: " + e.getMessage());
-////        }
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching customer details: " + e.getMessage());
+//        }
 //    }
 
     @GetMapping("{email}")

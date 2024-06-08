@@ -2,6 +2,7 @@ package com.intelli5.labourlink.controller;
 
 import com.intelli5.labourlink.Exception.ResourceNotFoundException;
 import com.intelli5.labourlink.dto.ConnectedUsersDTO;
+import com.intelli5.labourlink.dto.GetUserEmailFromTokenDTO;
 import com.intelli5.labourlink.dto.UserDTO;
 import com.intelli5.labourlink.dto.UserStatusUpdateDTO;
 import com.intelli5.labourlink.entity.Customer;
@@ -16,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -147,13 +150,13 @@ public class UserController {
     }
 
 
+    @GetMapping("/user")
+    public ResponseEntity<GetUserEmailFromTokenDTO> getUserByToken() {
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
 
-
-
-
-
-
-
-
+        GetUserEmailFromTokenDTO email = userService.getUserByEmail(currentPrincipalName);
+        return ResponseEntity.ok(email);
+    }
 }
