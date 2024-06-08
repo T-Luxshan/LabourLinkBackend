@@ -63,7 +63,18 @@ private String location;
             return new LabourProfileDTO(this);
         }
     }
-
-
+//
+//public LabourProfileDTO() {
+//
+//    }
+//
+//    public static LabourProfileDTOBuilder builder() {
+//        return new LabourProfileDTOBuilder();
+//    }
+//
+//    public static class LabourProfileDTOBuilder {
+//        // Builder methods
+//    }
+//
 
 }
