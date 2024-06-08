@@ -20,7 +20,7 @@ List<LabourProfile> searchByLocation(String location);
 LabourProfileDTO createLabourProfile(LabourProfileRequest labourProfileRequest);
 LabourProfileDTO getLabourProfileById(String email);
 List<LabourProfile> getAllLabourProfile();
-LabourProfile updateLabourProfile(String email, LabourProfile updateLabourProfile);
+LabourProfile updateLabourProfile(String email, LabourProfileRequest labourProfileRequest);
 void deleteLabourProfile(String email);
 
 }

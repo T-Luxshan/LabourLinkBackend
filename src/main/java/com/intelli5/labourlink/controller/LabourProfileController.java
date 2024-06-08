@@ -4,6 +4,7 @@ import com.intelli5.labourlink.dto.LabourProfileDTO;
 import com.intelli5.labourlink.entity.LabourProfile;
 import com.intelli5.labourlink.service.LabourProfileService;
 import com.intelli5.labourlink.utils.LabourProfileRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +15,9 @@ import java.util.List;
 @RequestMapping("/api/labour-profiles")
 
 public class LabourProfileController {
-//    @Autowired
-//    private LabourProfileService labourProfileService;
-//
+    @Autowired
+    private LabourProfileService labourProfileService;
+
 //    @PostMapping("/create")
 //    public LabourProfile createLabourProfile(@RequestBody LabourProfile labourProfile){
 //        return labourProfileService.createLabourProfile(labourProfile);
@@ -64,11 +65,11 @@ public class LabourProfileController {
 
 
 
-    private final LabourProfileService labourProfileService;
-
-    public LabourProfileController(LabourProfileService labourProfileService) {
-        this.labourProfileService = labourProfileService;
-    }
+//    private final LabourProfileService labourProfileService;
+//
+//    public LabourProfileController(LabourProfileService labourProfileService) {
+//        this.labourProfileService = labourProfileService;
+//    }
 
     @PostMapping("/create")
     public ResponseEntity<LabourProfileDTO> createLabourProfile(@RequestBody LabourProfileRequest labourProfileRequest){
@@ -90,8 +91,8 @@ public class LabourProfileController {
     }
 
     @PutMapping("/update/{email}")
-    public ResponseEntity<LabourProfile> updateLabourProfile(@PathVariable String email, @RequestBody LabourProfile labourProfile){
-        LabourProfile updatedLabourProfile = labourProfileService.updateLabourProfile(email, labourProfile);
+    public ResponseEntity<LabourProfile> updateLabourProfile(@PathVariable String email, @RequestBody LabourProfileRequest labourProfileRequest){
+        LabourProfile updatedLabourProfile = labourProfileService.updateLabourProfile(email, labourProfileRequest);
         return ResponseEntity.ok(updatedLabourProfile);
     }
 

@@ -12,9 +12,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class LabourProfileServiceImpl implements LabourProfileService {
@@ -77,20 +75,15 @@ public class LabourProfileServiceImpl implements LabourProfileService {
               .gender(labourProfile.getGender())
               .languages(labourProfile.getLanguages())
               .location(labourProfile.getLocation())
-
               .build();
-
-
-
 
     }
 
-
-
     @Override
     public LabourProfileDTO getLabourProfileById(String email) {
-       try{
-           LabourProfile labourProfile = labourProfileRepository.findLabour(email)
+       try {
+           Labour labour = labourRepository.findLabour(email);
+           LabourProfile labourProfile = (LabourProfile) labourProfileRepository.findByLabour(labour)
                    .orElseThrow(() -> new ResourceNotFoundException("Labour not found exception"));
 
            return LabourProfileDTO.builder()
@@ -101,8 +94,10 @@ public class LabourProfileServiceImpl implements LabourProfileService {
                    .build();
 
 
-       } catch (ResourceNotFoundException ignored){
-           return new LabourProfileDTO();
+       }
+       catch (ResourceNotFoundException resourceNotFoundException){
+           return  LabourProfileDTO.builder().build();
+
        }
     }
 
@@ -112,25 +107,30 @@ public class LabourProfileServiceImpl implements LabourProfileService {
     }
 
     @Override
-    public LabourProfile updateLabourProfile(String email, LabourProfile updatedLabourProfile) {
-        Optional<LabourProfile> optionalLabourProfile = labourProfileRepository.findById(email);
-        if (optionalLabourProfile.isPresent()) {
-            LabourProfile existingProfile = optionalLabourProfile.get();
-            existingProfile.setAboutMe(updatedLabourProfile.getAboutMe());
-            existingProfile.setGender(updatedLabourProfile.getGender());
-            existingProfile.setLanguages(updatedLabourProfile.getLanguages());
-            existingProfile.setLocation(updatedLabourProfile.getLocation());
+    public LabourProfile updateLabourProfile(String email, LabourProfileRequest labourProfileRequest) {
+
+        try{
+            Labour labour = labourRepository.findLabour(email);
+            LabourProfile existingProfile = (LabourProfile) labourProfileRepository.findByLabour(labour)
+                    .orElseThrow(()-> new ResourceNotFoundException("Profile not found"));
+
+//            LabourProfile existingProfile = optionalLabourProfile.get();
+            existingProfile.setAboutMe(labourProfileRequest.getAboutMe());
+            existingProfile.setGender(labourProfileRequest.getGender());
+            existingProfile.setLanguages(labourProfileRequest.getLanguages());
+            existingProfile.setLocation(labourProfileRequest.getLocation());
 
             return labourProfileRepository.save(existingProfile);
 
-        }else {
+        }catch (ResourceNotFoundException resourceNotFoundException){
             return null;
         }
     }
 
     @Override
     public void deleteLabourProfile(String email) {
-        labourProfileRepository.deleteById(email);
+        Labour labour = labourRepository.findLabour(email);
+        labourProfileRepository.deleteByLabour(labour);
     }
 
 
