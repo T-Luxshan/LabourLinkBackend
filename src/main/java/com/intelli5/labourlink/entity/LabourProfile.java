@@ -1,33 +1,46 @@
-//package com.intelli5.labourlink.entity;
-//
-//import jakarta.persistence.*;
-//import lombok.AllArgsConstructor;
-//import lombok.Builder;
-//import lombok.Data;
-//import lombok.NoArgsConstructor;
-//import java.util.List;
-//
-//
-//@Entity
-//@Data
-//@NoArgsConstructor
-//@AllArgsConstructor
-////@Builder
-//
-//public class LabourProfile extends Labour{
-//
-//@Column(name = "about_me")
-//    private String aboutMe;
-//
-//private String gender;
-//
-//@ElementCollection
-//    private List<String> languages;
-//
-//private String location;
-//
-//
-//
-//
-//
-//}
+package com.intelli5.labourlink.entity;
+
+import com.google.firebase.database.annotations.NotNull;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import java.util.List;
+
+
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+//@PrimaryKeyJoinColumn(name = "email")
+
+
+public class LabourProfile {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer Id;
+
+    @OneToOne
+    Labour labour;
+
+
+    @Column(name = "about_me")
+    private String aboutMe;
+
+private String gender;
+
+@ElementCollection
+//@CollectionTable(name = "labour_profile_languages", joinColumns = @JoinColumn(name = "labour_profile_email"))
+@Column(name = "languages")
+@Enumerated(EnumType.STRING)
+    private List<String> languages;
+
+private String location;
+
+
+
+}
