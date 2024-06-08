@@ -7,6 +7,8 @@ import com.intelli5.labourlink.dto.UserStatusUpdateDTO;
 import com.intelli5.labourlink.entity.Customer;
 import com.intelli5.labourlink.entity.Labour;
 import com.intelli5.labourlink.entity.User;
+import com.intelli5.labourlink.repository.CustomerRepository;
+import com.intelli5.labourlink.repository.LabourRepository;
 import com.intelli5.labourlink.repository.UserRepository;
 import com.intelli5.labourlink.service.UserService;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -25,14 +27,10 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/user")
 public class UserController {
     private final UserService userService;
+    private final CustomerRepository customerRepository;
+    private final LabourRepository labourRepository;
 
-    @Qualifier("customerRepository")
-    private final UserRepository customerRepository;
-    @Qualifier("labourRepository")
-    private final UserRepository labourRepository;
-
-
-    public UserController(UserService userService, @Qualifier("customerRepository") UserRepository customerRepository, @Qualifier("labourRepository") UserRepository labourRepository) {
+    public UserController(UserService userService, @Qualifier("customerRepository") CustomerRepository customerRepository, @Qualifier("labourRepository") LabourRepository labourRepository) {
         this.userService = userService;
         this.customerRepository = customerRepository;
         this.labourRepository = labourRepository;
@@ -66,26 +64,13 @@ public class UserController {
     }
 
 
-    @GetMapping("/users")
-    public ResponseEntity<List<ConnectedUsersDTO>> findConnectedUsers() {
-        // Find connected users from both repositories
-        List<User> connectedUsers = new ArrayList<>();
-
+    @GetMapping("/connectedCustomers")
+    public ResponseEntity<List<ConnectedUsersDTO>> findConnectedCustomers() {
         // Retrieve connected users from the customer repository
-        List<User> customerUsers = userService.findConnectedUsers(customerRepository);
-        connectedUsers.addAll(customerUsers);
-
-        // Retrieve connected users from the labor repository
-        List<User> laborUsers = userService.findConnectedUsers(labourRepository);
-        for (User laborUser : laborUsers) {
-            // Check if the user already exists in the connectedUsers list based on email
-            if (connectedUsers.stream().noneMatch(u -> u.getEmail().equals(laborUser.getEmail()))) {
-                connectedUsers.add(laborUser);
-            }
-        }
+        List<User> customerUsers = userService.findConnectedCustomers();
 
         // Convert User entities to ConnectedUsersDTOs
-        List<ConnectedUsersDTO> connectedUsersDTOs = connectedUsers.stream()
+        List<ConnectedUsersDTO> connectedUsersDTOs = customerUsers.stream()
                 .map(user -> ConnectedUsersDTO.builder()
                         .name(user.getName())
                         .email(user.getEmail())
@@ -97,6 +82,23 @@ public class UserController {
         return ResponseEntity.ok(connectedUsersDTOs);
     }
 
+    @GetMapping("/connectedLabours")
+    public ResponseEntity<List<ConnectedUsersDTO>> findConnectedLabours() {
+        // Retrieve connected users from the labor repository
+        List<User> laborUsers = userService.findConnectedLabours();
+
+        // Convert User entities to ConnectedUsersDTOs
+        List<ConnectedUsersDTO> connectedUsersDTOs = laborUsers.stream()
+                .map(user -> ConnectedUsersDTO.builder()
+                        .name(user.getName())
+                        .email(user.getEmail())
+                        .mobileNumber(user.getMobileNumber())
+                        .status(user.getStatus())
+                        .build())
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(connectedUsersDTOs);
+    }
 
     @GetMapping("{email}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable("email") String email) {
