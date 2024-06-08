@@ -1,15 +1,15 @@
-//Declare the package name
 package com.intelli5.labourlink.entity;
 
-//Import necessary JPA annotations for database mapping
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
 
-//Import Lombok annotations to reduce boilerplate code
 import lombok.AllArgsConstructor;
 
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.util.List;
 
 @Entity
@@ -17,7 +17,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Inheritance(strategy = InheritanceType.JOINED)
 public class Labour extends User{ //Defines the Labour class, which extends User
 
 

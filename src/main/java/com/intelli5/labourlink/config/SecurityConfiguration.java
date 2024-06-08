@@ -28,7 +28,7 @@ public class SecurityConfiguration {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/**", "/forgotPassword/**", "/**")// TODO need to change later to  allow access only to auth
+                        .requestMatchers("/api/**", "/forgotPassword/**","/**")// TODO need to change later to  allow access only to auth
                         .permitAll()
                         .anyRequest()
                         .authenticated())
