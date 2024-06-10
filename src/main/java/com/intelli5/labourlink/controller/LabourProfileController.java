@@ -103,22 +103,26 @@ public class LabourProfileController {
     }
 
     @GetMapping("/search/aboutMe")
-    public List<LabourProfile> searchByAboutMe(@RequestParam String aboutMe) {
-        return labourProfileService.searchByAboutMe(aboutMe);
+    public ResponseEntity<List<LabourProfile>> searchByAboutMe(@RequestParam String aboutMe) {
+        List<LabourProfile> profiles = labourProfileService.searchByAboutMe(aboutMe);
+        return ResponseEntity.ok(profiles);
     }
 
     @GetMapping("/search/gender")
-    public List<LabourProfile> searchByGender(@RequestParam String gender) {
-        return labourProfileService.searchByGender(gender);
+    public ResponseEntity<List<LabourProfile>> searchByGender(@RequestParam String gender) {
+        List<LabourProfile> profiles = labourProfileService.searchByGender(gender);
+        return ResponseEntity.ok(profiles);
     }
 
     @GetMapping("/search/languages")
-    public List<LabourProfile> searchByLanguages(@RequestParam List<String> languages) {
-        return labourProfileService.searchByLanguages(languages);
+    public ResponseEntity<List<LabourProfile>> searchByLanguages(@RequestParam List<String> languages) {
+        List<LabourProfile> profiles = labourProfileService.searchByLanguages(languages);
+        return ResponseEntity.ok(profiles);
     }
 
     @GetMapping("/search/location")
-    public List<LabourProfile> searchByLocation(@RequestParam String location) {
-        return labourProfileService.searchByLocation(location);
+    public ResponseEntity<List<LabourProfile>> searchByLocation(@RequestParam String location) {
+        List<LabourProfile> profiles = labourProfileService.searchByLocation(location);
+        return ResponseEntity.ok(profiles);
     }
 }
