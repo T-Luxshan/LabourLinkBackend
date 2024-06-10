@@ -2,7 +2,7 @@ package com.intelli5.labourlink.service.impl;
 
 import com.intelli5.labourlink.dto.AppointmentDTO;
 import com.intelli5.labourlink.entity.Appointment;
-import com.intelli5.labourlink.repository.AppointmentRepo;
+import com.intelli5.labourlink.repository.AppointmentRepository;
 import com.intelli5.labourlink.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,11 +10,12 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AppointmentImpl implements AppointmentService {
     @Autowired
-    private AppointmentRepo appointmentRepo;
+    private AppointmentRepository appointmentRepo;
   /*  @Override
     public List<Appointment> findAll() {
         Sort sort = Sort.by(Sort.Order.desc("AppointmentMadeDate"));
@@ -79,14 +80,23 @@ if(appointment.isDelivered()){
         return appointmentDtos;
     }
     public  double sumByRevenue() {
-
-        return  appointmentRepo.sumTaskRevenue();
+        Double sum=appointmentRepo.sumTaskRevenue();
+        return sum !=null?sum:0.0;
     }
-public List<Object[]> jobVsTotalAppointment(){
-   return appointmentRepo.findJobAppointmentCounts();
-}
-    public List<Object[]> findCancelledJobAppointmentCounts(){
-        return appointmentRepo.findCancelledJobAppointmentCounts();
+
+//-----------------------------------Appointment : -graph left : -Job Vs Total Appointment--------------------------------
+    public List<Object[]> jobVsTotalAppointment(){
+    List<Object[]> results=appointmentRepo.findJobAppointmentCounts() ;
+    return results.stream()
+            .map(result -> new Object[]{result[0], result[1] == null ? 0L : result[1]})
+            .collect(Collectors.toList());
+    }
+//-----------------------------------Appointment : -graph right : -Job Vs cancelled Total Appointment--------------------------------
+        public List<Object[]> findCancelledJobAppointmentCounts(){
+        List<Object[]> results =appointmentRepo.findCancelledJobAppointmentCounts();
+        return results.stream()
+                .map(result->new Object[] {result[0],result[1]==null?0L:result[1]})
+                .collect(Collectors.toList());
     }
     public List<Object[]> findActiveCustomerCount(){
         LocalDate startDate = LocalDate.now().minusDays(7);

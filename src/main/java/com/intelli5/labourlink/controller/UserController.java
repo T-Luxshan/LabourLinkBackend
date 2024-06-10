@@ -4,12 +4,14 @@ import com.intelli5.labourlink.Exception.ResourceNotFoundException;
 import com.intelli5.labourlink.dto.ConnectedUsersDTO;
 import com.intelli5.labourlink.dto.UserDTO;
 import com.intelli5.labourlink.dto.UserStatusUpdateDTO;
+import com.intelli5.labourlink.entity.Appointment;
 import com.intelli5.labourlink.entity.Customer;
 import com.intelli5.labourlink.entity.Labour;
 import com.intelli5.labourlink.entity.User;
 import com.intelli5.labourlink.repository.UserRepository;
 import com.intelli5.labourlink.service.UserService;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @CrossOrigin("*")
@@ -145,7 +148,48 @@ public class UserController {
     }
 
 
-
+//----------------------------------------------------------------------------------
+@GetMapping
+public ResponseEntity<List<User>> getAllUser() {
+    return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
+}
+    //-------------------Dashboard box: 1 ......and .......User detail box : 1-------------------
+    @GetMapping("/count")
+    public ResponseEntity<Integer> getAllUserCount() {
+        List<User> userList = userService.findAll();
+        int userCount = userList.size();
+        return new ResponseEntity <>(userCount, HttpStatus.OK);
+    }
+    //--------------------------------User:-User detail individual detail fetching -----------------
+    @GetMapping("u/{email}")
+    public ResponseEntity<User> findByEmail(@PathVariable String email) {
+        Optional<User> user = userService.getUserByEmail(email);
+        if (user.isPresent()) {
+            return new ResponseEntity<>(user.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    //--------------------------------User:-User detail individual detail Remove -----------------
+    @PutMapping ("u/{email}")
+    public ResponseEntity<Void> findBy_Email(@PathVariable String email) {
+        try{
+            userService.getUserBy_Email(email);
+            return new ResponseEntity<>( HttpStatus.NO_CONTENT);
+        }catch(RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    //--------------------------------User:-User detail individual appointment detail fetching -----------------
+    @GetMapping("/appointment/{email}")
+    public ResponseEntity<List<Appointment>> find_By_Email(@PathVariable String email) {
+        try{
+            List<Appointment> appointments = userService.get_UserBy_Email(email);
+            return new ResponseEntity<>(appointments,HttpStatus.OK);
+        }catch(RuntimeException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
 
 

@@ -10,9 +10,7 @@ public interface AppointmentService {
     List<AppointmentDTO> getPendingAppointmentsWithDetails();
     List<AppointmentDTO> getDeliveredAppointmentsWithDetails();
     List<AppointmentDTO>  getCancelAppointmentsWithDetails();
-
     double sumByRevenue();
-
     List<Object[]> jobVsTotalAppointment();
     List<Object[]> findCancelledJobAppointmentCounts();
     List<Object[]> findActiveCustomerCount();

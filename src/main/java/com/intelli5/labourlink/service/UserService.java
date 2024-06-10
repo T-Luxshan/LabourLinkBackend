@@ -2,13 +2,12 @@ package com.intelli5.labourlink.service;
 
 import com.intelli5.labourlink.Exception.ResourceNotFoundException;
 import com.intelli5.labourlink.dto.UserStatusUpdateDTO;
-import com.intelli5.labourlink.entity.Customer;
-import com.intelli5.labourlink.entity.Labour;
-import com.intelli5.labourlink.entity.Status;
-import com.intelli5.labourlink.entity.User;
+import com.intelli5.labourlink.entity.*;
+import com.intelli5.labourlink.repository.AppointmentRepository;
 import com.intelli5.labourlink.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +23,11 @@ public class UserService {
     @Qualifier("labourRepository")
     @Autowired
     private UserRepository labourRepository;
+
+    @Autowired
+    private AppointmentRepository appointmentRepository;
+
+    private UserRepository userRepository;
 
     public void saveUser(User user, @Qualifier("customerRepository") UserRepository repository) {
         user.setStatus(Status.ONLINE);
@@ -80,8 +84,6 @@ public class UserService {
     }
 
 
-
-
     public User updateUser(String email, User updateUser) {
         User existingUser = customerRepository.findById(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found for given email: " + email));
@@ -90,4 +92,44 @@ public class UserService {
         return customerRepository.save(existingUser);
     }
 
+    //------------------------------------------------------------------------------------------------------
+    public Optional<User> getUserByEmail(String email) {
+        Optional<User> users = labourRepository.findByEmail(email);
+        if (users.isPresent())
+            return users;
+        return null;
+    }
+
+    public List<User> findAll() {
+        Sort sort = Sort.by(Sort.Order.desc("joinDate"),
+                Sort.Order.desc("joinTime"));
+        return labourRepository.findAll(sort);
+    }
+
+    public void getUserBy_Email(String email) {
+        Optional<User> updateUser = labourRepository.findByEmail(email);
+        if (updateUser.isPresent()) {
+            User existingUser = updateUser.get();
+            existingUser.setPresent(false);
+        } else {
+            throw new RuntimeException("User not found");
+        }
+
+    }
+
+    public List<Appointment> get_UserBy_Email(String email) {
+        Optional<User> optionaluser = labourRepository.findByEmail(email);
+        if (optionaluser.isPresent()) {
+            User user = optionaluser.get();
+            if (user instanceof Customer) {
+                return appointmentRepository.findByCustomer((Customer) user);
+            } else if (user instanceof Labour) {
+                return appointmentRepository.findByLabour((Labour) user);
+            } else {
+                throw new RuntimeException("Invalid" + email);
+            }
+        } else {
+            throw new RuntimeException("not found" + email);
+        }
+    }
 }

@@ -13,14 +13,14 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/app")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin("*")
 public class AppointmentController {
     @Autowired
     private AppointmentService appointmentService;
 
     //------Appointment :- Appointment pending table------------------------
     @GetMapping
-    public ResponseEntity<List<AppointmentDTO>> getAppointments() {
+    public ResponseEntity<List<AppointmentDTO>> getPendingAppointments() {
         List<AppointmentDTO> appointments = appointmentService.getPendingAppointmentsWithDetails();
         return new ResponseEntity<>(appointments, HttpStatus.OK);
     }
@@ -65,24 +65,22 @@ public class AppointmentController {
 
     //----------------------Appointment - Revenue box 4-------------------------
     @GetMapping("/total_revenue")
-    public double sumByRevenue() {
+    public ResponseEntity<Double> sumByRevenue() {
+            double totalRevenue = appointmentService.sumByRevenue();
+            return ResponseEntity.ok(totalRevenue);
 
-        return appointmentService.sumByRevenue();
     }
-
     //-------------------------------------to dash board total Appointments --------------------------------
     @GetMapping("/total_app")
     public ResponseEntity<Integer> getTotalAppointmentsCount() {
         List<AppointmentDTO> cancelAppointments = appointmentService.getCancelAppointmentsWithDetails();
         List<AppointmentDTO> deliveredAppointments = appointmentService.getDeliveredAppointmentsWithDetails();
         List<AppointmentDTO> pendingAppointments = appointmentService.getPendingAppointmentsWithDetails();
-
         int totalAppointmentsCount = cancelAppointments.size() + deliveredAppointments.size() + pendingAppointments.size();
-
         return new ResponseEntity<>(totalAppointmentsCount, HttpStatus.OK);
     }
 
-    //-------------------------------------graph left : -Job Vs Total Appointment--------------------------------
+    //-----------------------------------Appointment : -graph left : -Job Vs Total Appointment--------------------------------
     @GetMapping("/graphleft")
     public List<Object[]> getJobVsTotalAppointment() {
         return appointmentService.jobVsTotalAppointment();
@@ -106,7 +104,7 @@ public class AppointmentController {
         return appointmentService.findActiveLabourCount();
     }
 
-    //------------------------------------Dashboard -graph  : - Appointment count vs day-------------------------------
+    //------------------------------------Dashboard -line graph  : - Appointment count vs day-------------------------------
 
     @GetMapping("/dashboard/g_AppCount")
     public List<Object[]> findAppointmentsCountWithDay() {

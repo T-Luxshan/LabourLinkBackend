@@ -26,10 +26,15 @@ private JobService jobservice;
 //-----------------------------------Job :- add job---------------------------------------
     @PostMapping
     public ResponseEntity<String> createJob(@RequestBody Job job){
-        jobservice.createJob(job);
-        return new ResponseEntity<>("Job Add", HttpStatus.CREATED );
-    }
-    //----------------------------Job :-  box 01 - job count -------------------------------
+       if(jobservice.existsByJobName(job.getJobName())){
+           return ResponseEntity.status(HttpStatus.CONFLICT)//conflict 409
+                   .body("job"+job.getJobName() + "is already exists");
+       }
+        else {
+           jobservice.createJob(job);
+           return new ResponseEntity<>("Job Add", HttpStatus.CREATED);
+       }}
+    //---------------------------Dashboard & -Job :-  box 01 - job count -------------------------------
     @GetMapping("/count")
     public ResponseEntity<Integer> getAllJobCount() {
        List<Job> JobCount=jobservice.findAll();

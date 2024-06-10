@@ -3,17 +3,15 @@ package com.intelli5.labourlink.repository;
 import com.intelli5.labourlink.entity.Appointment;
 import com.intelli5.labourlink.entity.Customer;
 import com.intelli5.labourlink.entity.Labour;
-import com.intelli5.labourlink.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
-public interface AppointmentRepo extends JpaRepository<Appointment,String> {
-List<Appointment> findByCustomer(Customer customer);
+public interface AppointmentRepository extends JpaRepository<Appointment,String> {
+    List<Appointment> findByCustomer(Customer customer);
     List<Appointment> findByLabour(Labour labour);
 
     @Query("select SUM(a.taskRevenue) from Appointment a")
@@ -60,7 +58,7 @@ List<Appointment> findByCustomer(Customer customer);
                     "from Appointment a " +
                     "where a.AppointmentMadeDate > :startDate  and a.isCancelled= false "  +
                     "group by dayname(a.AppointmentMadeDate), a.AppointmentMadeDate " +
-                    "order by field(dayname(a.AppointmentMadeDate), 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday' ,'Friday', 'Saturday')"
+                    "order by field(dayname(a.AppointmentMadeDate), 'Sun', 'Mon', 'Tues', 'Wed', 'Thur' ,'Fri', 'Sat')"
     )
     List<Object[]> findAppointmentsCountWithDay(@Param("startDate") LocalDate startDate);
 

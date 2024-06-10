@@ -27,9 +27,6 @@ import java.util.List;
 @AllArgsConstructor
 //@Builder
 public  class User implements UserDetails {
-
-
-
     @Id
     @NotNull
     @Email(message = "Please enter valid email")
