@@ -1,5 +1,6 @@
 package com.intelli5.labourlink.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.firebase.database.annotations.NotNull;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,7 @@ public class LabourProfile {
     private Integer Id;
 
     @OneToOne
+    @JsonIgnore
     Labour labour;
 
 
