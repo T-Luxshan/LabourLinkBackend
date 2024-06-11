@@ -28,19 +28,16 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/user")
 public class UserController {
     private final UserService userService;
-
     @Qualifier("customerRepository")
     private final UserRepository customerRepository;
     @Qualifier("labourRepository")
     private final UserRepository labourRepository;
-
 
     public UserController(UserService userService, @Qualifier("customerRepository") UserRepository customerRepository, @Qualifier("labourRepository") UserRepository labourRepository) {
         this.userService = userService;
         this.customerRepository = customerRepository;
         this.labourRepository = labourRepository;
     }
-
 
     @MessageMapping("/user.add")
     @SendTo("/user/public")
@@ -67,7 +64,6 @@ public class UserController {
         }
         return user;
     }
-
 
     @GetMapping("/users")
     public ResponseEntity<List<ConnectedUsersDTO>> findConnectedUsers() {
@@ -100,7 +96,6 @@ public class UserController {
         return ResponseEntity.ok(connectedUsersDTOs);
     }
 
-
     @GetMapping("{email}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable("email") String email) {
         try {
@@ -117,7 +112,6 @@ public class UserController {
             } else {
                 userDTO = new UserDTO(userFromCustomerRepo.getName(), userFromCustomerRepo.getEmail(), userFromCustomerRepo.getMobileNumber(), userFromCustomerRepo.getStatus());
             }
-
             // Return ResponseEntity with the created UserDTO
             return ResponseEntity.ok(userDTO);
         } catch (ResourceNotFoundException e) {
