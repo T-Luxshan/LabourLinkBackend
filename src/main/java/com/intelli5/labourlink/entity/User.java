@@ -46,7 +46,7 @@ public  class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     UserRole role;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "user")
     private RefreshToken refreshToken;
 
     private boolean isVerified = true;
@@ -87,6 +87,4 @@ public  class User implements UserDetails {
 
     private Status status;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Customer customer;
 }
