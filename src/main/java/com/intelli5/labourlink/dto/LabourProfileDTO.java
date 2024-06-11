@@ -13,9 +13,8 @@ import java.util.List;
 @Data
 @Builder
 public class LabourProfileDTO {
-//    private String email;
     private String aboutMe;
     private String gender;
     private List<String> languages;
-    private String location;
+//    private String location;
 }
