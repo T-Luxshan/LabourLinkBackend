@@ -34,12 +34,7 @@ public class LabourController {
         return ResponseEntity.ok(labourDTO);
     }
 
-    //Build Get Labour REST API
-//    @GetMapping("emails")
-//    public ResponseEntity<List<User>> getAllLabour(){
-//        List<User> AllLabours=labourService.getAllLabour();
-//        return ResponseEntity.ok(AllLabours);
-//    }
+
 
     @PutMapping("{email}")
     public ResponseEntity<LabourDTO> updateLabour(@PathVariable("email") String email, @RequestBody UpdateLabourDTO updatedLabourDTO){
