@@ -15,9 +15,10 @@ import lombok.extern.apachecommons.CommonsLog;
 //@Builder
 public class Customer extends User {
 
-
     @Column(nullable = false)
     private String address;
 
-
+    @OneToOne
+    @JoinColumn(name = "email", referencedColumnName = "email")
+    private User user;
 }

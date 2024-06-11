@@ -4,24 +4,32 @@ import com.intelli5.labourlink.Exception.ResourceNotFoundException;
 import com.intelli5.labourlink.dto.CustomerDTO;
 import com.intelli5.labourlink.dto.UpdateCustomerDTO;
 import com.intelli5.labourlink.entity.Customer;
-import com.intelli5.labourlink.entity.Status;
 import com.intelli5.labourlink.entity.User;
 import com.intelli5.labourlink.repository.CustomerRepository;
+import com.intelli5.labourlink.repository.UserRepository;
 import com.intelli5.labourlink.service.CustomerService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
+    @Qualifier("customerRepository")
     public CustomerRepository customerRepository;
 
-    public CustomerServiceImpl(CustomerRepository customerRepository) {
+    public UserRepository userRepository;
+
+    public CustomerServiceImpl(PasswordEncoder passwordEncoder, CustomerRepository customerRepository,UserRepository userRepository) {
+        this.passwordEncoder = passwordEncoder;
         this.customerRepository = customerRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -94,10 +102,19 @@ public class CustomerServiceImpl implements CustomerService {
 
 
     @Override
+    @Transactional
     public void deleteCustomer(String email) {
-        Customer customer = (Customer) customerRepository.findById(email)
+        // Find the User entity by email
+        User user = userRepository.findById(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found for given email: " + email));
-        customerRepository.deleteById(email);
+
+        // Manually delete associated Customer entity if necessary
+        if (user.getCustomer() != null) {
+            customerRepository.delete(user.getCustomer());
+        }
+
+        // Delete the User entity
+        userRepository.delete(user);
     }
 
 
@@ -106,7 +123,7 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = (Customer) customerRepository.findById(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found for given email: " + email));
 
-        customer.setPassword(password);
+        customer.setPassword(passwordEncoder.encode(password));
         customerRepository.save(customer);
     }
 
