@@ -148,7 +148,7 @@ public class UserController {
     }
 
 
-//----------------------------------------------------------------------------------
+//+++++++++++++++++++++++++-----------------------------------------------------------------------+++++++++++++++++++++++++++++++
 @GetMapping
 public ResponseEntity<List<User>> getAllUser() {
     return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);

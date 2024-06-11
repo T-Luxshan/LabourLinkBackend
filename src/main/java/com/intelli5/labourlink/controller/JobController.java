@@ -32,7 +32,7 @@ private JobService jobservice;
        }
         else {
            jobservice.createJob(job);
-           return new ResponseEntity<>("Job Add", HttpStatus.CREATED);
+           return new ResponseEntity<>("Job Add successfully", HttpStatus.CREATED);
        }}
     //---------------------------Dashboard & -Job :-  box 01 - job count -------------------------------
     @GetMapping("/count")
