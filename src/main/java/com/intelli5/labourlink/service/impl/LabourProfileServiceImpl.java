@@ -44,15 +44,12 @@ public class LabourProfileServiceImpl implements LabourProfileService {
         return labourProfileRepository.findByLanguagesIn(languages);
     }
 
-    @Override
-    public List<LabourProfile> searchByLocation(String location) {
-        return labourProfileRepository.findByLocation(location);
-    }
-
 //    @Override
-//    public LabourProfile createLabourProfile(LabourProfile labourProfile) {
-//        return null;
+//    public List<LabourProfile> searchByLocation(String location) {
+//        return labourProfileRepository.findByLocation(location);
 //    }
+
+
 
     @Override
     @Transactional
@@ -64,7 +61,7 @@ public class LabourProfileServiceImpl implements LabourProfileService {
               .aboutMe(labourProfileRequest.getAboutMe())
               .gender(labourProfileRequest.getGender())
               .languages(labourProfileRequest.getLanguages())
-              .location(labourProfileRequest.getLocation())
+//              .location(labourProfileRequest.getLocation())
               .labour(labour)
                       .build();
 
@@ -74,7 +71,7 @@ public class LabourProfileServiceImpl implements LabourProfileService {
               .aboutMe(labourProfile.getAboutMe())
               .gender(labourProfile.getGender())
               .languages(labourProfile.getLanguages())
-              .location(labourProfile.getLocation())
+//              .location(labourProfile.getLocation())
               .build();
 
     }
@@ -90,7 +87,7 @@ public class LabourProfileServiceImpl implements LabourProfileService {
                    .aboutMe(labourProfile.getAboutMe())
                    .gender(labourProfile.getGender())
                    .languages(labourProfile.getLanguages())
-                   .location(labourProfile.getLocation())
+//                   .location(labourProfile.getLocation())
                    .build();
 
 
@@ -114,11 +111,11 @@ public class LabourProfileServiceImpl implements LabourProfileService {
             LabourProfile existingProfile = (LabourProfile) labourProfileRepository.findByLabour(labour)
                     .orElseThrow(()-> new ResourceNotFoundException("Profile not found"));
 
-//            LabourProfile existingProfile = optionalLabourProfile.get();
+
             existingProfile.setAboutMe(labourProfileRequest.getAboutMe());
             existingProfile.setGender(labourProfileRequest.getGender());
             existingProfile.setLanguages(labourProfileRequest.getLanguages());
-            existingProfile.setLocation(labourProfileRequest.getLocation());
+//            existingProfile.setLocation(labourProfileRequest.getLocation());
 
             return labourProfileRepository.save(existingProfile);
 
