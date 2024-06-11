@@ -26,6 +26,7 @@ public class LabourProfile {
     private Integer Id;
 
     @OneToOne
+    @JoinColumn(name = "labour_email", referencedColumnName = "email")
     @JsonIgnore
     Labour labour;
 
