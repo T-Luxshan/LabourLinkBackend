@@ -45,9 +45,9 @@ public  class User implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
-private LocalDate joinDate;
-private LocalTime joinTime;
-private boolean isPresent =true;
+    private LocalDate joinDate;
+    private LocalTime joinTime;
+    private boolean isPresent =true;
 //    @Enumerated(EnumType.STRING)
 //    UserRole role;
 
