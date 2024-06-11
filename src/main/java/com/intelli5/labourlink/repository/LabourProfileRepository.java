@@ -18,9 +18,8 @@ public interface LabourProfileRepository extends JpaRepository<LabourProfile, St
   List<LabourProfile> findByAboutMeContaining(String aboutMe);
   List<LabourProfile> findByGender(String gender);
   List<LabourProfile> findByLanguagesIn(List<String> languages);
-  List<LabourProfile> findByLocation(String location);
-//  @Query("SELECT l FROM Labour l WHERE l.email = :email")
-//  Optional<LabourProfile> findLabour(String email);
+//  List<LabourProfile> findByLocation(String location);
+
 
   Optional<Object> findByLabour(Labour labour);
 
