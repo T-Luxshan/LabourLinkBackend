@@ -14,7 +14,6 @@ import java.util.List;
 @Builder
 
 public class LabourProfileRequest {
-//    private Integer Id;
     private String aboutMe;
     private String gender;
     private List<String> languages;
