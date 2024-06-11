@@ -26,8 +26,7 @@ public class LabourServiceImpl implements LabourService {
     @Override
     public Labour createLabour(Labour labour) {
         return labourRepository.save(labour);
-//        Labour savedLabour = labourRepository.save(labour);
-//        return savedLabour;
+
     }
 
     @Override
@@ -44,8 +43,6 @@ public class LabourServiceImpl implements LabourService {
     @Override
     public List<User> getAllLabour() {
         return labourRepository.findAll();
-//        List<User> allLabours = labourRepository.findAll();
-//        return allLabours;
     }
 
     @Override
@@ -62,7 +59,6 @@ public class LabourServiceImpl implements LabourService {
         existingLabour.setName(updateLabourDTO.getName());
         existingLabour.setNic(updateLabourDTO.getNic());
         existingLabour.setDocumentUri(updateLabourDTO.getDocumentUri());
-//        existingLabour.setEmail(updateLabourDTO.getEmail());
         existingLabour.setJobRole(updateLabourDTO.getJobRole());
         existingLabour.setMobileNumber(updateLabourDTO.getMobileNumber());
 
