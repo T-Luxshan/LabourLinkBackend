@@ -1,11 +1,11 @@
 package com.intelli5.labourlink.controller;
 
 import com.intelli5.labourlink.entity.Job;
-import com.intelli5.labourlink.entity.User;
+//import com.intelli5.labourlink.entity.User;
 import com.intelli5.labourlink.service.JobService;
-import jakarta.persistence.Entity;
+//import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+//import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
