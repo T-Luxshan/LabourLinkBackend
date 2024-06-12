@@ -1,5 +1,7 @@
 package com.intelli5.labourlink.dto;
 
+import com.intelli5.labourlink.entity.BookingStage;
+import com.intelli5.labourlink.entity.JobRole;
 import lombok.Builder;
 import lombok.Data;
 
@@ -15,5 +17,7 @@ public class BookingResponseDTO {
     private String customerId;
     private LocalDate date;
     private LocalTime startTime;
-    private LocalTime endTime;
+    private BookingStage bookingStage;
+    private String jobDescription;
+    private JobRole jobRole;
 }

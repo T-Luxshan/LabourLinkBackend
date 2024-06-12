@@ -32,5 +32,9 @@ public class Booking {
 
     private LocalTime startTime;
 
-    private LocalTime endTime;
+    private BookingStage bookingStage;
+
+    private String jobDescription;
+
+    private JobRole jobRole;
 }

@@ -1,11 +1,11 @@
 package com.intelli5.labourlink.service;
 
 import com.intelli5.labourlink.Exception.ResourceNotFoundException;
+import com.intelli5.labourlink.dto.GetUserEmailFromTokenDTO;
 import com.intelli5.labourlink.dto.UserStatusUpdateDTO;
-import com.intelli5.labourlink.entity.Customer;
-import com.intelli5.labourlink.entity.Labour;
-import com.intelli5.labourlink.entity.Status;
-import com.intelli5.labourlink.entity.User;
+import com.intelli5.labourlink.entity.*;
+import com.intelli5.labourlink.repository.CustomerRepository;
+import com.intelli5.labourlink.repository.LabourRepository;
 import com.intelli5.labourlink.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,17 +18,21 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    @Qualifier("customerRepository")
-    @Autowired
-    private UserRepository customerRepository;
 
-    @Qualifier("labourRepository")
     @Autowired
-    private UserRepository labourRepository;
+    private CustomerRepository customerRepository;
 
-    public void saveUser(User user, @Qualifier("customerRepository") UserRepository repository) {
+    @Autowired
+    private LabourRepository labourRepository;
+
+    public void saveUser(User user, CustomerRepository customerRepository) {
         user.setStatus(Status.ONLINE);
-        repository.save(user);
+        customerRepository.save(user);
+    }
+
+    public void saveUser(User user, LabourRepository labourRepository) {
+        user.setStatus(Status.ONLINE);
+        labourRepository.save(user);
     }
 
     public void disconnect(User user, @Qualifier("customerRepository") UserRepository repository) {
@@ -39,8 +43,12 @@ public class UserService {
         }
     }
 
-    public List<User> findConnectedUsers(@Qualifier("customerRepository") UserRepository repository) {
-        return repository.findAllByStatus(Status.ONLINE);
+    public List<User> findConnectedCustomers() {
+        return customerRepository.findAllByStatusAndRole(Status.ONLINE, UserRole.CUSTOMER);
+    }
+
+    public List<User> findConnectedLabours() {
+        return labourRepository.findAllByStatusAndRole(Status.ONLINE,UserRole.LABOUR);
     }
 
     public User getCustomerById(String email) {
@@ -113,6 +121,13 @@ public class UserService {
 
     public List<User> getAllLabors() {
         return labourRepository.findAll();
+    }
+
+    public GetUserEmailFromTokenDTO getUserByEmail(String currentPrincipalName){
+        User user=getLaborById(currentPrincipalName);
+        return GetUserEmailFromTokenDTO.builder()
+                .email(user.getEmail())
+                .build();
     }
 
 }

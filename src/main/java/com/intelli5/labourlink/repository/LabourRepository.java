@@ -15,4 +15,6 @@ public interface LabourRepository extends UserRepository{
 
     @Query("SELECT l FROM Labour l WHERE l.email = :email")
     Labour findLabour(String email);
+
+
 }
