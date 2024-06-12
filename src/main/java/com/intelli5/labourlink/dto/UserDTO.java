@@ -8,10 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@Getter
-@Setter
-
 public class UserDTO {
     private String name;
     private String email;
@@ -21,4 +17,5 @@ public class UserDTO {
 
     public UserDTO(String name, String email, String mobileNumber, Status status) {
     }
+
 }

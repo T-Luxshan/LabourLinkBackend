@@ -6,10 +6,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +17,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collection;
 import java.util.List;
+
+
+
+
 @Entity
 @Data
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -27,6 +28,9 @@ import java.util.List;
 @AllArgsConstructor
 //@Builder
 public  class User implements UserDetails {
+
+
+
     @Id
     @NotNull
     @Email(message = "Please enter valid email")
@@ -54,6 +58,7 @@ public  class User implements UserDetails {
     @OneToOne(mappedBy = "user")
     private RefreshToken refreshToken;
 
+    private boolean isVerified = true;
     private boolean isEnabled = true;
     private boolean isAccountNonExpired = true;
     private boolean isAccountNonLocked = true;

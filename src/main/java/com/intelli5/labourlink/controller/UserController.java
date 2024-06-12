@@ -2,12 +2,15 @@ package com.intelli5.labourlink.controller;
 
 import com.intelli5.labourlink.Exception.ResourceNotFoundException;
 import com.intelli5.labourlink.dto.ConnectedUsersDTO;
+import com.intelli5.labourlink.dto.GetUserEmailFromTokenDTO;
 import com.intelli5.labourlink.dto.UserDTO;
 import com.intelli5.labourlink.dto.UserStatusUpdateDTO;
 import com.intelli5.labourlink.entity.Appointment;
 import com.intelli5.labourlink.entity.Customer;
 import com.intelli5.labourlink.entity.Labour;
 import com.intelli5.labourlink.entity.User;
+import com.intelli5.labourlink.repository.CustomerRepository;
+import com.intelli5.labourlink.repository.LabourRepository;
 import com.intelli5.labourlink.repository.UserRepository;
 import com.intelli5.labourlink.service.UserService;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -28,16 +33,15 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/user")
 public class UserController {
     private final UserService userService;
-    @Qualifier("customerRepository")
-    private final UserRepository customerRepository;
-    @Qualifier("labourRepository")
-    private final UserRepository labourRepository;
+    private final CustomerRepository customerRepository;
+    private final LabourRepository labourRepository;
 
-    public UserController(UserService userService, @Qualifier("customerRepository") UserRepository customerRepository, @Qualifier("labourRepository") UserRepository labourRepository) {
+    public UserController(UserService userService, @Qualifier("customerRepository") CustomerRepository customerRepository, @Qualifier("labourRepository") LabourRepository labourRepository) {
         this.userService = userService;
         this.customerRepository = customerRepository;
         this.labourRepository = labourRepository;
     }
+
 
     @MessageMapping("/user.add")
     @SendTo("/user/public")
@@ -65,26 +69,14 @@ public class UserController {
         return user;
     }
 
-    @GetMapping("/users")
-    public ResponseEntity<List<ConnectedUsersDTO>> findConnectedUsers() {
-        // Find connected users from both repositories
-        List<User> connectedUsers = new ArrayList<>();
 
+    @GetMapping("/connectedCustomers")
+    public ResponseEntity<List<ConnectedUsersDTO>> findConnectedCustomers() {
         // Retrieve connected users from the customer repository
-        List<User> customerUsers = userService.findConnectedUsers(customerRepository);
-        connectedUsers.addAll(customerUsers);
-
-        // Retrieve connected users from the labor repository
-        List<User> laborUsers = userService.findConnectedUsers(labourRepository);
-        for (User laborUser : laborUsers) {
-            // Check if the user already exists in the connectedUsers list based on email
-            if (connectedUsers.stream().noneMatch(u -> u.getEmail().equals(laborUser.getEmail()))) {
-                connectedUsers.add(laborUser);
-            }
-        }
+        List<User> customerUsers = userService.findConnectedCustomers();
 
         // Convert User entities to ConnectedUsersDTOs
-        List<ConnectedUsersDTO> connectedUsersDTOs = connectedUsers.stream()
+        List<ConnectedUsersDTO> connectedUsersDTOs = customerUsers.stream()
                 .map(user -> ConnectedUsersDTO.builder()
                         .name(user.getName())
                         .email(user.getEmail())
@@ -95,6 +87,25 @@ public class UserController {
 
         return ResponseEntity.ok(connectedUsersDTOs);
     }
+
+    @GetMapping("/connectedLabours")
+    public ResponseEntity<List<ConnectedUsersDTO>> findConnectedLabours() {
+        // Retrieve connected users from the labor repository
+        List<User> laborUsers = userService.findConnectedLabours();
+
+        // Convert User entities to ConnectedUsersDTOs
+        List<ConnectedUsersDTO> connectedUsersDTOs = laborUsers.stream()
+                .map(user -> ConnectedUsersDTO.builder()
+                        .name(user.getName())
+                        .email(user.getEmail())
+                        .mobileNumber(user.getMobileNumber())
+                        .status(user.getStatus())
+                        .build())
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(connectedUsersDTOs);
+    }
+
 
     @GetMapping("{email}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable("email") String email) {
@@ -112,6 +123,7 @@ public class UserController {
             } else {
                 userDTO = new UserDTO(userFromCustomerRepo.getName(), userFromCustomerRepo.getEmail(), userFromCustomerRepo.getMobileNumber(), userFromCustomerRepo.getStatus());
             }
+
             // Return ResponseEntity with the created UserDTO
             return ResponseEntity.ok(userDTO);
         } catch (ResourceNotFoundException e) {
@@ -186,10 +198,13 @@ public ResponseEntity<List<User>> getAllUser() {
     }
 
 
+    @GetMapping("/user")
+    public ResponseEntity<GetUserEmailFromTokenDTO> getUserByToken() {
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
 
-
-
-
-
+        GetUserEmailFromTokenDTO email = userService.getUserByEmail(currentPrincipalName);
+        return ResponseEntity.ok(email);
+    }
 }
