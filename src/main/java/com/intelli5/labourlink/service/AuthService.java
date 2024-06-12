@@ -113,15 +113,22 @@ public class AuthService{
     }
 
     public AuthResponse loginAdmin(LoginRequest loginRequest){
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getEmail(),
-                        loginRequest.getPassword()
-                )
-        );
+        log.info("loginAdmin , in service");
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequest.getEmail(),
+                            loginRequest.getPassword()
+                    )
+            );
+        } catch (Exception e) {
+            log.error("Authentication failed: {}", e.getMessage());
+            throw e; // Or handle accordingly
+        }
 
         var user = adminRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() -> new UsernameNotFoundException("User not found!"));
         var accessToken = jwtService.generateToken(user);
+        log.info(accessToken);
         var refreshToken = refreshTokenService.createRefreshTokenAdmin(loginRequest.getEmail());
 
         return AuthResponse.builder()

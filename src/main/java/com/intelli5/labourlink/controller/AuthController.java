@@ -12,6 +12,8 @@ import com.intelli5.labourlink.service.JwtService;
 import com.intelli5.labourlink.service.RefreshTokenService;
 import com.intelli5.labourlink.utils.*;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +22,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/auth")
+
 public class AuthController {
 
     private final AuthService authService;
@@ -65,6 +69,7 @@ public class AuthController {
 
     @PostMapping("/login/admin")
     public ResponseEntity<AuthResponse> loginAdmin(@RequestBody LoginRequest loginRequest){
+        log.info("login request received,in controller");
         return ResponseEntity.ok(authService.loginAdmin(loginRequest));
     }
 
