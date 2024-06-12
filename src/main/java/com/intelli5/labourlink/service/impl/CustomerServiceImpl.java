@@ -4,7 +4,6 @@ import com.intelli5.labourlink.Exception.ResourceNotFoundException;
 import com.intelli5.labourlink.dto.CustomerDTO;
 import com.intelli5.labourlink.dto.UpdateCustomerDTO;
 import com.intelli5.labourlink.entity.Customer;
-import com.intelli5.labourlink.entity.Status;
 import com.intelli5.labourlink.entity.User;
 import com.intelli5.labourlink.repository.CustomerRepository;
 import com.intelli5.labourlink.service.CustomerService;

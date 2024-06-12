@@ -1,7 +1,6 @@
 package com.intelli5.labourlink.controller;
 
 import com.intelli5.labourlink.dto.*;
-import com.intelli5.labourlink.entity.Booking;
 import com.intelli5.labourlink.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

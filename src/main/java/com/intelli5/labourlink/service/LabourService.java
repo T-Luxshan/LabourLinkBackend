@@ -2,9 +2,7 @@
 package com.intelli5.labourlink.service;
 
 import com.intelli5.labourlink.dto.LabourDTO;
-
 import com.intelli5.labourlink.dto.UpdateLabourDTO;
-
 import com.intelli5.labourlink.entity.Labour;
 import com.intelli5.labourlink.entity.User;
 

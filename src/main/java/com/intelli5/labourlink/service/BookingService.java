@@ -5,7 +5,6 @@ import com.intelli5.labourlink.entity.*;
 import com.intelli5.labourlink.repository.BookingRepository;
 import com.intelli5.labourlink.repository.CustomerRepository;
 import com.intelli5.labourlink.repository.LabourRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

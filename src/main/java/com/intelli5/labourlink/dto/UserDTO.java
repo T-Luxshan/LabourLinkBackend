@@ -2,8 +2,9 @@ package com.intelli5.labourlink.dto;
 
 
 import com.intelli5.labourlink.entity.Status;
-import lombok.*;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor

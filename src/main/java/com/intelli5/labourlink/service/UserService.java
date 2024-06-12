@@ -5,7 +5,6 @@ import com.intelli5.labourlink.dto.GetUserEmailFromTokenDTO;
 import com.intelli5.labourlink.dto.UserStatusUpdateDTO;
 import com.intelli5.labourlink.entity.*;
 import com.intelli5.labourlink.repository.AppointmentRepository;
-import com.intelli5.labourlink.entity.*;
 import com.intelli5.labourlink.repository.CustomerRepository;
 import com.intelli5.labourlink.repository.LabourRepository;
 import com.intelli5.labourlink.repository.UserRepository;
@@ -13,14 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserService {
-
     @Qualifier("customerRepository")
     @Autowired
     private CustomerRepository customerRepository;
@@ -33,7 +31,7 @@ public class UserService {
 
     private UserRepository userRepository;
 
-    public void saveUser(User user, @Qualifier("customerRepository") UserRepository repository) {
+
     public void saveUser(User user, CustomerRepository customerRepository) {
         user.setStatus(Status.ONLINE);
         customerRepository.save(user);
@@ -57,7 +55,7 @@ public class UserService {
     }
 
     public List<User> findConnectedLabours() {
-        return labourRepository.findAllByStatusAndRole(Status.ONLINE,UserRole.LABOUR);
+        return labourRepository.findAllByStatusAndRole(Status.ONLINE, UserRole.LABOUR);
     }
 
     public User getCustomerById(String email) {
@@ -107,8 +105,6 @@ public class UserService {
     }
 
 
-
-
     public User updateUser(String email, User updateUser) {
         User existingUser = customerRepository.findById(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found for given email: " + email));
@@ -116,35 +112,6 @@ public class UserService {
         existingUser.setStatus(updateUser.getStatus());
         return customerRepository.save(existingUser);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     public List<User> getAllUsers() {
@@ -162,16 +129,16 @@ public class UserService {
         return labourRepository.findAll();
     }
 
-    public GetUserEmailFromTokenDTO getUserByEmail(String currentPrincipalName){
-        User user=getLaborById(currentPrincipalName);
+    public GetUserEmailFromTokenDTO getUserByEmail(String currentPrincipalName) {
+        User user = getLaborById(currentPrincipalName);
         return GetUserEmailFromTokenDTO.builder()
                 .email(user.getEmail())
                 .build();
     }
 
-}
+
     //------------------------------------------------------------------------------------------------------
-    public Optional<User> getUserByEmail(String email) {
+    public Optional<User> getUserByEmailId(String email) {
         Optional<User> users = labourRepository.findByEmail(email);
         if (users.isPresent())
             return users;
@@ -211,3 +178,6 @@ public class UserService {
         }
     }
 }
+
+
+

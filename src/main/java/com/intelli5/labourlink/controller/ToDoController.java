@@ -1,13 +1,10 @@
 package com.intelli5.labourlink.controller;
 
-import ch.qos.logback.core.encoder.EchoEncoder;
 import com.intelli5.labourlink.entity.ApiResponse;
 import com.intelli5.labourlink.entity.Todo;
 import com.intelli5.labourlink.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 

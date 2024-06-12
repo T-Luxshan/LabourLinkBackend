@@ -1,12 +1,10 @@
 package com.intelli5.labourlink.service;
 
-import com.intelli5.labourlink.Exception.ResourceNotFoundException;
 import com.intelli5.labourlink.dto.NotificationRequestDTO;
 import com.intelli5.labourlink.dto.NotificationResponseDTO;
 import com.intelli5.labourlink.entity.Notification;
 import com.intelli5.labourlink.entity.User;
 import com.intelli5.labourlink.repository.NotificationRepository;
-import com.intelli5.labourlink.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

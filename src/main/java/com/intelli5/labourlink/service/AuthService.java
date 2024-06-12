@@ -1,12 +1,10 @@
 package com.intelli5.labourlink.service;
 
 import com.intelli5.labourlink.Exception.CustomerRegistrationException;
-import com.intelli5.labourlink.Exception.UserExistException;
 import com.intelli5.labourlink.entity.*;
 import com.intelli5.labourlink.repository.AdminRepository;
 import com.intelli5.labourlink.repository.CustomerRepository;
 import com.intelli5.labourlink.repository.LabourRepository;
-import com.intelli5.labourlink.repository.UserRepository;
 import com.intelli5.labourlink.utils.AuthResponse;
 import com.intelli5.labourlink.utils.LoginRequest;
 import com.intelli5.labourlink.utils.RegisterRequest;
