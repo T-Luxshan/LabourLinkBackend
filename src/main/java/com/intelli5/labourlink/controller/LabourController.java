@@ -8,6 +8,7 @@ import com.intelli5.labourlink.service.LabourService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class LabourController {
 
     private final LabourService labourService;
+    private final PasswordEncoder passwordEncoder;
 
     //Build Add Labour REST API//
     @PostMapping("/createLabour")
@@ -46,7 +48,8 @@ public class LabourController {
     //Build Put Labour REST API to updatePassword
     @PutMapping("/changePassword/{email}")
     public ResponseEntity<String> updateLabourPassword(@PathVariable("email") String email, @RequestBody PasswordDTO password){
-        labourService.updateLabourPassword(email, password.getNewPassword());
+        String encodePassword = passwordEncoder.encode(password.getNewPassword());
+        labourService.updateLabourPassword(email, encodePassword);
         return ResponseEntity.ok("Labour Password Updated successfully");
     }
 
