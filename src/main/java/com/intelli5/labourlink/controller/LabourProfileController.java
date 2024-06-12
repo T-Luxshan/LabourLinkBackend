@@ -35,8 +35,8 @@ public class LabourProfileController {
     }
 
     @PutMapping("/update/{email}")
-    public ResponseEntity<LabourProfile> updateLabourProfile(@PathVariable String email, @RequestBody LabourProfileRequest labourProfileRequest){
-        LabourProfile updatedLabourProfile = labourProfileService.updateLabourProfile(email, labourProfileRequest);
+    public ResponseEntity<LabourProfileDTO> updateLabourProfile(@PathVariable String email, @RequestBody LabourProfileRequest labourProfileRequest){
+        LabourProfileDTO updatedLabourProfile = labourProfileService.updateLabourProfile(email, labourProfileRequest);
         return ResponseEntity.ok(updatedLabourProfile);
     }
 

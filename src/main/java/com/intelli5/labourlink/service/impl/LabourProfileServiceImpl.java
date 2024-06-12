@@ -104,7 +104,7 @@ public class LabourProfileServiceImpl implements LabourProfileService {
     }
 
     @Override
-    public LabourProfile updateLabourProfile(String email, LabourProfileRequest labourProfileRequest) {
+    public LabourProfileDTO updateLabourProfile(String email, LabourProfileRequest labourProfileRequest) {
 
         try{
             Labour labour = labourRepository.findLabour(email);
@@ -112,12 +112,19 @@ public class LabourProfileServiceImpl implements LabourProfileService {
                     .orElseThrow(()-> new ResourceNotFoundException("Profile not found"));
 
 
-            existingProfile.setAboutMe(labourProfileRequest.getAboutMe());
-            existingProfile.setGender(labourProfileRequest.getGender());
-            existingProfile.setLanguages(labourProfileRequest.getLanguages());
+            existingProfile.setAboutMe(labourProfileRequest.getAboutMe().isBlank() ? existingProfile.getAboutMe() : labourProfileRequest.getAboutMe());
+            existingProfile.setGender(labourProfileRequest.getGender().isBlank() ? existingProfile.getGender() : labourProfileRequest.getGender());
+            existingProfile.setLanguages(labourProfileRequest.getLanguages().toArray().length == 0 ? existingProfile.getLanguages() : labourProfileRequest.getLanguages());
 //            existingProfile.setLocation(labourProfileRequest.getLocation());
 
-            return labourProfileRepository.save(existingProfile);
+            LabourProfile updatedProfile = labourProfileRepository.save(existingProfile);
+
+            return LabourProfileDTO.builder()
+                    .aboutMe(updatedProfile.getAboutMe())
+                    .gender(updatedProfile.getGender())
+                    .languages(updatedProfile.getLanguages())
+//                   .location(labourProfile.getLocation())
+                    .build();
 
         }catch (ResourceNotFoundException resourceNotFoundException){
             return null;

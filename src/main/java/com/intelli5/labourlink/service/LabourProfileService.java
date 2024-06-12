@@ -20,7 +20,7 @@ List<LabourProfile> searchByLanguages(List<String> languages);
 LabourProfileDTO createLabourProfile(LabourProfileRequest labourProfileRequest);
 LabourProfileDTO getLabourProfileById(String email);
 List<LabourProfile> getAllLabourProfile();
-LabourProfile updateLabourProfile(String email, LabourProfileRequest labourProfileRequest);
+LabourProfileDTO updateLabourProfile(String email, LabourProfileRequest labourProfileRequest);
 void deleteLabourProfile(String email);
 
 }
