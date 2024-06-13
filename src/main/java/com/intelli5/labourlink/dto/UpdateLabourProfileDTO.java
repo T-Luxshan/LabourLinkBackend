@@ -13,5 +13,6 @@ public class UpdateLabourProfileDTO {
     private String aboutMe;
     private String gender;
     private List<String> languages;
+    private String experience;
 //    private String location;
 }
