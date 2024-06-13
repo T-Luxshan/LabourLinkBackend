@@ -17,8 +17,9 @@ public class LabourProfileRequest {
     private String aboutMe;
     private String gender;
     private List<String> languages;
-    private String location;
+//    private String location;
     private String labourEmail;
+    private String experience;
 
 
 
