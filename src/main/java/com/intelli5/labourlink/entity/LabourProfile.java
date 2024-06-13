@@ -42,6 +42,8 @@ private String gender;
 @Enumerated(EnumType.STRING)
     private List<String> languages;
 
+    private String experience;
+
 //private String location;
 
 
