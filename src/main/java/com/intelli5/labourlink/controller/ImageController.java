@@ -63,6 +63,7 @@ public class ImageController {
     @PostMapping("/addProfilePhotoCustomer/{userId}")
     public String addImagePostCustomer(HttpServletRequest request,@PathVariable("userId") String userId ,@RequestParam("image") MultipartFile file) throws IOException, SerialException, SQLException
     {
+
         byte[] bytes = file.getBytes();
         Blob blob = new javax.sql.rowset.serial.SerialBlob(bytes);
 
