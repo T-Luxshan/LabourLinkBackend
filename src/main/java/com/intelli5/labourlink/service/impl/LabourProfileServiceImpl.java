@@ -44,12 +44,6 @@ public class LabourProfileServiceImpl implements LabourProfileService {
         return labourProfileRepository.findByLanguagesIn(languages);
     }
 
-//    @Override
-//    public List<LabourProfile> searchByLocation(String location) {
-//        return labourProfileRepository.findByLocation(location);
-//    }
-
-
 
     @Override
     @Transactional
@@ -61,8 +55,6 @@ public class LabourProfileServiceImpl implements LabourProfileService {
               .aboutMe(labourProfileRequest.getAboutMe())
               .gender(labourProfileRequest.getGender())
               .languages(labourProfileRequest.getLanguages())
-              .experience(labourProfileRequest.getExperience())
-//              .location(labourProfileRequest.getLocation())
               .labour(labour)
                       .build();
 
@@ -72,8 +64,6 @@ public class LabourProfileServiceImpl implements LabourProfileService {
               .aboutMe(labourProfile.getAboutMe())
               .gender(labourProfile.getGender())
               .languages(labourProfile.getLanguages())
-              .experience(labourProfile.getExperience())
-//              .location(labourProfile.getLocation())
               .build();
 
     }
@@ -89,8 +79,6 @@ public class LabourProfileServiceImpl implements LabourProfileService {
                    .aboutMe(labourProfile.getAboutMe())
                    .gender(labourProfile.getGender())
                    .languages(labourProfile.getLanguages())
-                   .experience(labourProfile.getExperience())
-//                   .location(labourProfile.getLocation())
                    .build();
 
 
@@ -118,17 +106,12 @@ public class LabourProfileServiceImpl implements LabourProfileService {
             existingProfile.setAboutMe(labourProfileRequest.getAboutMe().isBlank() ? existingProfile.getAboutMe() : labourProfileRequest.getAboutMe());
             existingProfile.setGender(labourProfileRequest.getGender().isBlank() ? existingProfile.getGender() : labourProfileRequest.getGender());
             existingProfile.setLanguages(labourProfileRequest.getLanguages().toArray().length == 0 ? existingProfile.getLanguages() : labourProfileRequest.getLanguages());
-            existingProfile.setExperience(labourProfileRequest.getExperience().isBlank() ? existingProfile.getExperience() : labourProfileRequest.getExperience());
-//            existingProfile.setLocation(labourProfileRequest.getLocation());
-
             LabourProfile updatedProfile = labourProfileRepository.save(existingProfile);
 
             return LabourProfileDTO.builder()
                     .aboutMe(updatedProfile.getAboutMe())
                     .gender(updatedProfile.getGender())
                     .languages(updatedProfile.getLanguages())
-                    .experience(updatedProfile.getExperience())
-//                   .location(labourProfile.getLocation())
                     .build();
 
         }catch (ResourceNotFoundException resourceNotFoundException){

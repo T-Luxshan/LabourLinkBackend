@@ -13,10 +13,8 @@ public interface LabourProfileService {
 List<LabourProfile> searchByAboutMe(String aboutMe);
 List<LabourProfile> searchByGender(String gender);
 List<LabourProfile> searchByLanguages(List<String> languages);
-//List<LabourProfile> searchByLocation(String location);
 
 
-//LabourProfile createLabourProfile(LabourProfile labourProfile);
 LabourProfileDTO createLabourProfile(LabourProfileRequest labourProfileRequest);
 LabourProfileDTO getLabourProfileById(String email);
 List<LabourProfile> getAllLabourProfile();

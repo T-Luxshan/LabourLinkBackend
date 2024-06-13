@@ -64,9 +64,5 @@ public class LabourProfileController {
         return ResponseEntity.ok(profiles);
     }
 
-//    @GetMapping("/search/location")
-//    public ResponseEntity<List<LabourProfile>> searchByLocation(@RequestParam String location) {
-//        List<LabourProfile> profiles = labourProfileService.searchByLocation(location);
-//        return ResponseEntity.ok(profiles);
-//    }
+
 }
