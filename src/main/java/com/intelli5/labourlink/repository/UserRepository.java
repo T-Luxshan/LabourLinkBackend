@@ -8,11 +8,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-@NoRepositoryBean
+@Repository
 public interface UserRepository extends JpaRepository<User,String> {
 
    Optional<User> findByEmail(String username);
@@ -27,5 +28,7 @@ public interface UserRepository extends JpaRepository<User,String> {
     List<User> findAllByStatusAndRole(Status status, UserRole role);
 
     List<User> findAllByStatus(Status status);
-    //Optional<User> findByEmail(String email);
+
+
+
 }

@@ -17,28 +17,28 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Optional;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService{
-
     private final PasswordEncoder passwordEncoder;
-
     private final JwtService jwtService;
     private final RefreshTokenService refreshTokenService;
     private final AuthenticationManager authenticationManager;
     private final CustomerRepository customerRepository;
     private final LabourRepository labourRepository;
     private final AdminRepository adminRepository;
+    private final SuspendUserService suspendUserService;
 
     public AuthResponse registerCustomer(RegisterRequest registerRequest) throws CustomerRegistrationException {
-
-        try {
-            // Check if the customer already exists
-//            if (customerRepository.existsByEmail(registerRequest.getEmail())) {
-//                throw new UserExistException("Customer with email " + registerRequest.getEmail() + " already exists.");
-//            }
-
+        Optional<SuspendUser> suspendedUser=suspendUserService.findByEmail(registerRequest.getEmail());
+        if(!suspendedUser.isPresent()){
+        try{
             var user = new Customer();
             user.setEmail(registerRequest.getEmail());
             user.setName(registerRequest.getName());
@@ -47,7 +47,8 @@ public class AuthService{
             user.setAddress(registerRequest.getAddress());
             user.setRole(UserRole.CUSTOMER);
             user.setStatus(Status.OFFLINE);
-
+            user.setJoinDate(LocalDate.now());
+            user.setJoinTime(LocalTime.now());
 
             User savedUser = customerRepository.save(user);
             var accessToken = jwtService.generateToken(savedUser);
@@ -61,11 +62,14 @@ public class AuthService{
         catch (DataIntegrityViolationException ex) {
 
             throw new CustomerRegistrationException("Customer registration failed: " + ex.getMessage());
-        }
+        } }
+        else{
+            throw new RuntimeException("Suspended user");}
     }
 
     public AuthResponse registerLabour(RegisterRequest registerRequest){
-
+        Optional<SuspendUser> suspendedUser=suspendUserService.findByEmail(registerRequest.getEmail());
+        if(!suspendedUser.isPresent()){
         var user = new Labour();
         user.setEmail(registerRequest.getEmail());
         user.setName(registerRequest.getName());
@@ -76,7 +80,8 @@ public class AuthService{
         user.setVerified(false);
         user.setJobRole(registerRequest.getJobRole());
         user.setDocumentUri(registerRequest.getDocumentUri());
-
+        user.setJoinDate(LocalDate.now());
+        user.setJoinTime(LocalTime.now());
         User savedUser = labourRepository.save(user);
         var accessToken = jwtService.generateToken(savedUser);
         var refreshToken = refreshTokenService.createRefreshTokenCustomer(savedUser.getEmail());
@@ -85,7 +90,8 @@ public class AuthService{
                 .accessToken(accessToken)
                 .refreshToken(refreshToken.getRefreshToken())
                 .build();
-
+    }else{
+            throw new RuntimeException("Suspended user");}
     }
 
     public AuthResponse registerAdmin(RegisterRequest registerRequest){
@@ -113,6 +119,7 @@ public class AuthService{
     }
 
     public AuthResponse loginAdmin(LoginRequest loginRequest){
+
         log.info("loginAdmin , in service");
         try {
             authenticationManager.authenticate(
@@ -138,42 +145,52 @@ public class AuthService{
     }
 
 
-    public AuthResponse loginCustomer(LoginRequest loginRequest){
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getEmail(),
-                        loginRequest.getPassword()
-                )
-        );
+    public AuthResponse loginCustomer(LoginRequest loginRequest) {
+        Optional<SuspendUser> suspendedUser = suspendUserService.findByEmail(loginRequest.getEmail());
+        if (!suspendedUser.isPresent()) {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequest.getEmail(),
+                            loginRequest.getPassword()
+                    )
+            );
 
-        var user = customerRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() -> new UsernameNotFoundException("User not found!"));
-        var accessToken = jwtService.generateToken(user);
-        var refreshToken = refreshTokenService.createRefreshTokenCustomer(loginRequest.getEmail());
+            var user = customerRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() -> new UsernameNotFoundException("User not found!"));
+            var accessToken = jwtService.generateToken(user);
+            var refreshToken = refreshTokenService.createRefreshTokenCustomer(loginRequest.getEmail());
 
-        return AuthResponse.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken.getRefreshToken())
-                .build();
+            return AuthResponse.builder()
+                    .accessToken(accessToken)
+                    .refreshToken(refreshToken.getRefreshToken())
+                    .build();
+        } else {
+            throw new RuntimeException("Suspended user");
+        }
     }
-
 
     public AuthResponse loginLabour(LoginRequest loginRequest){
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getEmail(),
-                        loginRequest.getPassword()
-                )
-        );
+        Optional<SuspendUser> suspendedUser = suspendUserService.findByEmail(loginRequest.getEmail());
+        if (!suspendedUser.isPresent()) {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequest.getEmail(),
+                            loginRequest.getPassword()
+                    )
+            );
 
-        var user = labourRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() -> new UsernameNotFoundException("User not found!"));
-        var accessToken = jwtService.generateToken(user);
-        var refreshToken = refreshTokenService.createRefreshTokenLabour(loginRequest.getEmail());
+            var user = labourRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() -> new UsernameNotFoundException("User not found!"));
+            var accessToken = jwtService.generateToken(user);
+            var refreshToken = refreshTokenService.createRefreshTokenLabour(loginRequest.getEmail());
 
-        return AuthResponse.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken.getRefreshToken())
-                .build();
-    }
+            return AuthResponse.builder()
+                    .accessToken(accessToken)
+                    .refreshToken(refreshToken.getRefreshToken())
+                    .build();
+        }
+        else {
+            throw new RuntimeException("Suspended user");
+        }
+        }
 
     public boolean checkNicExists(String nic) {
         return labourRepository.existsByNic(nic);

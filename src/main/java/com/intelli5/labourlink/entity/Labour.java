@@ -2,6 +2,9 @@
 package com.intelli5.labourlink.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +20,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+
 public class Labour extends User{ //Defines the Labour class, which extends User
 
 
@@ -25,6 +29,7 @@ public class Labour extends User{ //Defines the Labour class, which extends User
 /*
     @Lob
     private byte[] pdfDocument;*/
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "Labour_Job",

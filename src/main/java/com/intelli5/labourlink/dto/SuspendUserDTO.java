@@ -6,26 +6,19 @@ import com.intelli5.labourlink.entity.UserRole;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 @Data
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
+public class SuspendUserDTO {
     private String name;
     private String email;
     private String mobileNumber;
     private Status status;
     private LocalDate joinDate;
-    private LocalTime joinTime;
     private UserRole role;
+    private String reason;
 
-    public UserDTO(String name, String email, String mobileNumber, Status status) {
-    }
-
-//    public UserDTO(String name, String email,LocalDate joinDate, UserRole role) {
-//
-//    }
 }

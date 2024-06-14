@@ -1,6 +1,4 @@
 package com.intelli5.labourlink.controller;
-
-
 import com.intelli5.labourlink.Exception.CustomerRegistrationException;
 import com.intelli5.labourlink.entity.JobRole;
 import com.intelli5.labourlink.entity.RefreshToken;
@@ -27,20 +25,12 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1/auth")
 
 public class AuthController {
-
     private final AuthService authService;
     private final JwtService jwtService;
     private final RefreshTokenService refreshTokenService;
-
     private final CustomerRepository customerRepository;
     private final LabourRepository labourRepository;
-
-
-
-
-
     public AuthController(AuthService authService, JwtService jwtService, RefreshTokenService refreshTokenService,
-
                           CustomerRepository customerRepository,
                           LabourRepository labourRepository
                           ) {
@@ -51,7 +41,6 @@ public class AuthController {
         this.labourRepository = labourRepository;
 
     }
-
     @PostMapping("/register/admin")
     public ResponseEntity<AuthResponse> registerAdmin(@RequestBody @Valid RegisterRequest registerRequest){
         return ResponseEntity.ok(authService.registerAdmin(registerRequest));

@@ -1,20 +1,15 @@
 package com.intelli5.labourlink.entity;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Collection;
-import java.util.List;
 
 @Entity
 @Data
@@ -23,10 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-
-//@Builder
-public  class User implements UserDetails {
-
+public class SuspendUser  {
 
     @Id
     @NotNull
@@ -50,51 +42,19 @@ public  class User implements UserDetails {
     private LocalTime joinTime;
     @Column(name = "is_present")
     private boolean isPresent =true;
-//    @Enumerated(EnumType.STRING)
+    //    @Enumerated(EnumType.STRING)
 //    UserRole role;
-    @JsonIgnore
-    @OneToOne(mappedBy = "user" ,cascade = CascadeType.ALL, orphanRemoval = true)
-    private RefreshToken refreshToken;
+
+//    @OneToOne(mappedBy = "suspendUser")
+//    private RefreshToken refreshToken;
 
     private boolean isVerified = true;
     private boolean isEnabled = true;
     private boolean isAccountNonExpired = true;
     private boolean isAccountNonLocked = true;
     private boolean isCredentialsNonExpired = true;
+    private String reason;
+    private LocalDate suspendedDate;
+    private LocalTime suspendedTime;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return isAccountNonExpired;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return isAccountNonLocked;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return isCredentialsNonExpired;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return isEnabled;
-    }
-
-    private Status status;
-
-    public void setRole(com.intelli5.labourlink.entity.UserRole userRole) {
-        this.role=userRole;
-    }
 }
