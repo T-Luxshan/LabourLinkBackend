@@ -10,7 +10,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
@@ -95,5 +94,10 @@ public  class User implements UserDetails {
     }
 
     private Status status;
+
+//   Todo need to check
+//    public Status getStatus() {
+//        return this.status != null ? this.status : Status.OFFLINE;
+//    }
 
 }

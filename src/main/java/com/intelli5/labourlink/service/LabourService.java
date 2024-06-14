@@ -31,3 +31,4 @@ public interface LabourService {
 
     void updateLabourStatus(String email, Labour updatedLabour);
 }
+
