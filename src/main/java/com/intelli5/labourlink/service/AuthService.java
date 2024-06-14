@@ -46,6 +46,7 @@ public class AuthService{
             user.setMobileNumber(registerRequest.getMobileNumber());
             user.setAddress(registerRequest.getAddress());
             user.setRole(UserRole.CUSTOMER);
+            user.setStatus(Status.OFFLINE);
 
 
             User savedUser = customerRepository.save(user);

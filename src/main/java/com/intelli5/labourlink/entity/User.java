@@ -46,8 +46,16 @@ public  class User implements UserDetails {
     UserRole role;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-
     private RefreshToken refreshToken;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private ForgotPassword forgotPassword;
+
+    @OneToMany(mappedBy = "ReportedBy", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserReport> ReportedByUser;
+
+    @OneToMany(mappedBy = "ReportedTo", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserReport> ReportedToUser;
 
     private boolean isVerified = true;
     private boolean isEnabled = true;

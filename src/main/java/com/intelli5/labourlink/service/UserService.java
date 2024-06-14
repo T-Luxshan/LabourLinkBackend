@@ -1,6 +1,7 @@
 package com.intelli5.labourlink.service;
 
 import com.intelli5.labourlink.Exception.ResourceNotFoundException;
+import com.intelli5.labourlink.dto.GetUserEmailFromTokenDTO;
 import com.intelli5.labourlink.dto.UserStatusUpdateDTO;
 import com.intelli5.labourlink.entity.*;
 import com.intelli5.labourlink.repository.CustomerRepository;
@@ -120,6 +121,13 @@ public class UserService {
 
     public List<User> getAllLabors() {
         return labourRepository.findAll();
+    }
+
+    public GetUserEmailFromTokenDTO getUserByEmail(String currentPrincipalName){
+        User user=getLaborById(currentPrincipalName);
+        return GetUserEmailFromTokenDTO.builder()
+                .email(user.getEmail())
+                .build();
     }
 
 }

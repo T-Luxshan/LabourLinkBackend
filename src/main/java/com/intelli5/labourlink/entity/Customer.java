@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.apachecommons.CommonsLog;
 
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -18,6 +20,9 @@ public class Customer extends User {
 
     @Column(nullable = false)
     private String address;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Booking> bookings;
 
 
 }

@@ -1,13 +1,15 @@
+//Declare the package name
 package com.intelli5.labourlink.entity;
 
+//Import necessary JPA annotations for database mapping
 import jakarta.persistence.*;
 
+//Import Lombok annotations to reduce boilerplate code
 import lombok.AllArgsConstructor;
 
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.List;
 
 @Entity
@@ -26,6 +28,17 @@ public class Labour extends User{ //Defines the Labour class, which extends User
     @ElementCollection
     @Enumerated(EnumType.STRING) // Specify the enum type
     private List<JobRole> jobRole;
+
+    @OneToOne(mappedBy = "labour", cascade = CascadeType.ALL, orphanRemoval = true)
+    private LabourLocations labourLocations;
+
+    @OneToMany(mappedBy = "labour", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Booking> bookings;
+
+    @OneToMany(mappedBy = "labour", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<LabourReview> labourReview;
+
+
 
     @OneToOne(mappedBy = "labour", cascade = CascadeType.ALL, orphanRemoval = true)
     private LabourProfile labourProfile;
