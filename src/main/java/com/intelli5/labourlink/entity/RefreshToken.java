@@ -27,6 +27,8 @@ public class RefreshToken {
     @Column(nullable = false)
     private Instant expirationTime;
 
-    @OneToOne
+//    @OneToOne
+@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+@JoinColumn(name = "user_email", referencedColumnName = "email")
     private User user;
 }

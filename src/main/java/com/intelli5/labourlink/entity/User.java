@@ -10,7 +10,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
@@ -49,7 +48,7 @@ public  class User implements UserDetails {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private RefreshToken refreshToken;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.DETACH, orphanRemoval = true)
     private ForgotPassword forgotPassword;
 
     @OneToMany(mappedBy = "ReportedBy", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -95,5 +94,10 @@ public  class User implements UserDetails {
     }
 
     private Status status;
+
+//   Todo need to check
+//    public Status getStatus() {
+//        return this.status != null ? this.status : Status.OFFLINE;
+//    }
 
 }
