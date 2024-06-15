@@ -28,9 +28,20 @@ public class LabourLocationsService {
                 .longitude(labourLocationsDTO.getLongitude())
                 .labour(labour)
                 .build();
-        labourLocations = labourLocationsRepository.save(labourLocations);
-        return convertToDTO(labourLocations);
+
+        try {
+            labourLocations = labourLocationsRepository.save(labourLocations);
+            return convertToDTO(labourLocations);
+        } catch (RuntimeException e) {
+            LabourLocations existingLocation = labourLocationsRepository.findByLabour(labour);
+            return updateLabourLocation(existingLocation.getId(), labourLocationsDTO);
+        } catch (Exception e){
+            return new LabourLocationDTO();
+        }
     }
+
+
+
 
     public LabourLocationDTO getLabourLocationById(Long id) {
         LabourLocations labourLocations = labourLocationsRepository.findById(id).orElseThrow(() -> new RuntimeException("LabourLocation not found"));
