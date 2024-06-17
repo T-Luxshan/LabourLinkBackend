@@ -1,5 +1,6 @@
 package com.intelli5.labourlink.controller;
 
+import com.intelli5.labourlink.Exception.ResourceNotFoundException;
 import com.intelli5.labourlink.dto.MailBody;
 import com.intelli5.labourlink.entity.ForgotPassword;
 import com.intelli5.labourlink.entity.User;
@@ -10,6 +11,7 @@ import com.intelli5.labourlink.repository.ForgotPasswordRepository;
 import com.intelli5.labourlink.repository.LabourRepository;
 import com.intelli5.labourlink.service.EmailService;
 import com.intelli5.labourlink.utils.ChangePassword;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -57,6 +59,7 @@ public class ForgotPasswordController {
     }
 
     @PostMapping("/verifyMail/{role}/{email}")
+    @Transactional
     public ResponseEntity<String> verifyEmail(@PathVariable UserRole role, @PathVariable String email){
         User user = switch (role) {
             case CUSTOMER -> customerRepository.findByEmail(email)
@@ -69,11 +72,13 @@ public class ForgotPasswordController {
 
         try{
             ForgotPassword oldFp = forgotPasswordRepository.FindByUser(user)
-                    .orElseThrow(() -> new RuntimeException("Invalid OTP for " + email));
+                    .orElseThrow(() -> new ResourceNotFoundException("User doesn't exist " + email));
             forgotPasswordRepository.deleteById(oldFp.getFpid());
+            forgotPasswordRepository.flush();
 
+//
         }catch (Exception e){
-            System.out.println("Email did not exist earlier");
+            System.out.println("User did not exist earlier");
         }
 
         int otp = otpGenerator();

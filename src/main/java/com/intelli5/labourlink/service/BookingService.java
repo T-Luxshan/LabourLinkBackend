@@ -123,4 +123,13 @@ public class BookingService {
                 .build();
     }
 
+    public List<BookingDetailsForLabourDTO> getBookingByLabourIdAndStage(String labourEmail, BookingStage stage) {
+        Labour labour = labourRepository.findLabour(labourEmail);
+        List<Booking> bookings = bookingRepository.getBookingByLabourIdAndStage(labour, stage);
+        if (bookings.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return bookings.stream().map(booking -> convertToBookingDetailsForLabourDTO(booking))
+                .collect(Collectors.toList());
+    }
 }

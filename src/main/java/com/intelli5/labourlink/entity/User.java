@@ -1,35 +1,34 @@
 package com.intelli5.labourlink.entity;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import java.time.LocalDate;
-import java.time.LocalTime;
+
+
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+
+
+
 
 @Entity
 @Data
 @Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
-
 //@Builder
 public  class User implements UserDetails {
 
 
+
     @Id
-    @NotNull
+    @Column(unique = true,nullable = false)
     @Email(message = "Please enter valid email")
     private String email;
 
@@ -45,16 +44,19 @@ public  class User implements UserDetails {
     private String mobileNumber;
 
     @Enumerated(EnumType.STRING)
-    private UserRole role;
-    private LocalDate joinDate;
-    private LocalTime joinTime;
-    @Column(name = "is_present")
-    private boolean isPresent =true;
-//    @Enumerated(EnumType.STRING)
-//    UserRole role;
-    @JsonIgnore
-    @OneToOne(mappedBy = "user" ,cascade = CascadeType.ALL, orphanRemoval = true)
+    UserRole role;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private RefreshToken refreshToken;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.DETACH, orphanRemoval = true)
+    private ForgotPassword forgotPassword;
+
+    @OneToMany(mappedBy = "ReportedBy", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserReport> ReportedByUser;
+
+    @OneToMany(mappedBy = "ReportedTo", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserReport> ReportedToUser;
 
     private boolean isVerified = true;
     private boolean isEnabled = true;
@@ -94,7 +96,9 @@ public  class User implements UserDetails {
 
     private Status status;
 
-    public void setRole(com.intelli5.labourlink.entity.UserRole userRole) {
-        this.role=userRole;
-    }
+//   Todo need to check
+//    public Status getStatus() {
+//        return this.status != null ? this.status : Status.OFFLINE;
+//    }
+
 }

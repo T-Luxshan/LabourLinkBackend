@@ -23,4 +23,7 @@ public class ReviewDTO implements Serializable {
     Double rating;
     String customerName;
     String labourName;
+    String customerEmail;
+
+
 }

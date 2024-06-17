@@ -1,6 +1,8 @@
 package com.intelli5.labourlink.controller;
 
 import com.intelli5.labourlink.dto.*;
+import com.intelli5.labourlink.entity.Booking;
+import com.intelli5.labourlink.entity.BookingStage;
 import com.intelli5.labourlink.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -43,5 +45,16 @@ public class BookingController {
     @PatchMapping("/updateStage/{id}")
     public BookingStatusUpdateDTO updateBookingStage(@PathVariable Long id, @RequestBody BookingStatusUpdateDTO bookingStatusUpdateDTO){
         return bookingService.updateBookingStage(id, bookingStatusUpdateDTO.getBookingStage());
+    }
+
+    @GetMapping("/labour/{labourEmail}/{stage}")
+    public ResponseEntity<List<BookingDetailsForLabourDTO>> getBookingByLabourIdAndStage(@PathVariable String labourEmail,
+                                                                                        @PathVariable BookingStage stage
+                                                                                        ){
+        List<BookingDetailsForLabourDTO> bookingDetailsForLabourDTO=bookingService.getBookingByLabourIdAndStage(labourEmail, stage);
+        if (bookingDetailsForLabourDTO.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(bookingDetailsForLabourDTO);
     }
 }

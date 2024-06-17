@@ -88,11 +88,9 @@ public class CustomerController {
         return ResponseEntity.ok("Customer Password Updated successfully");
     }
 
-    @DeleteMapping("/{email}")
+    @DeleteMapping("/deleteCustomer/{email}")
     public ResponseEntity<String> deleteCustomer(@PathVariable("email") String email){
         customerService.deleteCustomer(email);
         return ResponseEntity.ok("Employee deleted successfully");
     }
-
-
 }

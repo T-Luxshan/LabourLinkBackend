@@ -61,9 +61,9 @@ public class LabourServiceImpl implements LabourService {
 
         existingLabour.setName(updateLabourDTO.getName());
         existingLabour.setNic(updateLabourDTO.getNic());
-        existingLabour.setDocumentUri(updateLabourDTO.getDocumentUri());
+//        existingLabour.setDocumentUri(updateLabourDTO.getDocumentUri());
 //        existingLabour.setEmail(updateLabourDTO.getEmail());
-        existingLabour.setJobRole(updateLabourDTO.getJobRole());
+//        existingLabour.setJobRole(updateLabourDTO.getJobRole());
         existingLabour.setMobileNumber(updateLabourDTO.getMobileNumber());
 
 

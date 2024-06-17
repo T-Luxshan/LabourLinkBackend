@@ -144,6 +144,7 @@ public class LabourReviewService {
                             .rating(review.getRating())
                             .labourName(review.getLabour().getName())
                             .customerName(review.getCustomer().getName())
+                            .customerEmail(review.getCustomer().getEmail())
                             .build()
             );
         }
