@@ -2,7 +2,6 @@ package com.intelli5.labourlink.controller;
 
 import com.intelli5.labourlink.Exception.ResourceNotFoundException;
 import com.intelli5.labourlink.dto.*;
-import com.intelli5.labourlink.entity.Appointment;
 import com.intelli5.labourlink.entity.Customer;
 import com.intelli5.labourlink.entity.Labour;
 import com.intelli5.labourlink.entity.User;

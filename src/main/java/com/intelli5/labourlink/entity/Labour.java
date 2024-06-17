@@ -26,21 +26,6 @@ public class Labour extends User{ //Defines the Labour class, which extends User
 
     @Column(name = "nic",nullable = false,unique = true) //Configures the nic field for database mapping
     private String nic;
-/*
-    @Lob
-    private byte[] pdfDocument;*/
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-            name = "Labour_Job",
-            joinColumns = @JoinColumn(name = "labour_id"),
-            inverseJoinColumns = @JoinColumn(name = "job_id",referencedColumnName = "jobId")
-    )
-    private Set<Job> jobs = new HashSet<>();
-
-    @OneToMany(mappedBy = "labour", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Appointment> appointment;
-
 
 
     private String documentUri;

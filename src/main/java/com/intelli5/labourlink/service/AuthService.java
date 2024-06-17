@@ -69,7 +69,7 @@ public class AuthService{
 
     public AuthResponse registerLabour(RegisterRequest registerRequest){
         Optional<SuspendUser> suspendedUser=suspendUserService.findByEmail(registerRequest.getEmail());
-        if(!suspendedUser.isPresent()){
+        if(suspendedUser.isEmpty()){
         var user = new Labour();
         user.setEmail(registerRequest.getEmail());
         user.setName(registerRequest.getName());

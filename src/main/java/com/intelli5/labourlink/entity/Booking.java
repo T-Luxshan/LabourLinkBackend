@@ -37,4 +37,8 @@ public class Booking {
     private String jobDescription;
 
     private JobRole jobRole;
+
+    private LocalDate bookingMadeDate = LocalDate.now();
+
+
 }

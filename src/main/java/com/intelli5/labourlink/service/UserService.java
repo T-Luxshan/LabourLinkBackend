@@ -31,9 +31,6 @@ public class UserService {
     private LabourRepository labourRepository;
 
     @Autowired
-    private AppointmentRepository appointmentRepository;
-
-    @Autowired
     private UserRepository userRepository;
     @Autowired
     private SuspendUserRepository suspendUserRepository;
