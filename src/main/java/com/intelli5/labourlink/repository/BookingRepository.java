@@ -1,5 +1,6 @@
 package com.intelli5.labourlink.repository;
 
+import com.intelli5.labourlink.dto.BookingCountDTO;
 import com.intelli5.labourlink.entity.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -82,4 +83,55 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     )
     List<Object[]> findSuccessfulBookingWithDay(@Param("startDate") LocalDate startDate);
 
+    //Job roles and Active labour count ----------------------------
+    @Query(
+            "select  (b.jobRole ,COUNT(DISTINCT b.labour)) " +
+            "from Booking b " +
+            "where b.bookingStage=com.intelli5.labourlink.entity.BookingStage.COMPLETED and b.bookingStage=com.intelli5.labourlink.entity.BookingStage.ACCEPTED " +
+            "group by b.jobRole "
+    )
+    List<BookingCountDTO> getLabourRoleCount();
+
+    //------------------Booking count for each jobroles :According to the complete,accept,declined,pending------------------------
+    @Query(
+            "select  (b.jobRole ,COUNT(DISTINCT b.id)) " +
+            "from Booking b " +
+            "where b.bookingStage IN (com.intelli5.labourlink.entity.BookingStage .COMPLETED , com.intelli5.labourlink.entity.BookingStage .ACCEPTED ,com.intelli5.labourlink.entity.BookingStage .PENDING,com.intelli5.labourlink.entity.BookingStage .DECLINED )" +
+            "group by b.jobRole "
+    )
+    List<BookingCountDTO> getBookingCountWithJobRole();
+    //------------------Booking count for each jobroles : pending------------------------
+    @Query(
+            "select  (b.jobRole ,COUNT(DISTINCT b.id)) " +
+                    "from Booking b " +
+                    "where b.bookingStage IN (com.intelli5.labourlink.entity.BookingStage .PENDING,com.intelli5.labourlink.entity.BookingStage .DECLINED )" +
+                    "group by b.jobRole "
+    )
+    List<BookingCountDTO> getPendingCount();
+    //------------------Booking count for each jobroles : declined------------------------
+    @Query(
+            "select  (b.jobRole ,COUNT(DISTINCT b.id)) " +
+                    "from Booking b " +
+                    "where b.bookingStage = com.intelli5.labourlink.entity.BookingStage .DECLINED " +
+                    "group by b.jobRole "
+    )
+    List<BookingCountDTO> getDeclinedCount();
+
+    //------------------Booking count for each jobroles : accept------------------------
+    @Query(
+            "select  (b.jobRole ,COUNT(DISTINCT b.id)) " +
+                    "from Booking b " +
+                    "where b.bookingStage = com.intelli5.labourlink.entity.BookingStage .ACCEPTED " +
+                    "group by b.jobRole "
+    )
+    List<BookingCountDTO> getAcceptCount();
+
+    //------------------Booking count for each jobroles : complete------------------------
+    @Query(
+            "select  (b.jobRole ,COUNT(DISTINCT b.id)) " +
+                    "from Booking b " +
+                    "where b.bookingStage = com.intelli5.labourlink.entity.BookingStage .COMPLETED " +
+                    "group by b.jobRole "
+    )
+    List<BookingCountDTO> getCompleteCount();
 }

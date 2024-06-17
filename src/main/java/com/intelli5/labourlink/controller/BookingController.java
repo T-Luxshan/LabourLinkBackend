@@ -3,8 +3,10 @@ package com.intelli5.labourlink.controller;
 import com.intelli5.labourlink.dto.*;
 import com.intelli5.labourlink.entity.Booking;
 import com.intelli5.labourlink.entity.BookingStage;
+import com.intelli5.labourlink.entity.JobRole;
 import com.intelli5.labourlink.service.BookingService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -59,8 +61,8 @@ public class BookingController {
         return ResponseEntity.ok(bookingDetailsForLabourDTO);
     }
     //------------------------------++++++++++++++++++++++++++++++++++++++++++++++++++++-----------------------------------------------------------------
-    //------Booking :- Booking complete table--------------------------------------
-    @GetMapping
+    //------Booking :- Booking Pending table--------------------------------------
+    @GetMapping("/pending")
     public ResponseEntity<List<BookingDTO>> getPendingAppointments() {
         List<BookingDTO> bookings = bookingService.getPendingAppointmentsWithDetails();
         return new ResponseEntity<>(bookings, HttpStatus.OK);
@@ -68,8 +70,8 @@ public class BookingController {
 
     //------Appointment :- Appointment Complete table------------------------
     @GetMapping("/deliver")
-    public ResponseEntity<List<BookingDTO>> getDeliveredAppointmentsWithDetails() {
-        List<BookingDTO> bookings = bookingService.getDeliveredAppointmentsWithDetails();
+    public ResponseEntity<List<BookingDTO>> getCompleteAppointmentsWithDetails() {
+        List<BookingDTO> bookings = bookingService.getCompleteAppointmentsWithDetails();
         return new ResponseEntity<>(bookings, HttpStatus.OK);
     }
     //------Appointment :- Appointment Accept table------------------------
@@ -80,11 +82,10 @@ public class BookingController {
     }
     //------Appointment :- Appointment Declined table------------------------
     @GetMapping("/cancel")
-    public ResponseEntity<List<BookingDTO>> getCancelAppointmentsWithDetails() {
-        List<BookingDTO> bookings = bookingService.getCancelAppointmentsWithDetails();
+    public ResponseEntity<List<BookingDTO>> getDeclinedAppointmentsWithDetails() {
+        List<BookingDTO> bookings = bookingService.getDeclinedAppointmentsWithDetails();
         return new ResponseEntity<>(bookings, HttpStatus.OK);
     }
-
 
 
     //----------------------Appointment - box 1- pending count------------------------
@@ -98,26 +99,19 @@ public class BookingController {
 
     @GetMapping("/delivered_count")
     public ResponseEntity<Integer> getDeliveredAppointmentsWithDetailsCount() {
-        List<BookingDTO> deliveredAppointments = bookingService.getDeliveredAppointmentsWithDetails();
+        List<BookingDTO> deliveredAppointments = bookingService.getCompleteAppointmentsWithDetails();
         int count = deliveredAppointments.size();
-        return new ResponseEntity<>(count, HttpStatus.OK);
-    }
-//----------------------Appointment - Revenue box 2-------------------------
-
-    @GetMapping("/cancel_count")
-    public ResponseEntity<Integer> getCancelAppointmentsWithDetailsCount() {
-        List<BookingDTO> cancelAppointments = bookingService.getCancelAppointmentsWithDetails();
-        int count = cancelAppointments.size();
         return new ResponseEntity<>(count, HttpStatus.OK);
     }
 
     //-------------------------------------to dash board total Appointments --------------------------------
     @GetMapping("/total_app")
     public ResponseEntity<Integer> getTotalAppointmentsCount() {
-        List<BookingDTO> cancelAppointments = bookingService.getCancelAppointmentsWithDetails();
-        List<BookingDTO> deliveredAppointments = bookingService.getDeliveredAppointmentsWithDetails();
+        List<BookingDTO> cancelAppointments = bookingService.getDeclinedAppointmentsWithDetails();
+        List<BookingDTO> deliveredAppointments = bookingService.getCompleteAppointmentsWithDetails();
         List<BookingDTO> pendingAppointments = bookingService.getPendingAppointmentsWithDetails();
-        int totalAppointmentsCount = cancelAppointments.size() + deliveredAppointments.size() + pendingAppointments.size();
+        List<BookingDTO> acceptAppointments = bookingService.getAcceptAppointmentsWithDetails();
+        int totalAppointmentsCount = cancelAppointments.size() + deliveredAppointments.size() + pendingAppointments.size()+acceptAppointments.size();
         return new ResponseEntity<>(totalAppointmentsCount, HttpStatus.OK);
     }
 
@@ -152,7 +146,7 @@ public class BookingController {
         return bookingService.findSuccessfulBookingWithDay();
     }
 
-    //------------------------------------User Individiual booking history------------------------------------
+    //-----------------------------------User: Individual -User Individiual booking history------------------------------------
     @GetMapping("/labour/{email}")
     public ResponseEntity<List<BookingIndividualDTO >> getLabourCompleteBookingById(@PathVariable String email){
         try{
@@ -161,8 +155,41 @@ public class BookingController {
         }catch(RuntimeException e){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-
     }
-
-
+    //----------------JOB-01-Job roles and Active labour count :According to the complete and acceptance of the job------------------------
+    @GetMapping("/labourcount")
+    public ResponseEntity<List<BookingCountDTO>> getLabourRoleCount(){
+        List<BookingCountDTO> counts=bookingService.getLabourRoleCount();
+        return new ResponseEntity<>(counts,HttpStatus.OK);
+    }
+    //------------Job-02`(pie)--Booking count for each jobroles :According to the complete,accept,declined,pending------------------------
+    @GetMapping("/bookingcount")
+    public ResponseEntity<List<BookingCountDTO>> getBookingCountWithJobRole(){
+        List<BookingCountDTO> counts=bookingService.getBookingCountWithJobRole();
+        return new ResponseEntity<>(counts,HttpStatus.OK);
+    }
+    //----------------JOB uselinechart 3 in 1--Booking count for each jobroles : pending------------------------
+    @GetMapping("/pendingbookingcount")
+    public ResponseEntity<List<BookingCountDTO>> getPendingCount(){
+        List<BookingCountDTO> counts=bookingService.getPendingCount();
+        return new ResponseEntity<>(counts,HttpStatus.OK);
+    }
+    //----------------Job03--Booking count for each jobroles :According to the declined------------------------
+    @GetMapping("/declinedbookingcount")
+    public ResponseEntity<List<BookingCountDTO>> getDeclinedCount(){
+        List<BookingCountDTO> counts=bookingService.getDeclinedCount();
+        return new ResponseEntity<>(counts,HttpStatus.OK);
+    }
+    //----------------Job03--Booking count for each jobroles :According to the accept------------------------
+    @GetMapping("/acceptbookingcount")
+    public ResponseEntity<List<BookingCountDTO>> getAcceptCount(){
+        List<BookingCountDTO> counts=bookingService.getAcceptCount();
+        return new ResponseEntity<>(counts,HttpStatus.OK);
+    }
+    //----------------Job03--Booking count for each jobroles :According to the complete------------------------
+    @GetMapping("/completebookingcount")
+    public ResponseEntity<List<BookingCountDTO>> getCompleteCount(){
+        List<BookingCountDTO> counts=bookingService.getCompleteCount();
+        return new ResponseEntity<>(counts,HttpStatus.OK);
+    }
 }

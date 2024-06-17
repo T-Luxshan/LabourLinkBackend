@@ -157,7 +157,7 @@ public class BookingService {
     }
 //------Booking :- Booking complete table--------------------------------------
 
-    public List<BookingDTO> getDeliveredAppointmentsWithDetails() {
+    public List<BookingDTO> getCompleteAppointmentsWithDetails() {
         List<Booking> bookings = bookingRepository.findAll(); // Fetch bookings from repository
         List<BookingDTO> bookingsDtos = new ArrayList<>();
 
@@ -197,9 +197,9 @@ public class BookingService {
         }
         return bookingsDtos;
     }
+    //------Booking :- Booking declined table--------------------------------------
 
-    //------Booking :- Booking cancel table--------------------------------------
-    public List<BookingDTO> getCancelAppointmentsWithDetails() {
+    public List<BookingDTO> getDeclinedAppointmentsWithDetails() {
         List<Booking> bookings = bookingRepository.findAll(); // Fetch bookings from repository
         List<BookingDTO> bookingsDtos = new ArrayList<>();
 
@@ -267,4 +267,27 @@ public class BookingService {
                 booking.getStartTime()
         );
     }
+
+    public List<BookingCountDTO> getLabourRoleCount() {
+        return bookingRepository.getLabourRoleCount();
+    }
+
+    public List<BookingCountDTO> getBookingCountWithJobRole() {
+        return bookingRepository.getBookingCountWithJobRole();
+    }
+
+    public List<BookingCountDTO> getPendingCount() {
+        return bookingRepository.getPendingCount();
+    }
+
+    public List<BookingCountDTO> getDeclinedCount() {
+        return bookingRepository.getDeclinedCount();
+    }
+    public List<BookingCountDTO> getAcceptCount() {
+        return bookingRepository.getAcceptCount();
+    }
+    public List<BookingCountDTO> getCompleteCount() {
+        return bookingRepository.getCompleteCount();
+    }
+
 }
