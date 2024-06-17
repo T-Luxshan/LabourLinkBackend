@@ -21,6 +21,7 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "[User]")
 //@Builder
 public  class User implements UserDetails {
 
