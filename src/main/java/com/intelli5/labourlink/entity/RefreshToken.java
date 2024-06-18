@@ -20,6 +20,7 @@ public class RefreshToken {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer tokenId;
 
+
     @Column(nullable = false, length = 500)
     @NotBlank(message = "Please enter refresh token value")
     private String refreshToken;

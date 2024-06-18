@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -69,9 +72,9 @@ public class BookingService {
                 .collect(Collectors.toList());
     }
 
-    public BookingStatusUpdateDTO updateBookingStage(Long id, BookingStage bookingStage){
-        Optional<Booking> bookingOptional=bookingRepository.findById(id);
-        if (bookingOptional.isPresent()){
+    public BookingStatusUpdateDTO updateBookingStage(Long id, BookingStage bookingStage) {
+        Optional<Booking> bookingOptional = bookingRepository.findById(id);
+        if (bookingOptional.isPresent()) {
             Booking booking = bookingOptional.get();
             booking.setBookingStage(bookingStage);
             Booking updatedBooking = bookingRepository.save(booking);
@@ -83,6 +86,27 @@ public class BookingService {
         throw new RuntimeException("Booking not found with id " + id);
     }
 
+    public BookingDetailsDTO getFullBookingDetails(Long id){
+        Optional<Booking> booking=bookingRepository.findById(id);
+        if(booking.isPresent()){
+            Booking bookingDetails = booking.get();
+
+            return BookingDetailsDTO.builder()
+                    .bookingStage(bookingDetails.getBookingStage())
+                    .appointmentDate(bookingDetails.getDate())
+                    .appointmentTime(bookingDetails.getStartTime())
+                    .jobRole(bookingDetails.getJobRole())
+                    .customerId(bookingDetails.getCustomer().getEmail())
+                    .customerName(bookingDetails.getCustomer().getName())
+                    .labourId(bookingDetails.getLabour().getEmail())
+                    .labourName(bookingDetails.getLabour().getName())
+                    .build();
+
+        }
+        throw new RuntimeException("Booking not found with id " + id);
+
+
+    }
 
 
     private BookingResponseDTO convertToBookingResponseDTO(Booking booking) {
@@ -131,5 +155,139 @@ public class BookingService {
         }
         return bookings.stream().map(booking -> convertToBookingDetailsForLabourDTO(booking))
                 .collect(Collectors.toList());
+    }
+
+    //-------------------+++++++++++++++++++++++++++++++++++++++++------------------------------------------------------------
+    //------Booking :- Booking Pending table--------------------------------------
+    public List<BookingDTO> getPendingAppointmentsWithDetails() {
+        List<Booking> bookings = bookingRepository.findAll();
+        List<BookingDTO> bookingsDtos = new ArrayList<>();
+
+        for (Booking booking : bookings) {
+            if (booking.getBookingStage() == BookingStage.PENDING) {
+                BookingDTO bookingsDto = new BookingDTO();
+                bookingsDto.setId(booking.getId());
+                bookingsDto.setCustomerName(booking.getCustomer().getName());
+                bookingsDto.setCustomerEmail(booking.getCustomer().getEmail());
+                bookingsDto.setLabourName(booking.getLabour().getName());
+                bookingsDto.setJobRole(booking.getJobRole());
+                bookingsDto.setBookingMadeDate(booking.getBookingMadeDate());
+
+                bookingsDtos.add(bookingsDto);
+            }
+        }
+        return bookingsDtos;
+    }
+//------Booking :- Booking complete table--------------------------------------
+
+    public List<BookingDTO> getDeliveredAppointmentsWithDetails() {
+        List<Booking> bookings = bookingRepository.findAll(); // Fetch bookings from repository
+        List<BookingDTO> bookingsDtos = new ArrayList<>();
+
+        for (Booking booking : bookings) {
+            if (booking.getBookingStage() == BookingStage.COMPLETED) {
+                BookingDTO bookingsDto = new BookingDTO();
+                bookingsDto.setId(booking.getId());
+                bookingsDto.setCustomerName(booking.getCustomer().getName());
+                bookingsDto.setCustomerEmail(booking.getCustomer().getEmail());
+                bookingsDto.setLabourName(booking.getLabour().getName());
+                bookingsDto.setJobRole(booking.getJobRole());
+                bookingsDto.setBookingMadeDate(booking.getBookingMadeDate());
+
+                bookingsDtos.add(bookingsDto);
+            }
+        }
+        return bookingsDtos;
+    }
+    //------Booking :- Booking accept table--------------------------------------
+
+    public List<BookingDTO> getAcceptAppointmentsWithDetails() {
+        List<Booking> bookings = bookingRepository.findAll(); // Fetch bookings from repository
+        List<BookingDTO> bookingsDtos = new ArrayList<>();
+
+        for (Booking booking : bookings) {
+            if (booking.getBookingStage() == BookingStage.ACCEPTED) {
+                BookingDTO bookingsDto = new BookingDTO();
+                bookingsDto.setId(booking.getId());
+                bookingsDto.setCustomerName(booking.getCustomer().getName());
+                bookingsDto.setCustomerEmail(booking.getCustomer().getEmail());
+                bookingsDto.setLabourName(booking.getLabour().getName());
+                bookingsDto.setJobRole(booking.getJobRole());
+                bookingsDto.setBookingMadeDate(booking.getBookingMadeDate());
+
+                bookingsDtos.add(bookingsDto);
+            }
+        }
+        return bookingsDtos;
+    }
+
+    //------Booking :- Booking cancel table--------------------------------------
+    public List<BookingDTO> getCancelAppointmentsWithDetails() {
+        List<Booking> bookings = bookingRepository.findAll(); // Fetch bookings from repository
+        List<BookingDTO> bookingsDtos = new ArrayList<>();
+
+        for (Booking booking : bookings) {
+            if (booking.getBookingStage() == BookingStage.DECLINED) {
+                BookingDTO bookingsDto = new BookingDTO();
+                bookingsDto.setId(booking.getId());
+                bookingsDto.setCustomerName(booking.getCustomer().getName());
+                bookingsDto.setCustomerEmail(booking.getCustomer().getEmail());
+                bookingsDto.setLabourName(booking.getLabour().getName());
+                bookingsDto.setJobRole(booking.getJobRole());
+                bookingsDto.setBookingMadeDate(booking.getBookingMadeDate());
+
+                bookingsDtos.add(bookingsDto);
+            }
+        }
+        return bookingsDtos;
+    }
+
+    //-----------------------------------Booking : -graph left : -Job Vs Total Booking--------------------------------
+    public List<Object[]> jobVsTotalAppointment() {
+        List<Object[]> results = bookingRepository.findJobBookingCounts();
+        return results.stream()
+                .map(result -> new Object[]{result[0], result[1] == null ? 0L : result[1]})
+                .collect(Collectors.toList());
+    }
+
+    //-----------------------------------Booking : -graph right : -Job Vs cancelled Total Booking--------------------------------
+    public List<Object[]> findCancelledBookCounts() {
+        List<Object[]> results = bookingRepository.findCancelledBookCounts();
+        return results.stream()
+                .map(result -> new Object[]{result[0], result[1] == null ? 0L : result[1]})
+                .collect(Collectors.toList());
+    }
+
+    public List<Object[]> findActiveCustomerCount() {
+        LocalDate startDate = LocalDate.now().minusDays(7);
+        return bookingRepository.findActiveCustomerCount(startDate);
+    }
+
+    public List<Object[]> findActiveLabourCount() {
+        LocalDate startDate = LocalDate.now().minusDays(7);
+        return bookingRepository.findActiveLabourCount(startDate);
+    }
+
+    public List<Object[]> findSuccessfulBookingWithDay() {
+        LocalDate startDate = LocalDate.now().minusDays(7);
+        return bookingRepository.findSuccessfulBookingWithDay(startDate);
+    }
+
+    public List<BookingIndividualDTO> getLabourCompleteBookingById(String email) {
+        Optional<User> labour = labourRepository.findByEmail(email);
+        List<Booking> bookings = bookingRepository.findByLabour(labour);
+        return bookings.stream()
+                .map(this::convertToBookingIndividualDTO)
+                .collect(Collectors.toList());
+    }
+
+    private BookingIndividualDTO convertToBookingIndividualDTO(Booking booking) {
+        return new BookingIndividualDTO(
+                booking.getCustomer(),
+                booking.getJobRole(),
+                booking.getJobDescription(),
+                booking.getDate(),
+                booking.getStartTime()
+        );
     }
 }

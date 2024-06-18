@@ -1,18 +1,15 @@
 package com.intelli5.labourlink.controller;
 
 import com.intelli5.labourlink.Exception.ResourceNotFoundException;
-import com.intelli5.labourlink.dto.ConnectedUsersDTO;
-import com.intelli5.labourlink.dto.GetUserEmailFromTokenDTO;
-import com.intelli5.labourlink.dto.UserDTO;
-import com.intelli5.labourlink.dto.UserStatusUpdateDTO;
+import com.intelli5.labourlink.dto.*;
 import com.intelli5.labourlink.entity.Customer;
 import com.intelli5.labourlink.entity.Labour;
 import com.intelli5.labourlink.entity.User;
 import com.intelli5.labourlink.repository.CustomerRepository;
 import com.intelli5.labourlink.repository.LabourRepository;
-import com.intelli5.labourlink.repository.UserRepository;
 import com.intelli5.labourlink.service.UserService;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -21,8 +18,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @CrossOrigin("*")
@@ -103,6 +101,7 @@ public class UserController {
         return ResponseEntity.ok(connectedUsersDTOs);
     }
 
+
     @GetMapping("{email}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable("email") String email) {
         try {
@@ -115,9 +114,9 @@ public class UserController {
             // Create a UserDTO object from the retrieved user
             UserDTO userDTO;
             if (userFromLaborRepo != null) {
-                userDTO = new UserDTO(userFromLaborRepo.getName(), userFromLaborRepo.getEmail(), userFromLaborRepo.getMobileNumber(), userFromLaborRepo.getStatus());
+                userDTO = convertToDTO(userFromLaborRepo);
             } else {
-                userDTO = new UserDTO(userFromCustomerRepo.getName(), userFromCustomerRepo.getEmail(), userFromCustomerRepo.getMobileNumber(), userFromCustomerRepo.getStatus());
+                userDTO = convertToDTO(userFromCustomerRepo);
             }
 
             // Return ResponseEntity with the created UserDTO
@@ -150,6 +149,87 @@ public class UserController {
     }
 
 
+    //+++++++++++++++++++++++++-----------------------------------------------------------------------+++++++++++++++++++++++++++++++
+    //-------------------User : 01 Table All user detail----------------------------------------
+    @GetMapping("/all")
+    public ResponseEntity<List<UserDTO>> getAllUser() {
+        List<UserDTO> users = userService.getAllUser();
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+    //-------------------Dashboard box: 1 ......and .......User detail box : 1-------------------
+    @GetMapping("/count")
+    public ResponseEntity<Integer> getAllUserCount() {
+        int userCount = userService.getAllUserCount();
+        return new ResponseEntity<>(userCount, HttpStatus.OK);
+    }
+
+    //--------------------------------User:-User detail individual detail fetching -----------------
+    @GetMapping("u/{email}")
+    public ResponseEntity <Optional<User>> findUserByEmail(@PathVariable String email) {
+        try{
+            Optional<User> user = userService.findUserByEmail(email);
+            if (user != null) {
+                return new ResponseEntity<>(user, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        }catch(RuntimeException e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+    //--------------------------------User:-User detail individual detail Remove -----------------
+    @PutMapping ("/u/{email}")
+    public ResponseEntity<Void> removeUserByEmail(@PathVariable String email ,@RequestBody Map<String, String> request) {
+        String removalPurpose = request.get("removalPurpose");
+        try {
+            userService.removeUserByEmail(email,removalPurpose);
+            return ResponseEntity.ok().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }}
+
+
+    //--------------------------------User:-03 table Deactivate User detail------------------------------------
+    @GetMapping("/deactivate/all")
+    public ResponseEntity<List<UserDTO>>  getDeactivatedUser(){
+        List<UserDTO> users = userService.getDeactivatedUser();
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+    //-------------------Dashboard box: 1 ......and .......User detail box : 1-------------------
+    @GetMapping("/deactivate/count")
+    public ResponseEntity<Integer> deactivateCount() {
+        int userCount = userService.getDeactivateCount();
+        return new ResponseEntity<>(userCount, HttpStatus.OK);
+    }
+    //--------------------------------User:-Deactivate User detail individual detail  -----------------
+    @GetMapping("/deactivate/{email}")
+    public ResponseEntity <Optional<User>>findDeactivateUserByEmail(@PathVariable String email) {
+        try{
+            Optional<User> user = userService.findDeactivateUserByEmail(email);
+            if (user != null) {
+                return new ResponseEntity<>(user, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        }catch(RuntimeException e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    //------------------------------User:-User detail individual appointment detail fetching -----------------
+//    @GetMapping("/appointment/{email}")
+//    public ResponseEntity<List<Appointment>> find_By_Email(@PathVariable String email) {
+//        try {
+//            List<Appointment> appointments = userService.get_UserBy_Email(email);
+//            return new ResponseEntity<>(appointments, HttpStatus.OK);
+//        } catch (RuntimeException e) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//    }
+
+
     @GetMapping("/user")
     public ResponseEntity<GetUserEmailFromTokenDTO> getUserByToken() {
 
@@ -159,4 +239,12 @@ public class UserController {
         GetUserEmailFromTokenDTO email = userService.getUserByEmail(currentPrincipalName);
         return ResponseEntity.ok(email);
     }
-}
+}//-------------------------Adding deactivate user : My purpose -----------------------------
+//    @PutMapping ("/deactivate/{email}")
+//    public ResponseEntity<Void> DeactivatedUser(@PathVariable String email ) {
+//        try {
+//            userService.getUserBy_Email_(email);
+//            return ResponseEntity.ok().build();
+//        } catch (RuntimeException e) {
+//            return ResponseEntity.notFound().build();
+//        }}
