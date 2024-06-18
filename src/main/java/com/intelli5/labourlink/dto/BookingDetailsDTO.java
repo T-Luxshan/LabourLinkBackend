@@ -23,4 +23,5 @@ public class BookingDetailsDTO {
     private String labourId;
     private String customerName;
     private String labourName;
+
 }
