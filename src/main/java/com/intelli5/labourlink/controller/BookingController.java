@@ -43,6 +43,14 @@ public class BookingController {
         return ResponseEntity.ok(bookingDetailsForLabourDTO);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<BookingDetailsDTO> getFullBookingDetails(@PathVariable("id") Long id){
+        BookingDetailsDTO bookingDetailsDTO=bookingService.getFullBookingDetails(id);
+        return ResponseEntity.ok(bookingDetailsDTO);
+
+    }
+
+
     @PatchMapping("/updateStage/{id}")
     public BookingStatusUpdateDTO updateBookingStage(@PathVariable Long id, @RequestBody BookingStatusUpdateDTO bookingStatusUpdateDTO){
         return bookingService.updateBookingStage(id, bookingStatusUpdateDTO.getBookingStage());
