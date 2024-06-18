@@ -104,10 +104,10 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     @Query(
             "select  (b.jobRole ,COUNT(DISTINCT b.id)) " +
                     "from Booking b " +
-                    "where b.bookingStage IN (com.intelli5.labourlink.entity.BookingStage .PENDING,com.intelli5.labourlink.entity.BookingStage .DECLINED )" +
+                    "where b.bookingStage IN (com.intelli5.labourlink.entity.BookingStage .PENDING )" +
                     "group by b.jobRole "
     )
-    List<BookingCountDTO> getPendingCount();
+    List<BookingCountDTO> getPendingCountWithJob();
     //------------------Booking count for each jobroles : declined------------------------
     @Query(
             "select  (b.jobRole ,COUNT(DISTINCT b.id)) " +
@@ -115,7 +115,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
                     "where b.bookingStage = com.intelli5.labourlink.entity.BookingStage .DECLINED " +
                     "group by b.jobRole "
     )
-    List<BookingCountDTO> getDeclinedCount();
+    List<BookingCountDTO> getDeclinedCountWithJob();
 
     //------------------Booking count for each jobroles : accept------------------------
     @Query(
@@ -124,7 +124,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
                     "where b.bookingStage = com.intelli5.labourlink.entity.BookingStage .ACCEPTED " +
                     "group by b.jobRole "
     )
-    List<BookingCountDTO> getAcceptCount();
+    List<BookingCountDTO> getAcceptCountWithJob();
 
     //------------------Booking count for each jobroles : complete------------------------
     @Query(
@@ -133,5 +133,5 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
                     "where b.bookingStage = com.intelli5.labourlink.entity.BookingStage .COMPLETED " +
                     "group by b.jobRole "
     )
-    List<BookingCountDTO> getCompleteCount();
+    List<BookingCountDTO> getCompleteCountWithJob();
 }

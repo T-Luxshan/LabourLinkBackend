@@ -28,5 +28,7 @@ public interface LabourService {
     void deleteLabour(String email);
 
     void updateLabourStatus(String email, Labour updatedLabour);
+
+    void getLabourByIdForVerification(String email);
 }
 

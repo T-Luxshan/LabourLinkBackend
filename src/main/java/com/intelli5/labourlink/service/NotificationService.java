@@ -1,17 +1,22 @@
 package com.intelli5.labourlink.service;
 
+import com.intelli5.labourlink.dto.NotificationAdminDTO;
 import com.intelli5.labourlink.dto.NotificationRequestDTO;
 import com.intelli5.labourlink.dto.NotificationResponseDTO;
 import com.intelli5.labourlink.entity.Notification;
 import com.intelli5.labourlink.entity.User;
 import com.intelli5.labourlink.repository.NotificationRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
+@Slf4j
 @Service
 public class NotificationService {
 
@@ -20,6 +25,14 @@ public class NotificationService {
 
     @Autowired
     private UserService userService;
+
+    private final SimpMessagingTemplate messagingTemplate;
+    private static final Logger logger = LoggerFactory.getLogger(NotificationService.class);
+
+
+    public NotificationService(SimpMessagingTemplate messagingTemplate) {
+        this.messagingTemplate = messagingTemplate;
+    }
 
     public void sendNotification(NotificationRequestDTO request) {
         // Check if the recipient exists in the database
@@ -113,5 +126,12 @@ public class NotificationService {
 
     public void deleteNotification(Long id) {
         notificationRepository.deleteById(id);
+    }
+
+    //--------------------Register Labour notification ----------------------------------------------
+    public void notifyAdmin(NotificationAdminDTO userDetail) {
+        logger.info("Sending notification: {}", userDetail);
+            messagingTemplate.convertAndSend("/topic/notifications", userDetail);
+
     }
 }

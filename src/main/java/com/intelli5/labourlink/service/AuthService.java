@@ -1,6 +1,7 @@
 package com.intelli5.labourlink.service;
 
 import com.intelli5.labourlink.Exception.CustomerRegistrationException;
+import com.intelli5.labourlink.dto.NotificationAdminDTO;
 import com.intelli5.labourlink.entity.*;
 import com.intelli5.labourlink.repository.AdminRepository;
 import com.intelli5.labourlink.repository.CustomerRepository;
@@ -10,6 +11,7 @@ import com.intelli5.labourlink.utils.LoginRequest;
 import com.intelli5.labourlink.utils.RegisterRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,6 +36,8 @@ public class AuthService{
     private final LabourRepository labourRepository;
     private final AdminRepository adminRepository;
     private final SuspendUserService suspendUserService;
+    @Autowired
+    private final NotificationService notificationService;
 
     public AuthResponse registerCustomer(RegisterRequest registerRequest) throws CustomerRegistrationException {
         Optional<SuspendUser> suspendedUser=suspendUserService.findByEmail(registerRequest.getEmail());
@@ -85,7 +89,15 @@ public class AuthService{
         User savedUser = labourRepository.save(user);
         var accessToken = jwtService.generateToken(savedUser);
         var refreshToken = refreshTokenService.createRefreshTokenCustomer(savedUser.getEmail());
-
+            // Notify the admin
+        NotificationAdminDTO userDetail =new NotificationAdminDTO(
+                    user.getName(),
+                    user.getEmail(),
+                    user.getDocumentUri(),
+                    user.getJobRole().toString(),
+                    user.getJoinDate().toString()
+        );
+        notificationService.notifyAdmin(userDetail);
         return AuthResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken.getRefreshToken())

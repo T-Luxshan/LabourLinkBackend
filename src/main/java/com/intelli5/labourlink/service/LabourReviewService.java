@@ -9,9 +9,12 @@ import com.intelli5.labourlink.repository.CustomerRepository;
 import com.intelli5.labourlink.repository.LabourRepository;
 import com.intelli5.labourlink.repository.LabourReviewRepository;
 import com.intelli5.labourlink.utils.ReviewRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -178,5 +181,26 @@ public class LabourReviewService {
         } catch (Exception e){
             return 0.0;
         }
+    }
+    //------------------------------------------++++++++++++++++++++++++++++++++++++++++++----------------------------
+    public List<ReviewDTO> getAllReviewsForAdmin() {
+        List<LabourReview> allReviews = labourReviewRepository.findAll(Sort.by(Sort.Direction.DESC, "reviewPostAt"));
+
+        List<ReviewDTO> allReviewDTO = new ArrayList<>();
+        for (LabourReview review: allReviews) {
+            allReviewDTO.add(
+                    ReviewDTO.builder()
+                            .Id(review.getId())
+                            .jobRole(review.getJobRole())
+//                            .workTitle(review.getWorkTitle())
+                            .description(review.getDescription())
+                            .rating(review.getRating())
+                            .labourName(review.getLabour().getName())
+                            .customerName(review.getCustomer().getName())
+                            .reviewPostAt(LocalDateTime.now())
+                            .build()
+            );
+        }
+        return allReviewDTO;
     }
 }

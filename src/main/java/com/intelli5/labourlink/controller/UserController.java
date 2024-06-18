@@ -168,7 +168,7 @@ public class UserController {
     public ResponseEntity <Optional<User>> findUserByEmail(@PathVariable String email) {
         try{
             Optional<User> user = userService.findUserByEmail(email);
-            if (user != null) {
+            if (user.isPresent()) {
                 return new ResponseEntity<>(user, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -217,17 +217,6 @@ public class UserController {
         }
 
     }
-
-    //------------------------------User:-User detail individual appointment detail fetching -----------------
-//    @GetMapping("/appointment/{email}")
-//    public ResponseEntity<List<Appointment>> find_By_Email(@PathVariable String email) {
-//        try {
-//            List<Appointment> appointments = userService.get_UserBy_Email(email);
-//            return new ResponseEntity<>(appointments, HttpStatus.OK);
-//        } catch (RuntimeException e) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//    }
 
 
     @GetMapping("/user")

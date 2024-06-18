@@ -1,4 +1,4 @@
-package com.intelli5.labourlink.Config;
+package com.intelli5.labourlink.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Configuration;

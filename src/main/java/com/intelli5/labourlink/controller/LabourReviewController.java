@@ -86,4 +86,12 @@ public class LabourReviewController {
     public ResponseEntity<Double> getRating(@PathVariable String email){
             return ResponseEntity.ok(labourReviewService.getRating(email));
     }
+    //---------------------------++++++++++++++++++++++++++++++++++++++++++++----------------------------------------
+    //-------------------Review : Fetching review with in a particular time gap  -------------------------------------------------
+    @GetMapping("/getAllReviewForAdmin")
+    public ResponseEntity<List<ReviewDTO>> getAllReviewsForAdmin(){
+        return ResponseEntity.ok(labourReviewService.getAllReviewsForAdmin());
+    }
+    //-------------------Review :Delete review by id: exist  -------------------------------------------------
+
 }

@@ -250,23 +250,22 @@ public class BookingService {
         return bookingRepository.findSuccessfulBookingWithDay(startDate);
     }
 
-    public List<BookingIndividualDTO> getLabourCompleteBookingById(String email) {
-        Optional<User> labour = labourRepository.findByEmail(email);
-        List<Booking> bookings = bookingRepository.findByLabour(labour);
-        return bookings.stream()
-                .map(this::convertToBookingIndividualDTO)
-                .collect(Collectors.toList());
-    }
-
-    private BookingIndividualDTO convertToBookingIndividualDTO(Booking booking) {
-        return new BookingIndividualDTO(
-                booking.getCustomer(),
-                booking.getJobRole(),
-                booking.getJobDescription(),
-                booking.getDate(),
-                booking.getStartTime()
-        );
-    }
+//    public List<BookingIndividualDTO> getLabourCompleteBookingById(String email) {
+//        Optional<User> labour = labourRepository.findByEmail(email);
+//        List<Booking> bookings = bookingRepository.findByLabour(labour);
+//        return bookings.stream()
+//                .map(this::convertToBookingIndividualDTO)
+//                .collect(Collectors.toList());
+//    }
+//    private BookingIndividualDTO convertToBookingIndividualDTO(Booking booking) {
+//        return new BookingIndividualDTO(
+//                booking.getCustomer(),
+//                booking.getJobRole(),
+//                booking.getJobDescription(),
+//                booking.getDate(),
+//                booking.getStartTime()
+//        );
+//    }
 
     public List<BookingCountDTO> getLabourRoleCount() {
         return bookingRepository.getLabourRoleCount();
@@ -276,18 +275,43 @@ public class BookingService {
         return bookingRepository.getBookingCountWithJobRole();
     }
 
-    public List<BookingCountDTO> getPendingCount() {
-        return bookingRepository.getPendingCount();
+    public List<BookingCountDTO> getPendingCountWithJob() {
+        return bookingRepository.getPendingCountWithJob();
     }
 
-    public List<BookingCountDTO> getDeclinedCount() {
-        return bookingRepository.getDeclinedCount();
+    public List<BookingCountDTO> getDeclinedCountWithJob() {
+        return bookingRepository.getDeclinedCountWithJob();
     }
-    public List<BookingCountDTO> getAcceptCount() {
-        return bookingRepository.getAcceptCount();
+    public List<BookingCountDTO> getAcceptCountWithJob() {
+        return bookingRepository.getAcceptCountWithJob();
     }
-    public List<BookingCountDTO> getCompleteCount() {
-        return bookingRepository.getCompleteCount();
+    public List<BookingCountDTO> getCompleteCountWithJob() {
+        return bookingRepository.getCompleteCountWithJob();
     }
+
+    public List<BookingIndividualDTO> findBookingById(String email) {
+        List<Booking> bookings = bookingRepository.findByLabourEmail(email);
+
+        return bookings.stream()
+                .filter(booking -> booking.getBookingStage() == BookingStage.COMPLETED)
+                .map(this::mapToBookingIndividualDTO)
+                .collect(Collectors.toList());
+    }
+
+    private BookingIndividualDTO mapToBookingIndividualDTO(Booking booking) {
+        BookingIndividualDTO dto = BookingIndividualDTO.builder()
+                .customer(booking.getCustomer())
+                .jobRole(booking.getJobRole())
+                .jobDescription(booking.getJobDescription())
+                .date(booking.getDate())
+                .startTime(booking.getStartTime())
+                .build();
+
+        return dto;
+    }
+
+
+    //------------------------Individual bookings history ----------------------------------------------
+
 
 }
