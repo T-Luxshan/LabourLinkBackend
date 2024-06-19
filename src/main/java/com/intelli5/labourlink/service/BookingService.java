@@ -180,7 +180,7 @@ public class BookingService {
     }
 //------Booking :- Booking complete table--------------------------------------
 
-    public List<BookingDTO> getDeliveredAppointmentsWithDetails() {
+    public List<BookingDTO> getCompleteAppointmentsWithDetails() {
         List<Booking> bookings = bookingRepository.findAll(); // Fetch bookings from repository
         List<BookingDTO> bookingsDtos = new ArrayList<>();
 
@@ -220,9 +220,9 @@ public class BookingService {
         }
         return bookingsDtos;
     }
+    //------Booking :- Booking declined table--------------------------------------
 
-    //------Booking :- Booking cancel table--------------------------------------
-    public List<BookingDTO> getCancelAppointmentsWithDetails() {
+    public List<BookingDTO> getDeclinedAppointmentsWithDetails() {
         List<Booking> bookings = bookingRepository.findAll(); // Fetch bookings from repository
         List<BookingDTO> bookingsDtos = new ArrayList<>();
 
@@ -273,21 +273,68 @@ public class BookingService {
         return bookingRepository.findSuccessfulBookingWithDay(startDate);
     }
 
-    public List<BookingIndividualDTO> getLabourCompleteBookingById(String email) {
-        Optional<User> labour = labourRepository.findByEmail(email);
-        List<Booking> bookings = bookingRepository.findByLabour(labour);
+//    public List<BookingIndividualDTO> getLabourCompleteBookingById(String email) {
+//        Optional<User> labour = labourRepository.findByEmail(email);
+//        List<Booking> bookings = bookingRepository.findByLabour(labour);
+//        return bookings.stream()
+//                .map(this::convertToBookingIndividualDTO)
+//                .collect(Collectors.toList());
+//    }
+//    private BookingIndividualDTO convertToBookingIndividualDTO(Booking booking) {
+//        return new BookingIndividualDTO(
+//                booking.getCustomer(),
+//                booking.getJobRole(),
+//                booking.getJobDescription(),
+//                booking.getDate(),
+//                booking.getStartTime()
+//        );
+//    }
+
+    public List<BookingCountDTO> getLabourRoleCount() {
+        return bookingRepository.getLabourRoleCount();
+    }
+
+    public List<BookingCountDTO> getBookingCountWithJobRole() {
+        return bookingRepository.getBookingCountWithJobRole();
+    }
+
+    public List<BookingCountDTO> getPendingCountWithJob() {
+        return bookingRepository.getPendingCountWithJob();
+    }
+
+    public List<BookingCountDTO> getDeclinedCountWithJob() {
+        return bookingRepository.getDeclinedCountWithJob();
+    }
+    public List<BookingCountDTO> getAcceptCountWithJob() {
+        return bookingRepository.getAcceptCountWithJob();
+    }
+    public List<BookingCountDTO> getCompleteCountWithJob() {
+        return bookingRepository.getCompleteCountWithJob();
+    }
+
+    public List<BookingIndividualDTO> findBookingById(String email) {
+        List<Booking> bookings = bookingRepository.findByLabourEmail(email);
+
         return bookings.stream()
-                .map(this::convertToBookingIndividualDTO)
+                .filter(booking -> booking.getBookingStage() == BookingStage.COMPLETED)
+                .map(this::mapToBookingIndividualDTO)
                 .collect(Collectors.toList());
     }
 
-    private BookingIndividualDTO convertToBookingIndividualDTO(Booking booking) {
-        return new BookingIndividualDTO(
-                booking.getCustomer(),
-                booking.getJobRole(),
-                booking.getJobDescription(),
-                booking.getDate(),
-                booking.getStartTime()
-        );
+    private BookingIndividualDTO mapToBookingIndividualDTO(Booking booking) {
+        BookingIndividualDTO dto = BookingIndividualDTO.builder()
+                .customer(booking.getCustomer())
+                .jobRole(booking.getJobRole())
+                .jobDescription(booking.getJobDescription())
+                .date(booking.getDate())
+                .startTime(booking.getStartTime())
+                .build();
+
+        return dto;
     }
+
+
+    //------------------------Individual bookings history ----------------------------------------------
+
+
 }

@@ -3,6 +3,9 @@ package com.intelli5.labourlink.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,6 +33,7 @@ public class LabourReview {
     @ManyToOne
     @JoinColumn(name = "labour_email")
     private Labour labour;
+    private LocalDateTime reviewPostAt;
 
     public void setLabour(Labour labour) {
         this.labour = labour;

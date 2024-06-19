@@ -1,9 +1,7 @@
 package com.intelli5.labourlink.service;
 
 import com.intelli5.labourlink.Exception.ResourceNotFoundException;
-import com.intelli5.labourlink.dto.GetUserEmailFromTokenDTO;
-import com.intelli5.labourlink.dto.UserDTO;
-import com.intelli5.labourlink.dto.UserStatusUpdateDTO;
+import com.intelli5.labourlink.dto.*;
 import com.intelli5.labourlink.entity.*;
 import com.intelli5.labourlink.repository.*;
 import lombok.AllArgsConstructor;
@@ -18,6 +16,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @NoArgsConstructor
@@ -36,7 +35,8 @@ public class UserService {
     private SuspendUserRepository suspendUserRepository;
     @Autowired
     private RefreshTokenRepository refreshTokenRepository;
-
+    @Autowired
+    private BookingRepository bookingRepository;
     public void saveUser(User user, CustomerRepository customerRepository) {
         user.setStatus(Status.ONLINE);
         customerRepository.save(user);
@@ -148,7 +148,7 @@ public class UserService {
         List <UserDTO> userDtos=new ArrayList<>();
        List<User> users=userRepository.findAll(Sort.by(Sort.Order.desc("joinDate"), Sort.Order.desc("joinTime")));
         for(User user:users) {
-            if ((user.getRole() == UserRole.CUSTOMER || user.getRole() == UserRole.LABOUR)&&(user.isAccountNonExpired())) {
+            if ((user.getRole() == UserRole.CUSTOMER || user.getRole() == UserRole.LABOUR)&&(user.isAccountNonExpired())&&(user.isVerified())) {
             UserDTO userDto = new UserDTO();
             userDto.setName(user.getName());
             userDto.setEmail(user.getEmail());
@@ -230,8 +230,9 @@ public class UserService {
         }}
         return null;
     }
-    
-    
+
+
+
 
 //    public List<Appointment> get_UserBy_Email(String email) {
 //        Optional<User> optionaluser = userRepository.findByEmail(email);
