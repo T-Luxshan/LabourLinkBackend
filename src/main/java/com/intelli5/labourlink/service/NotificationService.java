@@ -129,6 +129,7 @@ public class NotificationService {
         notificationRepository.deleteById(id);
     }
 
+
     //--------------------Register Labour notification ----------------------------------------------
     public void notifyAdmin(NotificationAdminDTO userDetail) {
         logger.info("Sending notification: {}", userDetail);
