@@ -1,5 +1,6 @@
 package com.intelli5.labourlink.entity;
 
+import ch.qos.logback.core.util.Loader;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -71,8 +72,8 @@ public  class User implements UserDetails {
     private boolean isAccountNonExpired = true;
     private boolean isAccountNonLocked = true;
     private boolean isCredentialsNonExpired = true;
-    private LocalDate joinDate;
-    private LocalTime joinTime;
+    private LocalDate joinDate= LocalDate.now();
+//    private LocalTime joinTime=LocalTime.now();
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));

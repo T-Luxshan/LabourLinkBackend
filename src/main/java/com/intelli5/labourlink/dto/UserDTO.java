@@ -18,8 +18,8 @@ public class UserDTO {
     private String email;
     private String mobileNumber;
     private Status status;
-    private LocalDate joinDate;
-    private LocalTime joinTime;
+    private LocalDate joinDate=LocalDate.now();
+//    private LocalTime joinTime=LocalTime.now();
     private UserRole role;
 
     public UserDTO(String name, String email, String mobileNumber, Status status) {

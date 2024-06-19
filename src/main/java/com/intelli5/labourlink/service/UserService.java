@@ -146,7 +146,7 @@ public class UserService {
 
     public List<UserDTO>getAllUser(){
         List <UserDTO> userDtos=new ArrayList<>();
-       List<User> users=userRepository.findAll(Sort.by(Sort.Order.desc("joinDate"), Sort.Order.desc("joinTime")));
+       List<User> users=userRepository.findAll(Sort.by(Sort.Order.desc("joinDate")));
         for(User user:users) {
             if ((user.getRole() == UserRole.CUSTOMER || user.getRole() == UserRole.LABOUR)&&(user.isAccountNonExpired())&&(user.isVerified())) {
             UserDTO userDto = new UserDTO();
@@ -182,7 +182,7 @@ public class UserService {
             suspenduser.setMobileNumber(user.getMobileNumber());
             suspenduser.setRole(user.getRole());
             suspenduser.setJoinDate(user.getJoinDate());
-            suspenduser.setJoinTime(user.getJoinTime());
+            //suspenduser.setJoinTime(user.getJoinTime());
             suspenduser.setPresent(false);
             suspenduser.setVerified(true);
             suspenduser.setEnabled(true);
