@@ -12,8 +12,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:8081", "exp://192.168.1.56:8081", "http://localhost:3000")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
-                .allowedHeaders("*");
-               // .allowCredentials(true); // Added from Suhira's CorsConfig
+                .allowedHeaders("*")
+                .allowCredentials(true); // Added from Suhira's CorsConfig
 
     }
 }

@@ -1,6 +1,7 @@
 package com.intelli5.labourlink.service;
 
 import com.intelli5.labourlink.Exception.ResourceNotFoundException;
+import com.intelli5.labourlink.dto.LabourReviewIndividualDTO;
 import com.intelli5.labourlink.dto.ReviewDTO;
 import com.intelli5.labourlink.entity.Customer;
 import com.intelli5.labourlink.entity.Labour;
@@ -17,6 +18,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class LabourReviewService {
@@ -32,6 +34,7 @@ public class LabourReviewService {
         this.labourRepository = labourRepository;
         this.labourReviewRepository = labourReviewRepository;
     }
+
 
     public ReviewDTO addReview(ReviewRequest reviewRequest, String customerEmail) {
 
@@ -203,4 +206,23 @@ public class LabourReviewService {
         }
         return allReviewDTO;
     }
+    //------------------------------------------++++++++++++++++++++++++++++++++++++++++++----------------------------
+//public List<LabourReviewIndividualDTO> findByLabour_Email(String email){
+//       Labour labour= labourRepository.findLabour(email);
+//       List<LabourReview> labourReviews = labourReviewRepository.findAllByEmail(labour);
+//
+//    return labourReviews.stream()
+//                .map(this::mapToLabourReviewIndividualDTO)
+//                .collect(Collectors.toList());
+//}
+//private LabourReviewIndividualDTO mapToLabourReviewIndividualDTO(LabourReview labourReview){
+//    LabourReviewIndividualDTO dto=LabourReviewIndividualDTO.builder()
+//            .customer(labourReview.getCustomer())
+//            .jobRole(labourReview.getJobRole())
+//            .description(labourReview.getDescription())
+//            .rating(labourReview.getRating())
+//            .build();
+//    return dto;
+//    }
+
 }

@@ -1,5 +1,6 @@
 package com.intelli5.labourlink.service;
 
+import com.intelli5.labourlink.config.NotificationHandler;
 import com.intelli5.labourlink.dto.NotificationAdminDTO;
 import com.intelli5.labourlink.dto.NotificationRequestDTO;
 import com.intelli5.labourlink.dto.NotificationResponseDTO;
@@ -10,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,13 +26,14 @@ public class NotificationService {
     @Autowired
     private UserService userService;
 
-    private final SimpMessagingTemplate messagingTemplate;
+    private final NotificationHandler notificationHandler;
+
     private static final Logger logger = LoggerFactory.getLogger(NotificationService.class);
 
-
-    public NotificationService(SimpMessagingTemplate messagingTemplate) {
-        this.messagingTemplate = messagingTemplate;
+    public NotificationService(NotificationHandler notificationHandler) {
+        this.notificationHandler = notificationHandler;
     }
+
 
     public void sendNotification(NotificationRequestDTO request) {
         // Check if the recipient exists in the database
@@ -131,7 +132,7 @@ public class NotificationService {
     //--------------------Register Labour notification ----------------------------------------------
     public void notifyAdmin(NotificationAdminDTO userDetail) {
         logger.info("Sending notification: {}", userDetail);
-            messagingTemplate.convertAndSend("/topic/notifications", userDetail);
+        notificationHandler.sendNotification(userDetail);
 
     }
 }
