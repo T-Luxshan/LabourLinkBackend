@@ -1,6 +1,6 @@
 package com.intelli5.labourlink.config;
 
-import com.intelli5.labourlink.dto.NotificationAdminDTO;
+import com.intelli5.labourlink.entity.NotificationAdmin;
 import com.intelli5.labourlink.service.NotificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,7 @@ public class NotificationHandler {
         this.messagingTemplate = messagingTemplate;
     }
 
-    public void sendNotification(NotificationAdminDTO notification) {
+    public void sendNotification(NotificationAdmin notification) {
         logger.info("Sending notification: {}", notification);
         messagingTemplate.convertAndSend("/topic/notifications", notification);
     }

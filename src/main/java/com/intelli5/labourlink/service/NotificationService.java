@@ -26,13 +26,13 @@ public class NotificationService {
     @Autowired
     private UserService userService;
 
-    private final NotificationHandler notificationHandler;
-
-    private static final Logger logger = LoggerFactory.getLogger(NotificationService.class);
-
-    public NotificationService(NotificationHandler notificationHandler) {
-        this.notificationHandler = notificationHandler;
-    }
+//    private final NotificationHandler notificationHandler;
+//
+//    private static final Logger logger = LoggerFactory.getLogger(NotificationService.class);
+//
+//    public NotificationService(NotificationHandler notificationHandler) {
+//        this.notificationHandler = notificationHandler;
+//    }
 
 
     public void sendNotification(NotificationRequestDTO request) {
@@ -130,10 +130,10 @@ public class NotificationService {
     }
 
 
-    //--------------------Register Labour notification ----------------------------------------------
-    public void notifyAdmin(NotificationAdminDTO userDetail) {
-        logger.info("Sending notification: {}", userDetail);
-        notificationHandler.sendNotification(userDetail);
-
-    }
+//    //--------------------Register Labour notification ----------------------------------------------
+//    public void notifyAdmin(NotificationAdminDTO userDetail) {
+//        logger.info("Sending notification: {}", userDetail);
+//        notificationHandler.sendNotification(userDetail);
+//
+//    }
 }
