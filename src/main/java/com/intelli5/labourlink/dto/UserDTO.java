@@ -23,6 +23,10 @@ public class UserDTO {
     private UserRole role;
 
     public UserDTO(String name, String email, String mobileNumber, Status status) {
+        this.name=name;
+        this.email=email;
+        this.mobileNumber=mobileNumber;
+        this.status=status;
     }
 
 //    public UserDTO(String name, String email,LocalDate joinDate, UserRole role) {

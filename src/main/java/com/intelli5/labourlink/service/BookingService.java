@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -83,6 +84,28 @@ public class BookingService {
                     .build();
         }
         throw new RuntimeException("Booking not found with id " + id);
+    }
+
+    public BookingDetailsDTO getFullBookingDetails(Long id){
+        Optional<Booking> booking=bookingRepository.findById(id);
+        if(booking.isPresent()){
+            Booking bookingDetails = booking.get();
+
+            return BookingDetailsDTO.builder()
+                    .bookingStage(bookingDetails.getBookingStage())
+                    .appointmentDate(bookingDetails.getDate())
+                    .appointmentTime(bookingDetails.getStartTime())
+                    .jobRole(bookingDetails.getJobRole())
+                    .customerId(bookingDetails.getCustomer().getEmail())
+                    .customerName(bookingDetails.getCustomer().getName())
+                    .labourId(bookingDetails.getLabour().getEmail())
+                    .labourName(bookingDetails.getLabour().getName())
+                    .build();
+
+        }
+        throw new RuntimeException("Booking not found with id " + id);
+
+
     }
 
 
