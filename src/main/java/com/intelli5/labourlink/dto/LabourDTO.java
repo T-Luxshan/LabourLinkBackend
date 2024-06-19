@@ -2,6 +2,7 @@ package com.intelli5.labourlink.dto;
 
 import com.intelli5.labourlink.entity.JobRole;
 import lombok.Data;
+
 import java.util.List;
 
 @Data
