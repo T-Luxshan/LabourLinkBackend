@@ -1,9 +1,12 @@
 package com.intelli5.labourlink.controller;
 
+import com.intelli5.labourlink.dto.BookingIndividualDTO;
+import com.intelli5.labourlink.dto.LabourReviewIndividualDTO;
 import com.intelli5.labourlink.dto.ReviewDTO;
 import com.intelli5.labourlink.service.LabourReviewService;
 import com.intelli5.labourlink.utils.ReviewRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -86,4 +89,22 @@ public class LabourReviewController {
     public ResponseEntity<Double> getRating(@PathVariable String email){
             return ResponseEntity.ok(labourReviewService.getRating(email));
     }
-}
+    //---------------------------++++++++++++++++++++++++++++++++++++++++++++----------------------------------------
+    //-------------------Review :Delete review by id: already exist  -------------------------------------------------
+    //-------------------Review : Fetching review with in a particular time gap  -------------------------------------------------
+    @GetMapping("/getAllReviewForAdmin")
+    public ResponseEntity<List<ReviewDTO>> getAllReviewsForAdmin(){
+        return ResponseEntity.ok(labourReviewService.getAllReviewsForAdmin());
+    }
+
+    //    ------------------------------User:-User detail individual Review detail fetching -----------------
+//    @GetMapping("/review/{email}")
+//    public ResponseEntity<List<LabourReviewIndividualDTO>> findBookingById(@PathVariable String email) {
+//            List<LabourReviewIndividualDTO> reviews = labourReviewService.findByLabour_Email(email);
+//            if (reviews.isEmpty()) {
+//                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//            }
+//            return new ResponseEntity<>(reviews, HttpStatus.OK);
+//        }
+    }
+

@@ -1,5 +1,6 @@
 package com.intelli5.labourlink.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -39,6 +40,7 @@ public  class User implements UserDetails {
 
     @NotBlank(message = "Field can not be empty")
     @Size(min = 5, message = "The password must have at least 5 characters")
+
     private String password;
 
     @NotBlank(message = "Field can not be empty")
@@ -48,15 +50,19 @@ public  class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     UserRole role;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private RefreshToken refreshToken;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "user", cascade = CascadeType.DETACH, orphanRemoval = true)
     private ForgotPassword forgotPassword;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "ReportedBy", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserReport> ReportedByUser;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "ReportedTo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserReport> ReportedToUser;
 
