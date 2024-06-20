@@ -126,4 +126,11 @@ public class LabourServiceImpl implements LabourService {
             throw new ResourceNotFoundException("Labour not found with email: " + email);
         }
     }
+
+    @Override
+    public Boolean isLabourVerified(String email) {
+        Labour optionalLabour =labourRepository.findLabour(email);
+        return optionalLabour.isVerified();
+    }
+
 }

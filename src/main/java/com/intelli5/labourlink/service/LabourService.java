@@ -30,5 +30,7 @@ public interface LabourService {
     void updateLabourStatus(String email, Labour updatedLabour);
 
     void getLabourByIdForVerification(String email);
+
+    Boolean isLabourVerified(String email);
 }
 

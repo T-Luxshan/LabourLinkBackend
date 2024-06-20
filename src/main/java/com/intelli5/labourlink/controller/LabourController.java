@@ -58,10 +58,16 @@ public class LabourController {
         labourService.deleteLabour(email);
         return ResponseEntity.ok("Labour deleted successfully");
     }
-
+//------------------------------Verified labour ----------------------------------------
     @PutMapping("/getLabour/{email}")
     public ResponseEntity<Void> getLabourByForVerification(@PathVariable String email){
         labourService.getLabourByIdForVerification(email);
         return ResponseEntity.ok().build();
+    }
+//------------------------------Verified labour ----------------------------------------
+    @GetMapping("/getLabour/{email}")
+    public ResponseEntity<Boolean>  isLabourVerified(@PathVariable String email){
+        Boolean response=labourService.isLabourVerified(email);
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 }
