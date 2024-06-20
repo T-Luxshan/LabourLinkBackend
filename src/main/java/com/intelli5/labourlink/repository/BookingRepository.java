@@ -16,6 +16,10 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     @Query("select b from  Booking b where b.bookingStage=?2 and b.labour=?1")
     List<Booking> getBookingByLabourIdAndStage(Labour labour, BookingStage stage);
 
+
+    @Query("SELECT b FROM Booking b WHERE b.bookingStage = com.intelli5.labourlink.entity.BookingStage.COMPLETED AND b.customer.email = :email")
+    List<Booking> findCompletedBookings(String email);
+
     //-----------------++++++++++++++++++++++++++++++++++++++++---------------------------------------
     List<Booking> findByCustomer(Customer customer);
     List<Booking> findByLabour(Optional<User> labour);

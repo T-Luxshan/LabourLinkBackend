@@ -15,6 +15,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @Builder
 public class BookingDetailsDTO {
+    private Long id;
     private BookingStage bookingStage;
     private LocalDate appointmentDate;
     private LocalTime appointmentTime;
@@ -23,5 +24,21 @@ public class BookingDetailsDTO {
     private String labourId;
     private String customerName;
     private String labourName;
+    private float amount;
+    private String description;
 
+    public BookingDetailsDTO(BookingStage bookingStage, LocalDate appointmentDate, LocalTime appointmentTime, JobRole jobRole, String customerId, String labourId, String customerName, String labourName) {
+        this.bookingStage = bookingStage;
+        this.appointmentDate = appointmentDate;
+        this.appointmentTime = appointmentTime;
+        this.jobRole = jobRole;
+        this.customerId = customerId;
+        this.labourId = labourId;
+        this.customerName = customerName;
+        this.labourName = labourName;
+    }
+
+    public BookingDetailsDTO(float amount) {
+        this.amount = amount;
+    }
 }
