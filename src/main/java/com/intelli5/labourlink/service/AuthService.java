@@ -87,13 +87,6 @@ public class AuthService{
         var accessToken = jwtService.generateToken(savedUser);
         var refreshToken = refreshTokenService.createRefreshTokenCustomer(savedUser.getEmail());
             // Notify the admin
-//        NotificationAdminDTO userDetail =new NotificationAdminDTO(
-//                    user.getName(),
-//                    user.getEmail(),
-//                    user.getDocumentUri(),
-//                    user.getJobRole().toString(),
-//                    user.getJoinDate().toString()
-//        );
         NotificationAdmin userDetail =new NotificationAdmin();
                userDetail.setName(user.getName());
                userDetail.setEmail(user.getEmail());

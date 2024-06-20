@@ -29,8 +29,6 @@ import java.util.List;
 //@Builder
 public  class User implements UserDetails {
 
-
-
     @Id
     @Column(unique = true,nullable = false)
     @Email(message = "Please enter valid email")

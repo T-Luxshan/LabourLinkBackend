@@ -1,6 +1,8 @@
 package com.intelli5.labourlink.config;
 
+import com.intelli5.labourlink.dto.NotificationReportDTO;
 import com.intelli5.labourlink.entity.NotificationAdmin;
+import com.intelli5.labourlink.entity.UserReport;
 import com.intelli5.labourlink.service.NotificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,4 +23,8 @@ public class NotificationHandler {
         messagingTemplate.convertAndSend("/topic/notifications", notification);
     }
 
+    public void sendReportNotification(NotificationReportDTO userReport) {
+        logger.info("Sending reports: {}", userReport);
+        messagingTemplate.convertAndSend("/topic/reports", userReport);
+    }
 }

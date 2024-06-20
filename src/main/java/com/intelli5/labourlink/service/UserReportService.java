@@ -1,12 +1,16 @@
 package com.intelli5.labourlink.service;
 
 import com.intelli5.labourlink.Exception.ResourceNotFoundException;
+import com.intelli5.labourlink.config.NotificationHandler;
+import com.intelli5.labourlink.dto.NotificationReportDTO;
 import com.intelli5.labourlink.dto.ReportDTO;
 import com.intelli5.labourlink.entity.User;
 import com.intelli5.labourlink.entity.UserReport;
 import com.intelli5.labourlink.repository.UserReportRepository;
 import com.intelli5.labourlink.repository.UserRepository;
 import com.intelli5.labourlink.utils.ReportRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +22,14 @@ public class UserReportService {
 
     private final UserRepository userRepository;
     private final UserReportRepository userReportRepository;
+    private final NotificationHandler notificationHandler;
+    private static final Logger logger = LoggerFactory.getLogger(NotificationService.class);
 
-    public UserReportService(@Qualifier("customerRepository") UserRepository userRepository, UserReportRepository userReportRepository) {
+    public UserReportService(@Qualifier("customerRepository") UserRepository userRepository, UserReportRepository userReportRepository, NotificationHandler notificationHandler) {
 
         this.userRepository = userRepository;
         this.userReportRepository = userReportRepository;
+        this.notificationHandler = notificationHandler;
     }
 
     public ReportDTO addReport(String email, ReportRequest reportRequest) {
@@ -38,6 +45,13 @@ public class UserReportService {
                 .ReportedTo(reportedToUser)
                 .build();
         userReport = userReportRepository.save(userReport);
+        // Notify the admin
+        NotificationReportDTO notificationReport=new NotificationReportDTO();
+        notificationReport.setTitle(userReport.getTitle());
+        notificationReport.setReportedToId(userReport.getReportedTo().getEmail());
+        notificationReport.setReportedByName(userReport.getReportedBy().getName());
+
+        notificationHandler.sendReportNotification(notificationReport);
 
         return ReportDTO.builder()
                 .id(userReport.getId())
