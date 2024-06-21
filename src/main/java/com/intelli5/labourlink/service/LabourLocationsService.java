@@ -72,8 +72,8 @@ public class LabourLocationsService {
                     dto.setLongitude(labourLocation.getLongitude());
                     dto.setLabourId(labourLocation.getLabour().getEmail()); // Set Labour ID instead of email
                     dto.setLabourName(labourLocation.getLabour().getName());
-                    double rating = labourReviewService.getRating(labourLocation.getLabour().getEmail());
-                    dto.setRating(rating);
+                    Double rating = labourReviewService.getRating(labourLocation.getLabour().getEmail());
+                    dto.setRating(rating != null ? rating : 0.0);
                     return dto;
 
                 })
