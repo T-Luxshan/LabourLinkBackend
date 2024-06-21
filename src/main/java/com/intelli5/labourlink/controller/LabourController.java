@@ -60,7 +60,7 @@ public class LabourController {
         labourService.deleteLabour(email);
         return ResponseEntity.ok("Labour deleted successfully");
     }
-//------------------------------Verified labour ----------------------------------------
+//***------------------------------Verified labour ----------------------------------------
     @PutMapping("/getLabour/{email}")
     public ResponseEntity<Void> getLabourByForVerification(@PathVariable String email){
         labourService.getLabourByIdForVerification(email);
@@ -72,7 +72,7 @@ public class LabourController {
         Boolean response=labourService.isLabourVerified(email);
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
-//-----------------------------Job: -count Labours By JobRole--------------------------------
+//***-----------------------------Job: -count Labours By JobRole--------------------------------
 @GetMapping("/count")
 public ResponseEntity<Map<JobRole,Integer>> countLaboursByJobRole(){
     Map<JobRole,Integer> count=labourService.countLaboursByJobRole();
