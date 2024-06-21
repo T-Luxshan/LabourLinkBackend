@@ -1,7 +1,7 @@
 package com.intelli5.labourlink.service;
 
 import com.intelli5.labourlink.Exception.ResourceNotFoundException;
-import com.intelli5.labourlink.config.NotificationHandler;
+import com.intelli5.labourlink.utils.NotificationHandler;
 import com.intelli5.labourlink.dto.NotificationReportDTO;
 import com.intelli5.labourlink.dto.ReportDTO;
 import com.intelli5.labourlink.entity.User;

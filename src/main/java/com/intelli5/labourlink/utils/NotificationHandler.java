@@ -1,4 +1,4 @@
-package com.intelli5.labourlink.config;
+package com.intelli5.labourlink.utils;
 
 import com.intelli5.labourlink.dto.NotificationReportDTO;
 import com.intelli5.labourlink.entity.NotificationAdmin;

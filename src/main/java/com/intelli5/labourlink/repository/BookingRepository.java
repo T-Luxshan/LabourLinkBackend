@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.awt.print.Pageable;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -22,36 +23,41 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     List<Booking> findByLabour(Optional<User> labour);
 
     //Booking graph :1 ----------------------------
-    @Query("select b.jobRole, COUNT(b.id) " +
+    @Query("select b.jobRole , " +
+            "COUNT(b.id) as totalCount , " +
+            "sum (case when b.bookingStage =com.intelli5.labourlink.entity.BookingStage.DECLINED then 1 else 0 end ) as declined_count , " +
+            "sum (case when b.bookingStage =com.intelli5.labourlink.entity.BookingStage.PENDING then 1 else 0 end ) as pending_count , " +
+            "sum (case when b.bookingStage =com.intelli5.labourlink.entity.BookingStage.ACCEPTED then 1 else 0 end ) as accept_count , " +
+            "sum (case when b.bookingStage =com.intelli5.labourlink.entity.BookingStage.COMPLETED then 1 else 0 end ) as complete_count  " +
             "from Booking b " +
             "group by b.jobRole")
-    List<Object[]> findJobBookingCounts();
+    List<Object[]> jobVsTotalAppointment();
 
-    //Booking declined/cancelled  graph :2 ----------------------------
-    @Query("select b.jobRole, COUNT(b.id) " +
-            "from Booking b " +
-            "where b.bookingStage=com.intelli5.labourlink.entity.BookingStage.DECLINED " +
-            "group by b.jobRole")
-    List<Object[]> findCancelledBookCounts();
+//    //Booking declined/cancelled  graph :2 ----------------------------
+//    @Query("select b.jobRole, COUNT(b.id) " +
+//            "from Booking b " +
+//            "where b.bookingStage=com.intelli5.labourlink.entity.BookingStage.DECLINED " +
+//            "group by b.jobRole")
+//    List<Object[]> findCancelledBookCounts();
 
-    //Booking Accept : 3-------------------------
-    @Query("select b.jobRole, COUNT(b.id) " +
-            "from Booking b " +
-            "where b.bookingStage=com.intelli5.labourlink.entity.BookingStage.ACCEPTED " +
-            "group by b.jobRole")
-    List<Object[]> findAcceptBookCounts();
-    //Booking Complete : 4-------------------------
-    @Query("select b.jobRole, COUNT(b.id) " +
-            "from Booking b " +
-            "where b.bookingStage=com.intelli5.labourlink.entity.BookingStage.COMPLETED " +
-            "group by b.jobRole")
-    List<Object[]> findCompleteBookCounts();
-    //Booking Pending : 4-------------------------
-    @Query("select b.jobRole, COUNT(b.id) " +
-            "from Booking b " +
-            "where b.bookingStage=com.intelli5.labourlink.entity.BookingStage.PENDING " +
-            "group by b.jobRole")
-    List<Object[]> findPendingBookCounts();
+//    //Booking Accept : 3-------------------------
+//    @Query("select b.jobRole, COUNT(b.id) " +
+//            "from Booking b " +
+//            "where b.bookingStage=com.intelli5.labourlink.entity.BookingStage.ACCEPTED " +
+//            "group by b.jobRole")
+//    List<Object[]> findAcceptBookCounts();
+//    //Booking Complete : 4-------------------------
+//    @Query("select b.jobRole, COUNT(b.id) " +
+//            "from Booking b " +
+//            "where b.bookingStage=com.intelli5.labourlink.entity.BookingStage.COMPLETED " +
+//            "group by b.jobRole")
+//    List<Object[]> findCompleteBookCounts();
+//    //Booking Pending : 4-------------------------
+//    @Query("select b.jobRole, COUNT(b.id) " +
+//            "from Booking b " +
+//            "where b.bookingStage=com.intelli5.labourlink.entity.BookingStage.PENDING " +
+//            "group by b.jobRole")
+//    List<Object[]> findPendingBookCounts();
 
     //Dashboard graph :1 ----------------------------
     @Query(
@@ -83,14 +89,14 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     )
     List<Object[]> findSuccessfulBookingWithDay(@Param("startDate") LocalDate startDate);
 
-    //Job roles and Active labour count ----------------------------
-    @Query(
-            "select  (b.jobRole ,COUNT(DISTINCT b.labour)) " +
-            "from Booking b " +
-            "where b.bookingStage=com.intelli5.labourlink.entity.BookingStage.COMPLETED and b.bookingStage=com.intelli5.labourlink.entity.BookingStage.ACCEPTED " +
-            "group by b.jobRole "
-    )
-    List<BookingCountDTO> getLabourRoleCount();
+//    //Job roles and Active labour count ----------------------------
+//    @Query(
+//            "select  (b.jobRole ,COUNT(DISTINCT b.labour)) " +
+//            "from Booking b " +
+//            "where b.bookingStage=com.intelli5.labourlink.entity.BookingStage.COMPLETED and b.bookingStage=com.intelli5.labourlink.entity.BookingStage.ACCEPTED " +
+//            "group by b.jobRole "
+//    )
+//    List<BookingCountDTO> getLabourRoleCount();
 
     //------------------Booking count for each jobroles :According to the complete,accept,declined,pending------------------------
     @Query(
@@ -134,4 +140,14 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
                     "group by b.jobRole "
     )
     List<BookingCountDTO> getCompleteCountWithJob();
+    //------------------Booking : High demand job role + ------------------------
+    @Query(
+            "select  (b.jobRole) " +
+                    "from Booking b " +
+                    "where b.bookingStage IN (com.intelli5.labourlink.entity.BookingStage .COMPLETED , com.intelli5.labourlink.entity.BookingStage .ACCEPTED ,com.intelli5.labourlink.entity.BookingStage .PENDING,com.intelli5.labourlink.entity.BookingStage .DECLINED )" +
+                    "group by b.jobRole " +
+                    "order by COUNT(b.id)desc " +
+                    "limit 1"
+    )
+    JobRole getDemandedJob();
 }

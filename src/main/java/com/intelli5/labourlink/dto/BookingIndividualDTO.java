@@ -15,7 +15,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @Builder
 public class BookingIndividualDTO {
-    private Customer customer;
+    private String customer;
     private JobRole jobRole;
     private String jobDescription;
     private LocalDate date;

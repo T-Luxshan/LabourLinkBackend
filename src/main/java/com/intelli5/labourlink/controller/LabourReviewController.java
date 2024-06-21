@@ -90,21 +90,28 @@ public class LabourReviewController {
             return ResponseEntity.ok(labourReviewService.getRating(email));
     }
     //---------------------------++++++++++++++++++++++++++++++++++++++++++++----------------------------------------
-    //-------------------Review :Delete review by id: already exist  -------------------------------------------------
-    //-------------------Review : Fetching review with in a particular time gap  -------------------------------------------------
+
+    //***-------------------Review : Fetching review with in a particular time gap  -------------------------------------------------
     @GetMapping("/getAllReviewForAdmin")
     public ResponseEntity<List<ReviewDTO>> getAllReviewsForAdmin(){
         return ResponseEntity.ok(labourReviewService.getAllReviewsForAdmin());
     }
+    //****-------------------Review :Delete review by id  -------------------------------------------------
+    @DeleteMapping("/deleteByAdmin/{id}")
+    public ResponseEntity<Void> deleteReviewByAdmin(@PathVariable Integer id){
+        labourReviewService.deleteReviewByAdmin(id);
+        return ResponseEntity.noContent().build();
+    }
 
-    //    ------------------------------User:-User detail individual Review detail fetching -----------------
-//    @GetMapping("/review/{email}")
-//    public ResponseEntity<List<LabourReviewIndividualDTO>> findBookingById(@PathVariable String email) {
-//            List<LabourReviewIndividualDTO> reviews = labourReviewService.findByLabour_Email(email);
-//            if (reviews.isEmpty()) {
-//                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//            }
-//            return new ResponseEntity<>(reviews, HttpStatus.OK);
-//        }
+
+//        ------------------------------User:-User detail individual Review detail fetching -----------------
+    @GetMapping("/review/{email}")
+    public ResponseEntity<List<LabourReviewIndividualDTO>> getReviewAdmin(@PathVariable String email) {
+            List<LabourReviewIndividualDTO> reviews = labourReviewService.getReviewAdmin(email);
+            if (reviews.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(reviews, HttpStatus.OK);
+        }
     }
 

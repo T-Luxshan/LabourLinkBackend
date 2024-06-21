@@ -1,15 +1,11 @@
 package com.intelli5.labourlink.service;
 
-import com.intelli5.labourlink.config.NotificationHandler;
-import com.intelli5.labourlink.dto.NotificationAdminDTO;
 import com.intelli5.labourlink.dto.NotificationRequestDTO;
 import com.intelli5.labourlink.dto.NotificationResponseDTO;
 import com.intelli5.labourlink.entity.Notification;
 import com.intelli5.labourlink.entity.User;
 import com.intelli5.labourlink.repository.NotificationRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

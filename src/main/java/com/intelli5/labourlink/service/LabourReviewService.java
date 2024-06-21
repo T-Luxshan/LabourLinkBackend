@@ -14,8 +14,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -195,34 +193,44 @@ public class LabourReviewService {
                     ReviewDTO.builder()
                             .Id(review.getId())
                             .jobRole(review.getJobRole())
-//                            .workTitle(review.getWorkTitle())
                             .description(review.getDescription())
                             .rating(review.getRating())
                             .labourName(review.getLabour().getName())
                             .customerName(review.getCustomer().getName())
-                            .reviewPostAt(LocalDateTime.now())
+                            .customerEmail(review.getCustomer().getEmail())
+                            .reviewPostAt(review.getReviewPostAt())
                             .build()
             );
         }
         return allReviewDTO;
     }
+
+    public void deleteReviewByAdmin(Integer id) {
+        if(labourReviewRepository.existsById(id)){
+            labourReviewRepository.deleteById(id);
+        }else{
+            throw new RuntimeException("id doesn't exist");
+        }
+    }
     //------------------------------------------++++++++++++++++++++++++++++++++++++++++++----------------------------
-//public List<LabourReviewIndividualDTO> findByLabour_Email(String email){
-//       Labour labour= labourRepository.findLabour(email);
-//       List<LabourReview> labourReviews = labourReviewRepository.findAllByEmail(labour);
-//
-//    return labourReviews.stream()
-//                .map(this::mapToLabourReviewIndividualDTO)
-//                .collect(Collectors.toList());
-//}
-//private LabourReviewIndividualDTO mapToLabourReviewIndividualDTO(LabourReview labourReview){
-//    LabourReviewIndividualDTO dto=LabourReviewIndividualDTO.builder()
-//            .customer(labourReview.getCustomer())
-//            .jobRole(labourReview.getJobRole())
-//            .description(labourReview.getDescription())
-//            .rating(labourReview.getRating())
-//            .build();
-//    return dto;
-//    }
+public List<LabourReviewIndividualDTO> getReviewAdmin(String email){
+       Labour labour= labourRepository.findLabour(email);
+       List<LabourReview> labourReviews = labourReviewRepository.findByLabour(labour);
+
+    return labourReviews.stream()
+                .map(this::mapToLabourReviewIndividualDTO)
+                .collect(Collectors.toList());
+}
+private LabourReviewIndividualDTO mapToLabourReviewIndividualDTO(LabourReview labourReview){
+    LabourReviewIndividualDTO dto=LabourReviewIndividualDTO.builder()
+            .customerName(labourReview.getCustomer().getName())
+            .customerEmail(labourReview.getCustomer().getEmail())
+            .labourName(labourReview.getLabour().getName())
+            .jobRole(labourReview.getJobRole())
+            .description(labourReview.getDescription())
+            .rating(labourReview.getRating())
+            .build();
+    return dto;
+    }
 
 }

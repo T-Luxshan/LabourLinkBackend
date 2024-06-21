@@ -11,10 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,6 +22,7 @@ public class BookingService {
     private final BookingRepository bookingRepository;
     private final LabourRepository labourRepository;
     private final CustomerRepository customerRepository;
+
 
     public BookingResponseDTO bookLabour(BookingRequestDTO bookingRequestDTO) {
         Optional<User> labourOptional = labourRepository.findById(bookingRequestDTO.getLabourId());
@@ -158,7 +156,7 @@ public class BookingService {
     }
 
     //-------------------+++++++++++++++++++++++++++++++++++++++++------------------------------------------------------------
-    //------Booking :- Booking Pending table--------------------------------------
+    //***------Booking :- Booking Pending table--------------------------------------
     public List<BookingDTO> getPendingAppointmentsWithDetails() {
         List<Booking> bookings = bookingRepository.findAll();
         List<BookingDTO> bookingsDtos = new ArrayList<>();
@@ -170,7 +168,7 @@ public class BookingService {
                 bookingsDto.setCustomerName(booking.getCustomer().getName());
                 bookingsDto.setCustomerEmail(booking.getCustomer().getEmail());
                 bookingsDto.setLabourName(booking.getLabour().getName());
-                bookingsDto.setJobRole(booking.getJobRole());
+                bookingsDto.setJobRole(JobRole.valueOf(booking.getJobRole().toString()));
                 bookingsDto.setBookingMadeDate(booking.getBookingMadeDate());
 
                 bookingsDtos.add(bookingsDto);
@@ -243,20 +241,28 @@ public class BookingService {
     }
 
     //-----------------------------------Booking : -graph left : -Job Vs Total Booking--------------------------------
-    public List<Object[]> jobVsTotalAppointment() {
-        List<Object[]> results = bookingRepository.findJobBookingCounts();
-        return results.stream()
-                .map(result -> new Object[]{result[0], result[1] == null ? 0L : result[1]})
-                .collect(Collectors.toList());
+    public List<Map<String,Object>> jobVsTotalAppointment() {
+        List<Object[]> results = bookingRepository.jobVsTotalAppointment();
+        List<Map<String, Object>> formattedResults = new ArrayList<>();
+        for (Object[] result : results) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("jobRole", result[0]);
+            map.put("totalCount", result[1]);
+            map.put("pendingCount", result[2]);
+            map.put("acceptedCount", result[3]);
+            map.put("completedCount", result[4]);
+            map.put("declinedCount", result[5]);
+            formattedResults.add(map);
+        }
+        return formattedResults;
     }
-
-    //-----------------------------------Booking : -graph right : -Job Vs cancelled Total Booking--------------------------------
-    public List<Object[]> findCancelledBookCounts() {
-        List<Object[]> results = bookingRepository.findCancelledBookCounts();
-        return results.stream()
-                .map(result -> new Object[]{result[0], result[1] == null ? 0L : result[1]})
-                .collect(Collectors.toList());
-    }
+//    //-----------------------------------Booking : -graph right : -Job Vs cancelled Total Booking--------------------------------
+//    public List<Object[]> findCancelledBookCounts() {
+//        List<Object[]> results = bookingRepository.findCancelledBookCounts();
+//        return results.stream()
+//                .map(result -> new Object[]{result[0], result[1] == null ? 0L : result[1]})
+//                .collect(Collectors.toList());
+//    }
 
     public List<Object[]> findActiveCustomerCount() {
         LocalDate startDate = LocalDate.now().minusDays(7);
@@ -290,9 +296,9 @@ public class BookingService {
 //        );
 //    }
 
-    public List<BookingCountDTO> getLabourRoleCount() {
-        return bookingRepository.getLabourRoleCount();
-    }
+//    public List<BookingCountDTO> getLabourRoleCount() {
+//        return bookingRepository.getLabourRoleCount();
+//    }
 
     public List<BookingCountDTO> getBookingCountWithJobRole() {
         return bookingRepository.getBookingCountWithJobRole();
@@ -323,7 +329,7 @@ public class BookingService {
 
     private BookingIndividualDTO mapToBookingIndividualDTO(Booking booking) {
         BookingIndividualDTO dto = BookingIndividualDTO.builder()
-                .customer(booking.getCustomer())
+                .customer(booking.getCustomer().getEmail())
                 .jobRole(booking.getJobRole())
                 .jobDescription(booking.getJobDescription())
                 .date(booking.getDate())
@@ -331,6 +337,10 @@ public class BookingService {
                 .build();
 
         return dto;
+    }
+
+    public JobRole getDemandedJob() {
+        return bookingRepository.getDemandedJob();
     }
 
 
