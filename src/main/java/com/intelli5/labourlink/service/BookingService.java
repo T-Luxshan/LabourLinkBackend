@@ -92,6 +92,7 @@ public class BookingService {
             Booking bookingDetails = booking.get();
 
             return BookingDetailsDTO.builder()
+                    .id(bookingDetails.getId())
                     .bookingStage(bookingDetails.getBookingStage())
                     .appointmentDate(bookingDetails.getDate())
                     .appointmentTime(bookingDetails.getStartTime())
@@ -100,6 +101,8 @@ public class BookingService {
                     .customerName(bookingDetails.getCustomer().getName())
                     .labourId(bookingDetails.getLabour().getEmail())
                     .labourName(bookingDetails.getLabour().getName())
+                    .description(bookingDetails.getJobDescription())
+                    .amount(bookingDetails.getAmount())
                     .build();
 
         }
@@ -177,6 +180,51 @@ public class BookingService {
             }
         }
         return bookingsDtos;
+    }
+
+    public List<BookingDetailsDTO> findCompletedBookings(String customerEmail) {
+        List<Booking> bookings = bookingRepository.findCompletedBookings(customerEmail);
+        return bookings.stream().map(this::convertToDTO).collect(Collectors.toList());
+    }
+
+    private BookingDetailsDTO convertToDTO(Booking booking) {
+        return BookingDetailsDTO.builder()
+                .id(booking.getId())
+                .bookingStage(booking.getBookingStage())
+                .appointmentDate(booking.getDate())
+                .appointmentTime(booking.getStartTime())
+                .jobRole(booking.getJobRole())
+                .customerId(booking.getCustomer().getEmail().toString())
+                .labourId(booking.getLabour().getEmail().toString())
+                .customerName(booking.getCustomer().getName())
+                .labourName(booking.getLabour().getName())
+                .amount(booking.getAmount())
+                .build();
+    }
+
+    public BookingDetailsDTO updateBookingAmount(Long id,BookingDetailsDTO bookingDetailsDTO){
+        Optional<Booking> bookingOptional = bookingRepository.findById(id);
+        if (bookingOptional.isPresent()){
+            Booking booking = bookingOptional.get();
+            booking.setAmount(bookingDetailsDTO.getAmount());
+            Booking updatedBooking = bookingRepository.save(booking);
+
+            return BookingDetailsDTO.builder()
+                    .id(booking.getId())
+                    .bookingStage(booking.getBookingStage())
+                    .appointmentDate(booking.getDate())
+                    .appointmentTime(booking.getStartTime())
+                    .jobRole(booking.getJobRole())
+                    .customerId(booking.getCustomer().getEmail())
+                    .labourId(booking.getLabour().getEmail())
+                    .customerName(booking.getCustomer().getName())
+                    .labourName(booking.getLabour().getName())
+                    .amount(booking.getAmount())
+                    .description(booking.getJobDescription())
+                    .build();
+        }
+        throw new RuntimeException("Booking not found with id " + id);
+
     }
 //------Booking :- Booking complete table--------------------------------------
 
