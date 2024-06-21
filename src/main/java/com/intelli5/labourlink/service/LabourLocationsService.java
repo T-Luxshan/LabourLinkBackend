@@ -67,7 +67,7 @@ public class LabourLocationsService {
                     dto.setLatitude(labourLocation.getLatitude());
                     dto.setLongitude(labourLocation.getLongitude());
                     dto.setLabourId(labourLocation.getLabour().getEmail()); // Set Labour ID instead of email
-
+                    dto.setLabourName(labourLocation.getLabour().getName());
                     return dto;
                 })
                 .collect(Collectors.toList());
