@@ -1,11 +1,9 @@
 package com.intelli5.labourlink.config;
 
-import com.intelli5.labourlink.entity.Admin;
 import com.intelli5.labourlink.entity.User;
 import com.intelli5.labourlink.repository.AdminRepository;
 import com.intelli5.labourlink.repository.CustomerRepository;
 import com.intelli5.labourlink.repository.LabourRepository;
-import com.intelli5.labourlink.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

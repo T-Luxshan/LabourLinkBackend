@@ -2,9 +2,7 @@ package com.intelli5.labourlink.repository;
 
 import com.intelli5.labourlink.entity.JobRole;
 import com.intelli5.labourlink.entity.LabourLocations;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

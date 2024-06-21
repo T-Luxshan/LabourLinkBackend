@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class LabourServiceImpl implements LabourService {
@@ -136,5 +137,17 @@ public class LabourServiceImpl implements LabourService {
                     return dto;
                 })
                 .collect(Collectors.toList());
+    }
+    //--------------+++++++++++++++++++++++++++++++++++++++++++++++++------------------------------------
+    @Transactional
+    public void getLabourByIdForVerification(String email){
+        Optional<User> optionalLabour = labourRepository.findById(email);
+        if (optionalLabour.isPresent()) {
+            User labour = optionalLabour.get();
+            optionalLabour.get().setVerified(true);
+            labourRepository.save(labour);
+        } else {
+            throw new ResourceNotFoundException("Labour not found with email: " + email);
+        }
     }
 }

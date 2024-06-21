@@ -67,4 +67,9 @@ public class LabourController {
 
     }
 
+    @PutMapping("/getLabour/{email}")
+    public ResponseEntity<Void> getLabourByForVerification(@PathVariable String email){
+        labourService.getLabourByIdForVerification(email);
+        return ResponseEntity.ok().build();
+    }
 }

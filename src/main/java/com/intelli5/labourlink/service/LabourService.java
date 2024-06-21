@@ -3,7 +3,6 @@ package com.intelli5.labourlink.service;
 
 import com.intelli5.labourlink.dto.LabourCardDTO;
 import com.intelli5.labourlink.dto.LabourDTO;
-
 import com.intelli5.labourlink.dto.UpdateLabourDTO;
 
 import com.intelli5.labourlink.entity.JobRole;
@@ -34,5 +33,7 @@ public interface LabourService {
     void updateLabourStatus(String email, Labour updatedLabour);
 
     List<LabourCardDTO> findLabourByJobRole(JobRole jobRole);
+
+    void getLabourByIdForVerification(String email);
 }
 

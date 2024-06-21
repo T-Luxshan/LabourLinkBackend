@@ -6,6 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 //
 ///**
 // * DTO for {@link com.intelli5.labourlink.entity.LabourReview}
@@ -24,6 +27,7 @@ public class ReviewDTO implements Serializable {
     String customerName;
     String labourName;
     String customerEmail;
+    private LocalDateTime reviewPostAt;
 
 
 }

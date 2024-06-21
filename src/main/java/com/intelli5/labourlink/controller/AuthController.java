@@ -1,19 +1,17 @@
 package com.intelli5.labourlink.controller;
-
 import com.intelli5.labourlink.Exception.CustomerRegistrationException;
 import com.intelli5.labourlink.entity.JobRole;
-import com.intelli5.labourlink.entity.Labour;
 import com.intelli5.labourlink.entity.RefreshToken;
 import com.intelli5.labourlink.entity.User;
 import com.intelli5.labourlink.repository.CustomerRepository;
 import com.intelli5.labourlink.repository.LabourRepository;
-import com.intelli5.labourlink.repository.UserRepository;
 import com.intelli5.labourlink.service.AuthService;
 import com.intelli5.labourlink.service.JwtService;
 import com.intelli5.labourlink.service.RefreshTokenService;
 import com.intelli5.labourlink.utils.*;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,23 +20,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
-@RequestMapping("/api/v1/auth/")
-public class AuthController {
+@RequestMapping("/api/v1/auth")
 
+public class AuthController {
     private final AuthService authService;
     private final JwtService jwtService;
     private final RefreshTokenService refreshTokenService;
-
     private final CustomerRepository customerRepository;
     private final LabourRepository labourRepository;
-
-
-
-
-
     public AuthController(AuthService authService, JwtService jwtService, RefreshTokenService refreshTokenService,
-
                           CustomerRepository customerRepository,
                           LabourRepository labourRepository
                           ) {
@@ -49,7 +41,6 @@ public class AuthController {
         this.labourRepository = labourRepository;
 
     }
-
     @PostMapping("/register/admin")
     public ResponseEntity<AuthResponse> registerAdmin(@RequestBody @Valid RegisterRequest registerRequest){
         return ResponseEntity.ok(authService.registerAdmin(registerRequest));
@@ -67,6 +58,7 @@ public class AuthController {
 
     @PostMapping("/login/admin")
     public ResponseEntity<AuthResponse> loginAdmin(@RequestBody LoginRequest loginRequest){
+        log.info("login request received,in controller");
         return ResponseEntity.ok(authService.loginAdmin(loginRequest));
     }
 
