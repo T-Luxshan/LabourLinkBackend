@@ -21,6 +21,9 @@ public class LabourLocationsService {
     @Autowired
     private LabourRepository labourRepository;
 
+    @Autowired
+    private  LabourReviewService labourReviewService;
+
     public LabourLocationDTO createLabourLocation(LabourLocationDTO labourLocationsDTO) {
         Labour labour = (Labour) labourRepository.findById(labourLocationsDTO.getLabourId()).orElseThrow(() -> new RuntimeException("Labour not found"));
         LabourLocations labourLocations = LabourLocations.builder()
@@ -60,6 +63,7 @@ public class LabourLocationsService {
 
     public List<LabourLocationDTO> findLocationsByJobRole(JobRole jobRole) {
         List<LabourLocations> locations = labourLocationsRepository.findByLabourJobRole(jobRole);
+//        Double rating;
         return locations.stream()
                 .map(labourLocation -> {
                     LabourLocationDTO dto = new LabourLocationDTO();
@@ -68,7 +72,10 @@ public class LabourLocationsService {
                     dto.setLongitude(labourLocation.getLongitude());
                     dto.setLabourId(labourLocation.getLabour().getEmail()); // Set Labour ID instead of email
                     dto.setLabourName(labourLocation.getLabour().getName());
+                    double rating = labourReviewService.getRating(labourLocation.getLabour().getEmail());
+                    dto.setRating(rating);
                     return dto;
+
                 })
                 .collect(Collectors.toList());
     }
