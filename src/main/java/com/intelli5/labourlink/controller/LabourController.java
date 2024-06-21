@@ -1,8 +1,10 @@
 package com.intelli5.labourlink.controller;
 
+import com.intelli5.labourlink.dto.LabourCardDTO;
 import com.intelli5.labourlink.dto.LabourDTO;
 import com.intelli5.labourlink.dto.PasswordDTO;
 import com.intelli5.labourlink.dto.UpdateLabourDTO;
+import com.intelli5.labourlink.entity.JobRole;
 import com.intelli5.labourlink.entity.Labour;
 import com.intelli5.labourlink.service.LabourService;
 import lombok.AllArgsConstructor;
@@ -11,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 
 @CrossOrigin("*")
@@ -57,6 +60,11 @@ public class LabourController {
     public ResponseEntity<String> deleteLabour(@PathVariable("email") String email){
         labourService.deleteLabour(email);
         return ResponseEntity.ok("Labour deleted successfully");
+    }
+    @GetMapping("/getLabourByJobRole/{jobRole}")
+    public List<LabourCardDTO> getLabourByJobRole(@PathVariable JobRole jobRole){
+        return labourService.findLabourByJobRole(jobRole);
+
     }
 
 }
