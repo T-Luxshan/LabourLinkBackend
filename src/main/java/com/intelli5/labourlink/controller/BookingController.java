@@ -149,12 +149,6 @@ public class BookingController {
         return new ResponseEntity<>(graphData, HttpStatus.OK);
     }
 
-//    //------------------------------------Booking-graph right : -Cancelled job Vs Total Booking-----------------------
-//    @GetMapping("/graphright")
-//    public List<Object[]> findCancelledBookCounts() {
-//        return bookingService.findCancelledBookCounts();
-//    }
-
     //------------------------------------Dashboard -graph  : - Active customer vs day-------------------------------
     @GetMapping("/dashboard/g_active")
     public List<Object[]> findActiveCustomerCount() {
@@ -173,18 +167,6 @@ public class BookingController {
     public List<Object[]> findSuccessfulBookingWithDay() {
         return bookingService.findSuccessfulBookingWithDay();
     }
-
-//    //-----------------------------------User: Individual -User Individiual booking history------------------------------------
-//    @GetMapping("/labour/{email}")
-//    public ResponseEntity<List<BookingIndividualDTO >> getLabourCompleteBookingById(@PathVariable String email){
-//        try{
-//            List<BookingIndividualDTO> bookingDetailLabour= bookingService.getLabourCompleteBookingById(email);
-//            return new ResponseEntity<>(bookingDetailLabour,HttpStatus.OK) ;
-//        }catch(RuntimeException e){
-//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//        }
-//    }
-
     //------------Job-02`(pie)--Booking count for each jobroles :According to the complete,accept,declined,pending------------------------
     @GetMapping("/bookingcount")
     public ResponseEntity<List<BookingCountDTO>> getBookingCountWithJobRole(){
@@ -215,7 +197,7 @@ public class BookingController {
         List<BookingCountDTO> counts=bookingService.getCompleteCountWithJob();
         return new ResponseEntity<>(counts,HttpStatus.OK);
     }
-    //    ------------------------------User:-User detail individual appointment detail fetching -----------------
+    //***-----------------------User:-User detail individual appointment detail fetching -----------------
     @GetMapping("/booking/{email}")
     public ResponseEntity<List<BookingIndividualDTO>> findBookingById(@PathVariable String email) {
         try {

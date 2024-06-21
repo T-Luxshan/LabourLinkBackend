@@ -3,6 +3,7 @@ package com.intelli5.labourlink.service.impl;
 import com.intelli5.labourlink.Exception.ResourceNotFoundException;
 import com.intelli5.labourlink.dto.LabourDTO;
 import com.intelli5.labourlink.dto.UpdateLabourDTO;
+import com.intelli5.labourlink.entity.JobRole;
 import com.intelli5.labourlink.entity.Labour;
 import com.intelli5.labourlink.entity.User;
 import com.intelli5.labourlink.repository.LabourRepository;
@@ -11,7 +12,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -131,6 +134,19 @@ public class LabourServiceImpl implements LabourService {
     public Boolean isLabourVerified(String email) {
         Labour optionalLabour =labourRepository.findLabour(email);
         return optionalLabour.isVerified();
+    }
+    public Map<JobRole,Integer> countLaboursByJobRole(){
+       List<Object[]> results=labourRepository.countLaboursByJobRole();
+        Map<JobRole, Integer> jobRoleCounts = new HashMap<>();
+        for (Object[] result : results) {
+            JobRole jobRole = JobRole.valueOf((String) result[0]);
+            if (jobRole != null) {
+                Long countLong = (Long) result[1]; // Assuming count is returned as Long
+                Integer count = countLong != null ? countLong.intValue() : 0;
+                jobRoleCounts.put(jobRole, count);
+            }
+        }
+        return jobRoleCounts;
     }
 
 }

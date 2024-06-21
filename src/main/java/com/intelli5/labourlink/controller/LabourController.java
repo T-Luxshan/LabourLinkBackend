@@ -3,6 +3,7 @@ package com.intelli5.labourlink.controller;
 import com.intelli5.labourlink.dto.LabourDTO;
 import com.intelli5.labourlink.dto.PasswordDTO;
 import com.intelli5.labourlink.dto.UpdateLabourDTO;
+import com.intelli5.labourlink.entity.JobRole;
 import com.intelli5.labourlink.entity.Labour;
 import com.intelli5.labourlink.service.LabourService;
 import lombok.AllArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 
 
 @CrossOrigin("*")
@@ -64,10 +66,16 @@ public class LabourController {
         labourService.getLabourByIdForVerification(email);
         return ResponseEntity.ok().build();
     }
-//------------------------------Verified labour ----------------------------------------
+//------------------------------Is Verified labour ----------------------------------------
     @GetMapping("/getLabour/{email}")
     public ResponseEntity<Boolean>  isLabourVerified(@PathVariable String email){
         Boolean response=labourService.isLabourVerified(email);
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
+//-----------------------------Job: -count Labours By JobRole--------------------------------
+@GetMapping("/count")
+public ResponseEntity<Map<JobRole,Integer>> countLaboursByJobRole(){
+    Map<JobRole,Integer> count=labourService.countLaboursByJobRole();
+    return new ResponseEntity<>(count,HttpStatus.OK);
+}
 }

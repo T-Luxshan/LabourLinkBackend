@@ -16,6 +16,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -150,20 +151,20 @@ public class UserController {
 
 
     //+++++++++++++++++++++++++-----------------------------------------------------------------------+++++++++++++++++++++++++++++++
-    //-------------------User : 01 Table All user detail----------------------------------------
+    //****-------------------User : 01 Table All user detail----------------------------------------
     @GetMapping("/all")
     public ResponseEntity<List<UserDTO>> getAllUser() {
         List<UserDTO> users = userService.getAllUser();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
-    //-------------------Dashboard box: 1 ......and .......User detail box : 1-------------------
+    //***-------------------Dashboard box: 1 ......and .......User detail box : 1-------------------
     @GetMapping("/count")
     public ResponseEntity<Integer> getAllUserCount() {
         int userCount = userService.getAllUserCount();
         return new ResponseEntity<>(userCount, HttpStatus.OK);
     }
 
-    //--------------------------------User:-User detail individual detail fetching -----------------
+    //***--------------------------------User:-User detail individual detail fetching -----------------
     @GetMapping("u/{email}")
     public ResponseEntity <Optional<User>> findUserByEmail(@PathVariable String email) {
         try{
@@ -178,7 +179,7 @@ public class UserController {
         }
 
     }
-    //--------------------------------User:-User detail individual detail Remove -----------------
+    //***--------------------------------User:-User detail individual detail Remove -----------------
     @PutMapping ("/u/{email}")
     public ResponseEntity<Void> removeUserByEmail(@PathVariable String email ,@RequestBody Map<String, String> request) {
         String removalPurpose = request.get("removalPurpose");
@@ -217,6 +218,19 @@ public class UserController {
         }
 
     }
+    //--------------------------------Profile name fetching ---------------------------------
+    @GetMapping("/userProfile")
+    public ResponseEntity<AdminProfileDTO> fetchProfileName (){
+        // Get the authenticated user's email from the security context
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+
+        User user = userService.fetchProfileName(currentPrincipalName)// Fetch the user details using the email
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + currentPrincipalName));
+        AdminProfileDTO userProfile = new AdminProfileDTO(user.getName(), user.getEmail());
+
+        return ResponseEntity.ok(userProfile);
+    }
 
 
     @GetMapping("/user")
@@ -228,6 +242,7 @@ public class UserController {
         GetUserEmailFromTokenDTO email = userService.getUserByEmail(currentPrincipalName);
         return ResponseEntity.ok(email);
     }
+
 }//-------------------------Adding deactivate user : My purpose -----------------------------
 //    @PutMapping ("/deactivate/{email}")
 //    public ResponseEntity<Void> DeactivatedUser(@PathVariable String email ) {

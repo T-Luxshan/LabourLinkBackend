@@ -1,5 +1,6 @@
 package com.intelli5.labourlink.repository;
 
+import com.intelli5.labourlink.entity.JobRole;
 import com.intelli5.labourlink.entity.Labour;
 import com.intelli5.labourlink.entity.LabourReview;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -8,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 @Qualifier("labourRepository")
@@ -19,6 +21,9 @@ public interface LabourRepository extends UserRepository{
     @Query("SELECT l FROM Labour l WHERE l.email = :email")
     Labour findLabour(String email);
 
+
+    @Query(value= " SELECT job_role AS jobRole, COUNT(labour_email) AS count FROM labour_job_role  GROUP BY job_role " , nativeQuery = true)
+    List<Object[]> countLaboursByJobRole();
 
 //
 }

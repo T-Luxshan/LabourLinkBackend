@@ -104,7 +104,7 @@ public class LabourReviewController {
     }
 
 
-//        ------------------------------User:-User detail individual Review detail fetching -----------------
+//***------------------------------User:-User detail individual Review detail fetching -----------------
     @GetMapping("/review/{email}")
     public ResponseEntity<List<LabourReviewIndividualDTO>> getReviewAdmin(@PathVariable String email) {
             List<LabourReviewIndividualDTO> reviews = labourReviewService.getReviewAdmin(email);

@@ -16,7 +16,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @NoArgsConstructor
@@ -231,7 +230,9 @@ public class UserService {
         return null;
     }
 
-
+    public Optional<User> fetchProfileName(String email) {
+        return userRepository.findByEmail(email);
+    }
 
 
 //    public List<Appointment> get_UserBy_Email(String email) {

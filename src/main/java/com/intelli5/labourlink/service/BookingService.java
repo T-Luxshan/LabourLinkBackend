@@ -176,7 +176,7 @@ public class BookingService {
         }
         return bookingsDtos;
     }
-//------Booking :- Booking complete table--------------------------------------
+//***------Booking :- Booking complete table--------------------------------------
 
     public List<BookingDTO> getCompleteAppointmentsWithDetails() {
         List<Booking> bookings = bookingRepository.findAll(); // Fetch bookings from repository
@@ -197,7 +197,7 @@ public class BookingService {
         }
         return bookingsDtos;
     }
-    //------Booking :- Booking accept table--------------------------------------
+    //***------Booking :- Booking accept table--------------------------------------
 
     public List<BookingDTO> getAcceptAppointmentsWithDetails() {
         List<Booking> bookings = bookingRepository.findAll(); // Fetch bookings from repository
@@ -218,7 +218,7 @@ public class BookingService {
         }
         return bookingsDtos;
     }
-    //------Booking :- Booking declined table--------------------------------------
+    //***------Booking :- Booking declined table--------------------------------------
 
     public List<BookingDTO> getDeclinedAppointmentsWithDetails() {
         List<Booking> bookings = bookingRepository.findAll(); // Fetch bookings from repository
@@ -240,7 +240,7 @@ public class BookingService {
         return bookingsDtos;
     }
 
-    //-----------------------------------Booking : -graph left : -Job Vs Total Booking--------------------------------
+    //***-----------------------------------Booking : -graph left : -Job Vs Total Booking--------------------------------
     public List<Map<String,Object>> jobVsTotalAppointment() {
         List<Object[]> results = bookingRepository.jobVsTotalAppointment();
         List<Map<String, Object>> formattedResults = new ArrayList<>();
@@ -256,14 +256,6 @@ public class BookingService {
         }
         return formattedResults;
     }
-//    //-----------------------------------Booking : -graph right : -Job Vs cancelled Total Booking--------------------------------
-//    public List<Object[]> findCancelledBookCounts() {
-//        List<Object[]> results = bookingRepository.findCancelledBookCounts();
-//        return results.stream()
-//                .map(result -> new Object[]{result[0], result[1] == null ? 0L : result[1]})
-//                .collect(Collectors.toList());
-//    }
-
     public List<Object[]> findActiveCustomerCount() {
         LocalDate startDate = LocalDate.now().minusDays(7);
         return bookingRepository.findActiveCustomerCount(startDate);
@@ -278,36 +270,12 @@ public class BookingService {
         LocalDate startDate = LocalDate.now().minusDays(7);
         return bookingRepository.findSuccessfulBookingWithDay(startDate);
     }
-
-//    public List<BookingIndividualDTO> getLabourCompleteBookingById(String email) {
-//        Optional<User> labour = labourRepository.findByEmail(email);
-//        List<Booking> bookings = bookingRepository.findByLabour(labour);
-//        return bookings.stream()
-//                .map(this::convertToBookingIndividualDTO)
-//                .collect(Collectors.toList());
-//    }
-//    private BookingIndividualDTO convertToBookingIndividualDTO(Booking booking) {
-//        return new BookingIndividualDTO(
-//                booking.getCustomer(),
-//                booking.getJobRole(),
-//                booking.getJobDescription(),
-//                booking.getDate(),
-//                booking.getStartTime()
-//        );
-//    }
-
-//    public List<BookingCountDTO> getLabourRoleCount() {
-//        return bookingRepository.getLabourRoleCount();
-//    }
-
     public List<BookingCountDTO> getBookingCountWithJobRole() {
         return bookingRepository.getBookingCountWithJobRole();
     }
-
     public List<BookingCountDTO> getPendingCountWithJob() {
         return bookingRepository.getPendingCountWithJob();
     }
-
     public List<BookingCountDTO> getDeclinedCountWithJob() {
         return bookingRepository.getDeclinedCountWithJob();
     }
@@ -317,7 +285,6 @@ public class BookingService {
     public List<BookingCountDTO> getCompleteCountWithJob() {
         return bookingRepository.getCompleteCountWithJob();
     }
-
     public List<BookingIndividualDTO> findBookingById(String email) {
         List<Booking> bookings = bookingRepository.findByLabourEmail(email);
 
@@ -326,7 +293,6 @@ public class BookingService {
                 .map(this::mapToBookingIndividualDTO)
                 .collect(Collectors.toList());
     }
-
     private BookingIndividualDTO mapToBookingIndividualDTO(Booking booking) {
         BookingIndividualDTO dto = BookingIndividualDTO.builder()
                 .customer(booking.getCustomer().getEmail())
@@ -338,13 +304,8 @@ public class BookingService {
 
         return dto;
     }
-
     public JobRole getDemandedJob() {
         return bookingRepository.getDemandedJob();
     }
-
-
-    //------------------------Individual bookings history ----------------------------------------------
-
 
 }
