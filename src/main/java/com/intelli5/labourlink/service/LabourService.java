@@ -1,10 +1,12 @@
 // Package definition for the service layer
 package com.intelli5.labourlink.service;
 
+import com.intelli5.labourlink.dto.LabourCardDTO;
 import com.intelli5.labourlink.dto.LabourDTO;
 
 import com.intelli5.labourlink.dto.UpdateLabourDTO;
 
+import com.intelli5.labourlink.entity.JobRole;
 import com.intelli5.labourlink.entity.Labour;
 import com.intelli5.labourlink.entity.User;
 
@@ -30,5 +32,7 @@ public interface LabourService {
     void deleteLabour(String email);
 
     void updateLabourStatus(String email, Labour updatedLabour);
+
+    List<LabourCardDTO> findLabourByJobRole(JobRole jobRole);
 }
 
