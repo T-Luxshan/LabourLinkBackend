@@ -59,6 +59,16 @@ public class BookingController {
         return bookingService.updateBookingStage(id, bookingStatusUpdateDTO.getBookingStage());
     }
 
+    @GetMapping("/completed-bookings/{email}")
+    public List<BookingDetailsDTO> getCompletedBookings(@PathVariable("email") String customerEmail) {
+        return bookingService.findCompletedBookings(customerEmail);
+    }
+
+    @PatchMapping("/updateAmount/{id}")
+    public BookingDetailsDTO updateBookingAmount(@PathVariable Long id, @RequestBody BookingDetailsDTO bookingDetailsDTO){
+        return bookingService.updateBookingAmount(id, bookingDetailsDTO);
+    }
+
     @GetMapping("/labour/{labourEmail}/{stage}")
     public ResponseEntity<List<BookingDetailsForLabourDTO>> getBookingByLabourIdAndStage(@PathVariable String labourEmail,
                                                                                         @PathVariable BookingStage stage
