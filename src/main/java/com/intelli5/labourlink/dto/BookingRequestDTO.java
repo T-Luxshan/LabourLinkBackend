@@ -17,4 +17,5 @@ public class BookingRequestDTO {
     private BookingStage bookingStage;
     private String jobDescription;
     private JobRole jobRole;
+    private LocalDate bookingMadeDate = LocalDate.now();
 }

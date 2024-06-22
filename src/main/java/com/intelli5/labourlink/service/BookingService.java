@@ -40,6 +40,7 @@ public class BookingService {
                     .bookingStage(bookingRequestDTO.getBookingStage())
                     .jobDescription(bookingRequestDTO.getJobDescription())
                     .jobRole(bookingRequestDTO.getJobRole())
+                    .bookingMadeDate(LocalDate.now())
                     .build();
 
             Booking savedBooking = bookingRepository.save(booking);
@@ -256,8 +257,8 @@ public class BookingService {
         }
         return formattedResults;
     }
-    public List<Object[]> findActiveCustomerCount() {
-        LocalDate startDate = LocalDate.now().minusDays(7);
+    public List<Object[]> findActiveCustomerCount(LocalDate startDate) {
+
         return bookingRepository.findActiveCustomerCount(startDate);
     }
 
@@ -269,21 +270,6 @@ public class BookingService {
     public List<Object[]> findSuccessfulBookingWithDay() {
         LocalDate startDate = LocalDate.now().minusDays(7);
         return bookingRepository.findSuccessfulBookingWithDay(startDate);
-    }
-    public List<BookingCountDTO> getBookingCountWithJobRole() {
-        return bookingRepository.getBookingCountWithJobRole();
-    }
-    public List<BookingCountDTO> getPendingCountWithJob() {
-        return bookingRepository.getPendingCountWithJob();
-    }
-    public List<BookingCountDTO> getDeclinedCountWithJob() {
-        return bookingRepository.getDeclinedCountWithJob();
-    }
-    public List<BookingCountDTO> getAcceptCountWithJob() {
-        return bookingRepository.getAcceptCountWithJob();
-    }
-    public List<BookingCountDTO> getCompleteCountWithJob() {
-        return bookingRepository.getCompleteCountWithJob();
     }
     public List<BookingIndividualDTO> findBookingById(String email) {
         List<Booking> bookings = bookingRepository.findByLabourEmail(email);

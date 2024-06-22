@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -149,54 +150,26 @@ public class BookingController {
         return new ResponseEntity<>(graphData, HttpStatus.OK);
     }
 
-    //------------------------------------Dashboard -graph  : - Active customer vs day-------------------------------
+    //***------------------------------------Dashboard -graph  : - Active customer vs day-------------------------------
     @GetMapping("/dashboard/g_active")
     public List<Object[]> findActiveCustomerCount() {
-        return bookingService.findActiveCustomerCount();
+        LocalDate startDate = LocalDate.now().minusDays(7);
+        return bookingService.findActiveCustomerCount(startDate);
     }
 
-    //------------------------------------Dashboard -graph  : - Active labour vs day-------------------------------
+    //***------------------------------------Dashboard -graph  : - Active labour vs day-------------------------------
     @GetMapping("/dashboard/g_active_l")
     public List<Object[]> findActiveLabourCount() {
         return bookingService.findActiveLabourCount();
     }
 
-    //------------------------------------Dashboard -line graph  : - Appointment count vs day---------------------------
+    //***------------------------------------Dashboard -line graph  : - Appointment count vs day---------------------------
 
     @GetMapping("/dashboard/g_AppCount")
     public List<Object[]> findSuccessfulBookingWithDay() {
         return bookingService.findSuccessfulBookingWithDay();
     }
-    //------------Job-02`(pie)--Booking count for each jobroles :According to the complete,accept,declined,pending------------------------
-    @GetMapping("/bookingcount")
-    public ResponseEntity<List<BookingCountDTO>> getBookingCountWithJobRole(){
-        List<BookingCountDTO> counts=bookingService.getBookingCountWithJobRole();
-        return new ResponseEntity<>(counts,HttpStatus.OK);
-    }
-    //----------------JOB uselinechart 3 in 1--Booking count for each jobroles : pending------------------------
-    @GetMapping("/pendingbookingcount")
-    public ResponseEntity<List<BookingCountDTO>> getPendingCountWithJob(){
-        List<BookingCountDTO> counts=bookingService.getPendingCountWithJob();
-        return new ResponseEntity<>(counts,HttpStatus.OK);
-    }
-    //----------------Job03--Booking count for each jobroles :According to the declined------------------------
-    @GetMapping("/declinedbookingcount")
-    public ResponseEntity<List<BookingCountDTO>> getDeclinedCountWithJob(){
-        List<BookingCountDTO> counts=bookingService.getDeclinedCountWithJob();
-        return new ResponseEntity<>(counts,HttpStatus.OK);
-    }
-    //----------------Job03--Booking count for each jobroles :According to the accept------------------------
-    @GetMapping("/acceptbookingcount")
-    public ResponseEntity<List<BookingCountDTO>> getAcceptCountWithJob(){
-        List<BookingCountDTO> counts=bookingService.getAcceptCountWithJob();
-        return new ResponseEntity<>(counts,HttpStatus.OK);
-    }
-    //----------------Job03--Booking count for each jobroles :According to the complete------------------------
-    @GetMapping("/completebookingcount")
-    public ResponseEntity<List<BookingCountDTO>> getCompleteCountWithJob(){
-        List<BookingCountDTO> counts=bookingService.getCompleteCountWithJob();
-        return new ResponseEntity<>(counts,HttpStatus.OK);
-    }
+
     //***-----------------------User:-User detail individual appointment detail fetching -----------------
     @GetMapping("/booking/{email}")
     public ResponseEntity<List<BookingIndividualDTO>> findBookingById(@PathVariable String email) {
@@ -213,4 +186,6 @@ public class BookingController {
         JobRole job=bookingService.getDemandedJob();
         return new ResponseEntity<>(job,HttpStatus.OK);
     }
+
+
 }
