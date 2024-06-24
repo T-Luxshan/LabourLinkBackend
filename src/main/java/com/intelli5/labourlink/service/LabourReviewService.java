@@ -57,6 +57,7 @@ public class LabourReviewService {
                 .rating(labourReview.getRating())
                 .labourName(labourReview.getLabour().getName())
                 .customerName(labourReview.getCustomer().getName())
+                .customerEmail(customerEmail)
                 .build();
 
 //        return "Review added successfully";
