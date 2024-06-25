@@ -25,7 +25,7 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "[User]")
+
 //@Builder
 @Table(name = "[User]")
 public  class User implements UserDetails {
@@ -67,6 +67,10 @@ public  class User implements UserDetails {
     @JsonIgnore
     @OneToMany(mappedBy = "ReportedTo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserReport> ReportedToUser;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private  ProfileImage profileImage;
 
     private boolean isVerified = true;
     private boolean isEnabled = true;
