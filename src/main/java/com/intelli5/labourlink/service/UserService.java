@@ -153,6 +153,10 @@ public class UserService {
             userDto.setEmail(user.getEmail());
             userDto.setJoinDate(user.getJoinDate());
             userDto.setRole(user.getRole());
+            if(user.getRole()==UserRole.LABOUR) {
+            Labour labour=labourRepository.findLabour(user.getEmail());
+                userDto.setJobRole(labour.getJobRole());
+            }
             userDtos.add(userDto);
         }}
         return userDtos;

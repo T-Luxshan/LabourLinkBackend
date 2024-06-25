@@ -1,14 +1,17 @@
 package com.intelli5.labourlink.controller;
 
 import com.intelli5.labourlink.dto.LabourDTO;
+import com.intelli5.labourlink.dto.LabourNewlyVerifiedDTO;
 import com.intelli5.labourlink.dto.PasswordDTO;
 import com.intelli5.labourlink.dto.UpdateLabourDTO;
 import com.intelli5.labourlink.entity.JobRole;
 import com.intelli5.labourlink.entity.Labour;
 import com.intelli5.labourlink.service.LabourService;
+import com.intelli5.labourlink.utils.NotificationHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +26,7 @@ public class LabourController {
 
     private final LabourService labourService;
     private final PasswordEncoder passwordEncoder;
+    private final NotificationHandler notificationHandler;
 
     //Build Add Labour REST API//
     @PostMapping("/createLabour")
@@ -62,8 +66,9 @@ public class LabourController {
     }
 //***------------------------------Verified labour ----------------------------------------
     @PutMapping("/getLabour/{email}")
-    public ResponseEntity<Void> getLabourByForVerification(@PathVariable String email){
-        labourService.getLabourByIdForVerification(email);
+    public ResponseEntity<LabourNewlyVerifiedDTO> getLabourByForVerification(@PathVariable String email){
+        LabourNewlyVerifiedDTO detail=  labourService.getLabourByIdForVerification(email);
+        notificationHandler.verifiedLabourList(detail);
         return ResponseEntity.ok().build();
     }
 //------------------------------Is Verified labour ----------------------------------------
@@ -78,4 +83,5 @@ public ResponseEntity<Map<JobRole,Integer>> countLaboursByJobRole(){
     Map<JobRole,Integer> count=labourService.countLaboursByJobRole();
     return new ResponseEntity<>(count,HttpStatus.OK);
 }
+
 }

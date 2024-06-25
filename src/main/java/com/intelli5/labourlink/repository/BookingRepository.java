@@ -115,4 +115,12 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
                     "limit 1"
     )
     JobRole getDemandedJob();
+    //------------------Job : booking vs jobrole------------------------
+
+    @Query(" SELECT b.jobRole AS jobRole, COUNT(b.id) AS count" +
+            " FROM Booking b " +
+            "GROUP BY jobRole "
+    )
+    List<Object[]> countBookingByJobRole();
+
 }

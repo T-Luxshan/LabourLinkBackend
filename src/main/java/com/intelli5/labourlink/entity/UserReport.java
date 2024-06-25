@@ -26,4 +26,6 @@ public class UserReport {
     @ManyToOne
     @JoinColumn(name = "ReportedTo")
     private User ReportedTo;
+
+
 }

@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +51,8 @@ public class UserReportService {
         notificationReport.setTitle(userReport.getTitle());
         notificationReport.setReportedToId(userReport.getReportedTo().getEmail());
         notificationReport.setReportedByName(userReport.getReportedBy().getName());
-
+        notificationReport.setId(userReport.getId());
+//        notificationReport.setReportedOn(LocalDateTime.now());
         notificationHandler.sendReportNotification(notificationReport);
 
         return ReportDTO.builder()

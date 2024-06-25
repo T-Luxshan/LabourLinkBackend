@@ -294,4 +294,20 @@ public class BookingService {
         return bookingRepository.getDemandedJob();
     }
 
+    public Map<JobRole, Integer> countBookingByJobRole() {
+        List<Object[]> results = bookingRepository.countBookingByJobRole();
+        Map<JobRole, Integer> jobRoleCounts = new HashMap<>();
+
+        for (Object[] result : results) {
+            if (result[0] != null && result[1] != null) {
+                JobRole jobRole = (JobRole) result[0]; // Directly cast to JobRole
+                Long countLong = (Long) result[1];
+                jobRoleCounts.put(jobRole, countLong.intValue());
+            }
+        }
+
+        return jobRoleCounts;
+    }
+
+
 }

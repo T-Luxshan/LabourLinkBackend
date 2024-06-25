@@ -2,6 +2,7 @@ package com.intelli5.labourlink.service.impl;
 
 import com.intelli5.labourlink.Exception.ResourceNotFoundException;
 import com.intelli5.labourlink.dto.LabourDTO;
+import com.intelli5.labourlink.dto.LabourNewlyVerifiedDTO;
 import com.intelli5.labourlink.dto.UpdateLabourDTO;
 import com.intelli5.labourlink.entity.JobRole;
 import com.intelli5.labourlink.entity.Labour;
@@ -119,12 +120,16 @@ public class LabourServiceImpl implements LabourService {
     }
     //--------------+++++++++++++++++++++++++++++++++++++++++++++++++------------------------------------
     @Transactional
-    public void getLabourByIdForVerification(String email){
+    public LabourNewlyVerifiedDTO getLabourByIdForVerification(String email){
         Optional<User> optionalLabour = labourRepository.findById(email);
         if (optionalLabour.isPresent()) {
             User labour = optionalLabour.get();
             optionalLabour.get().setVerified(true);
             labourRepository.save(labour);
+            LabourNewlyVerifiedDTO labourNewlyVerifiedDtos=new LabourNewlyVerifiedDTO();
+            labourNewlyVerifiedDtos.setName(labour.getName());
+            labourNewlyVerifiedDtos.setEmail(labour.getEmail());
+            return labourNewlyVerifiedDtos;
         } else {
             throw new ResourceNotFoundException("Labour not found with email: " + email);
         }
@@ -148,5 +153,7 @@ public class LabourServiceImpl implements LabourService {
         }
         return jobRoleCounts;
     }
+
+
 
 }

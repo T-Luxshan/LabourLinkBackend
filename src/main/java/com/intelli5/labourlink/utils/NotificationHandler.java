@@ -1,8 +1,8 @@
 package com.intelli5.labourlink.utils;
 
+import com.intelli5.labourlink.dto.LabourNewlyVerifiedDTO;
 import com.intelli5.labourlink.dto.NotificationReportDTO;
 import com.intelli5.labourlink.entity.NotificationAdmin;
-import com.intelli5.labourlink.entity.UserReport;
 import com.intelli5.labourlink.service.NotificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,5 +26,9 @@ public class NotificationHandler {
     public void sendReportNotification(NotificationReportDTO userReport) {
         logger.info("Sending reports: {}", userReport);
         messagingTemplate.convertAndSend("/topic/reports", userReport);
+    }
+    public void verifiedLabourList(LabourNewlyVerifiedDTO detail){
+        logger.info("Sending verified user list : {}", detail);
+        messagingTemplate.convertAndSend("/topic/verifiedlist",detail);
     }
 }

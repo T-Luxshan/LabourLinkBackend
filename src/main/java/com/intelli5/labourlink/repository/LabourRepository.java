@@ -25,5 +25,5 @@ public interface LabourRepository extends UserRepository{
     @Query(value= " SELECT job_role AS jobRole, COUNT(labour_email) AS count FROM labour_job_role  GROUP BY job_role " , nativeQuery = true)
     List<Object[]> countLaboursByJobRole();
 
-//
+
 }

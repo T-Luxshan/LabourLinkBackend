@@ -186,6 +186,11 @@ public class BookingController {
         JobRole job=bookingService.getDemandedJob();
         return new ResponseEntity<>(job,HttpStatus.OK);
     }
-
+//-----------------------------Job: -jobrole vs booking -------------------------------
+ @GetMapping("/jobrole-count")
+ public ResponseEntity<Map<JobRole,Integer>> countBookingByJobRole(){
+ Map<JobRole,Integer> count=bookingService.countBookingByJobRole();
+ return new ResponseEntity<>(count,HttpStatus.OK);
+ }
 
 }

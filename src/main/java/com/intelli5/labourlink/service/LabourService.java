@@ -2,6 +2,7 @@
 package com.intelli5.labourlink.service;
 
 import com.intelli5.labourlink.dto.LabourDTO;
+import com.intelli5.labourlink.dto.LabourNewlyVerifiedDTO;
 import com.intelli5.labourlink.dto.UpdateLabourDTO;
 import com.intelli5.labourlink.entity.JobRole;
 import com.intelli5.labourlink.entity.Labour;
@@ -31,10 +32,9 @@ public interface LabourService {
 
     void updateLabourStatus(String email, Labour updatedLabour);
 
-    void getLabourByIdForVerification(String email);
+    LabourNewlyVerifiedDTO getLabourByIdForVerification(String email);
 
     Boolean isLabourVerified(String email);
 
     Map<JobRole, Integer> countLaboursByJobRole();
 }
-
