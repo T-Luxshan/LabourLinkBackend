@@ -33,11 +33,11 @@ public class LabourProfile {
     @Column(name = "about_me")
     private String aboutMe;
 
-private String gender;
+    private String gender;
 
-@ElementCollection
-@Column(name = "languages")
-@Enumerated(EnumType.STRING)
+    @ElementCollection
+    @Column(name = "languages")
+    @Enumerated(EnumType.STRING)
     private List<String> languages;
 
 

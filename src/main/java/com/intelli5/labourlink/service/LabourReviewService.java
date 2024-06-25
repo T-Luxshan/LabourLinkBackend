@@ -1,7 +1,6 @@
 package com.intelli5.labourlink.service;
 
 import com.intelli5.labourlink.Exception.ResourceNotFoundException;
-import com.intelli5.labourlink.dto.LabourReviewIndividualDTO;
 import com.intelli5.labourlink.dto.ReviewDTO;
 import com.intelli5.labourlink.entity.Customer;
 import com.intelli5.labourlink.entity.Labour;
@@ -14,11 +13,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class LabourReviewService {
@@ -60,6 +57,7 @@ public class LabourReviewService {
                 .rating(labourReview.getRating())
                 .labourName(labourReview.getLabour().getName())
                 .customerName(labourReview.getCustomer().getName())
+                .customerEmail(customerEmail)
                 .build();
 
 //        return "Review added successfully";

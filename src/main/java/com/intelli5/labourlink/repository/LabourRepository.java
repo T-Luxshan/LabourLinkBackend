@@ -1,7 +1,8 @@
 package com.intelli5.labourlink.repository;
 
+import com.intelli5.labourlink.entity.JobRole;
 import com.intelli5.labourlink.entity.Labour;
-import com.intelli5.labourlink.entity.LabourReview;
+import com.intelli5.labourlink.entity.LabourLocations;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,6 +20,7 @@ public interface LabourRepository extends UserRepository{
     @Query("SELECT l FROM Labour l WHERE l.email = :email")
     Labour findLabour(String email);
 
+    List<Labour> findLabourByJobRole(JobRole jobRole);
 
-//
+
 }
