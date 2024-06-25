@@ -12,6 +12,7 @@ import com.intelli5.labourlink.entity.User;
 import com.intelli5.labourlink.repository.LabourRepository;
 import com.intelli5.labourlink.service.LabourReviewService;
 import com.intelli5.labourlink.service.LabourService;
+import com.intelli5.labourlink.service.ProfileImageService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,9 @@ public class LabourServiceImpl implements LabourService {
 
     @Autowired
     private LabourReviewService labourReviewService;
+
+    @Autowired
+    private ProfileImageService profileImageService;
 
     public LabourServiceImpl(LabourRepository labourRepository) {
         this.labourRepository = labourRepository;
@@ -134,6 +138,7 @@ public class LabourServiceImpl implements LabourService {
                     dto.setJobRole(labour.getJobRole());
                     dto.setRating(labourReviewService.getRating(labour.getEmail()));
                     dto.setLabourEmail((labour.getEmail()));
+                    dto.setProfileUri(profileImageService.getProfile(labour.getEmail()).getProfileUri());
                     return dto;
                 })
                 .collect(Collectors.toList());
