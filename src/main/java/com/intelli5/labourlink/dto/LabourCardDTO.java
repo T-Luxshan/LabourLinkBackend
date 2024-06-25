@@ -11,4 +11,5 @@ public class LabourCardDTO {
     private List<JobRole> jobRole;
     private Double rating;
     private String labourEmail;
+    private String profileUri;
 }
