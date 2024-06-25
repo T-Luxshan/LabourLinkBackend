@@ -17,6 +17,7 @@ public class LabourLocationDTO {
     private String labourId;
     private String labourName;
     private double rating;
+    private String profileUri;
 
     public LabourLocationDTO(Long id, double latitude, double longitude, String labourId) {
         this.id = id;
