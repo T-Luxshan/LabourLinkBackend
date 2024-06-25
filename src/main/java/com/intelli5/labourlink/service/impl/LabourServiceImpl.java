@@ -1,17 +1,24 @@
 package com.intelli5.labourlink.service.impl;
 
 import com.intelli5.labourlink.Exception.ResourceNotFoundException;
+import com.intelli5.labourlink.dto.LabourCardDTO;
 import com.intelli5.labourlink.dto.LabourDTO;
+import com.intelli5.labourlink.dto.LabourLocationDTO;
 import com.intelli5.labourlink.dto.UpdateLabourDTO;
+import com.intelli5.labourlink.entity.JobRole;
 import com.intelli5.labourlink.entity.Labour;
+import com.intelli5.labourlink.entity.LabourLocations;
 import com.intelli5.labourlink.entity.User;
 import com.intelli5.labourlink.repository.LabourRepository;
+import com.intelli5.labourlink.service.LabourReviewService;
 import com.intelli5.labourlink.service.LabourService;
+import com.intelli5.labourlink.service.ProfileImageService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.Optional;
 
 @Service
@@ -19,6 +26,12 @@ public class LabourServiceImpl implements LabourService {
 
     @Autowired
     private LabourRepository labourRepository;
+
+    @Autowired
+    private LabourReviewService labourReviewService;
+
+    @Autowired
+    private ProfileImageService profileImageService;
 
     public LabourServiceImpl(LabourRepository labourRepository) {
         this.labourRepository = labourRepository;
@@ -113,6 +126,22 @@ public class LabourServiceImpl implements LabourService {
 
         // Save the updated labour back to the database
         labourRepository.save(existingLabour);
+    }
+    @Override
+    public List<LabourCardDTO> findLabourByJobRole(JobRole jobRole) {
+        List<Labour> allLabours = labourRepository.findLabourByJobRole(jobRole);
+
+        return allLabours.stream()
+                .map(labour -> {
+                    LabourCardDTO dto = new LabourCardDTO();
+                    dto.setLabourName(labour.getName());
+                    dto.setJobRole(labour.getJobRole());
+                    dto.setRating(labourReviewService.getRating(labour.getEmail()));
+                    dto.setLabourEmail((labour.getEmail()));
+                    dto.setProfileUri(profileImageService.getProfile(labour.getEmail()).getProfileUri());
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
     //--------------+++++++++++++++++++++++++++++++++++++++++++++++++------------------------------------
     @Transactional
