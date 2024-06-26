@@ -18,4 +18,6 @@ public class BookingDetailsForLabourDTO {
     private LocalTime startTime;
     private BookingStage bookingStage;
     private String jobDescription;
+    private String customerEmail;
+
 }
