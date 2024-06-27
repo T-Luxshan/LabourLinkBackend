@@ -1,6 +1,7 @@
 package com.intelli5.labourlink.controller;
 
 import com.intelli5.labourlink.dto.BookingIndividualDTO;
+import com.intelli5.labourlink.dto.LabourReviewAdminDTO;
 import com.intelli5.labourlink.dto.LabourReviewIndividualDTO;
 import com.intelli5.labourlink.dto.ReviewDTO;
 import com.intelli5.labourlink.service.LabourReviewService;
@@ -98,7 +99,7 @@ public class LabourReviewController {
 
     //***-------------------Review : Fetching review with in a particular time gap  -------------------------------------------------
     @GetMapping("/getAllReviewForAdmin")
-    public ResponseEntity<List<ReviewDTO>> getAllReviewsForAdmin(){
+    public ResponseEntity<List<LabourReviewAdminDTO>> getAllReviewsForAdmin(){
         return ResponseEntity.ok(labourReviewService.getAllReviewsForAdmin());
     }
     //****-------------------Review :Delete review by id  -------------------------------------------------

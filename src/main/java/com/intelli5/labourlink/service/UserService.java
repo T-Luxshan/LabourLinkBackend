@@ -166,13 +166,32 @@ public class UserService {
 
     }
 
-    public Optional<User> findUserByEmail(String email) {
-        Optional<User> users=userRepository .findByEmail(email);
-        if(users.isPresent()&&(users.get().isAccountNonExpired())){
-            return users;
+    public Optional<UserAdminDTO> findUserByEmail(String email) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            UserAdminDTO userAdminDTO = new UserAdminDTO();
+            userAdminDTO.setEmail(user.getEmail());
+            userAdminDTO.setName(user.getName());
+            userAdminDTO.setMobileNumber(user.getMobileNumber());
+            userAdminDTO.setJoinDate(user.getJoinDate());
+            userAdminDTO.setRole(user.getRole());
+
+            if (user.getRole() == UserRole.LABOUR) {
+                Optional<Labour> labourOptional = Optional.ofNullable((Labour) user);
+                if (labourOptional.isPresent()) {
+                    Labour labour = labourOptional.get();
+                    userAdminDTO.setJobRole(labour.getJobRole());
+                }
+            }
+
+            return Optional.of(userAdminDTO);
         }
-        return null;
+        return Optional.empty();
     }
+
+
+
     @Transactional
     public void removeUserByEmail(String email,String removalPurpose) {
         Optional<User> targetUser = userRepository.findByEmail(email);

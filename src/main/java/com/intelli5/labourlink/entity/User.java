@@ -26,6 +26,8 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 @Table(name = "[User]")
 //@Builder
 public  class User implements UserDetails {
@@ -104,6 +106,8 @@ public  class User implements UserDetails {
     }
 
     private Status status;
+
+
 
 //   Todo need to check
 //    public Status getStatus() {

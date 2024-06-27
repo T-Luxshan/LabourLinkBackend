@@ -166,9 +166,9 @@ public class UserController {
 
     //***--------------------------------User:-User detail individual detail fetching -----------------
     @GetMapping("u/{email}")
-    public ResponseEntity <Optional<User>> findUserByEmail(@PathVariable String email) {
+    public ResponseEntity <Optional<UserAdminDTO>> findUserByEmail(@PathVariable String email) {
         try{
-            Optional<User> user = userService.findUserByEmail(email);
+            Optional<UserAdminDTO> user = userService.findUserByEmail(email);
             if (user.isPresent()) {
                 return new ResponseEntity<>(user, HttpStatus.OK);
             } else {

@@ -158,28 +158,6 @@ public class BookingService {
                 .collect(Collectors.toList());
     }
 
-    //-------------------+++++++++++++++++++++++++++++++++++++++++------------------------------------------------------------
-    //***------Booking :- Booking Pending table--------------------------------------
-    public List<BookingDTO> getPendingAppointmentsWithDetails() {
-        List<Booking> bookings = bookingRepository.findAll();
-        List<BookingDTO> bookingsDtos = new ArrayList<>();
-
-        for (Booking booking : bookings) {
-            if (booking.getBookingStage() == BookingStage.PENDING) {
-                BookingDTO bookingsDto = new BookingDTO();
-                bookingsDto.setId(booking.getId());
-                bookingsDto.setCustomerName(booking.getCustomer().getName());
-                bookingsDto.setCustomerEmail(booking.getCustomer().getEmail());
-                bookingsDto.setLabourName(booking.getLabour().getName());
-                bookingsDto.setJobRole(JobRole.valueOf(booking.getJobRole().toString()));
-                bookingsDto.setBookingMadeDate(booking.getBookingMadeDate());
-
-                bookingsDtos.add(bookingsDto);
-            }
-        }
-        return bookingsDtos;
-    }
-//***------Booking :- Booking complete table--------------------------------------
 
     public List<BookingDetailsDTO> findCompletedBookings(String customerEmail) {
         List<Booking> bookings = bookingRepository.findCompletedBookings(customerEmail);
@@ -225,6 +203,29 @@ public class BookingService {
         throw new RuntimeException("Booking not found with id " + id);
 
     }
+//-------------------+++++++++++++++++++++++++++++++++++++++++------------------------------------------------------------
+
+    //***------Booking :- Booking Pending table--------------------------------------
+    public List<BookingDTO> getPendingAppointmentsWithDetails() {
+        List<Booking> bookings = bookingRepository.findAll();
+        List<BookingDTO> bookingsDtos = new ArrayList<>();
+
+        for (Booking booking : bookings) {
+            if (booking.getBookingStage() == BookingStage.PENDING) {
+                BookingDTO bookingsDto = new BookingDTO();
+                bookingsDto.setId(booking.getId());
+                bookingsDto.setCustomerName(booking.getCustomer().getName());
+                bookingsDto.setCustomerEmail(booking.getCustomer().getEmail());
+                bookingsDto.setLabourName(booking.getLabour().getName());
+                bookingsDto.setJobRole(JobRole.valueOf(booking.getJobRole().toString()));
+                bookingsDto.setBookingMadeDate(booking.getBookingMadeDate());
+
+                bookingsDtos.add(bookingsDto);
+            }
+        }
+        return bookingsDtos;
+    }
+
 //------Booking :- Booking complete table--------------------------------------
 
     public List<BookingDTO> getCompleteAppointmentsWithDetails() {
@@ -297,10 +298,11 @@ public class BookingService {
             Map<String, Object> map = new HashMap<>();
             map.put("jobRole", result[0]);
             map.put("totalCount", result[1]);
-            map.put("pendingCount", result[2]);
-            map.put("acceptedCount", result[3]);
-            map.put("completedCount", result[4]);
-            map.put("declinedCount", result[5]);
+            map.put("declinedCount", result[2]);
+            map.put("pendingCount", result[3]);
+            map.put("acceptedCount", result[4]);
+            map.put("completedCount", result[5]);
+
             formattedResults.add(map);
         }
         return formattedResults;

@@ -39,76 +39,104 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     //***---Dashboard graph :1 ----------------------------
     @Query(
-            "select dayname(b.bookingMadeDate) AS day_of_week, count(b.customer) AS total_Customer " +
+            "select FORMAT(b.bookingMadeDate, 'dddd') AS day_of_week, count(b.customer) AS total_customer " +
                     "from Booking b " +
                     "where b.bookingMadeDate > :startDate " +
-                    "group by dayname(b.bookingMadeDate), b.bookingMadeDate " +
-                    "order by field(dayname(b.bookingMadeDate), 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday' ,'Friday', 'Saturday')"
+                    "group by FORMAT(b.bookingMadeDate, 'dddd') " +
+                    "order by " +
+                    "CASE FORMAT(b.bookingMadeDate, 'dddd') " +
+                    "    WHEN 'Sunday' THEN 1 " +
+                    "    WHEN 'Monday' THEN 2 " +
+                    "    WHEN 'Tuesday' THEN 3 " +
+                    "    WHEN 'Wednesday' THEN 4 " +
+                    "    WHEN 'Thursday' THEN 5 " +
+                    "    WHEN 'Friday' THEN 6 " +
+                    "    WHEN 'Saturday' THEN 7 " +
+                    "END"
     )
     List<Object[]> findActiveCustomerCount(@Param("startDate") LocalDate startDate);
 
     //**--Dashboard graph :2 ----------------------------
     @Query(
-            "select dayname(b.date) AS day_of_week, count(b.labour) AS total_Labour " +
+            "select FORMAT(b.date, 'dddd') AS day_of_week, count(b.labour) AS total_labour " +
                     "from Booking b " +
-                    "where b.date > :startDate  and b.bookingStage=com.intelli5.labourlink.entity.BookingStage.ACCEPTED "  +
-                    "group by dayname(b.date), b.date " +
-                    "order by field(dayname(b.date), 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday' ,'Friday', 'Saturday')"
+                    "where b.date > :startDate and b.bookingStage = com.intelli5.labourlink.entity.BookingStage.ACCEPTED " +
+                    "group by FORMAT(b.date, 'dddd') " +
+                    "order by " +
+                    "CASE FORMAT(b.date, 'dddd') " +
+                    "    WHEN 'Sunday' THEN 1 " +
+                    "    WHEN 'Monday' THEN 2 " +
+                    "    WHEN 'Tuesday' THEN 3 " +
+                    "    WHEN 'Wednesday' THEN 4 " +
+                    "    WHEN 'Thursday' THEN 5 " +
+                    "    WHEN 'Friday' THEN 6 " +
+                    "    WHEN 'Saturday' THEN 7 " +
+                    "END"
     )
     List<Object[]> findActiveLabourCount(@Param("startDate") LocalDate startDate);
 
     //Dashboard graph :3 ----------------------------
     @Query(
-            "select dayname(b.bookingMadeDate) AS day_of_week, count(b.id) AS total_appointments " +
+            "select FORMAT(b.bookingMadeDate, 'dddd') AS day_of_week, count(b.id) AS total_appointments " +
                     "from Booking b " +
-                    "where b.bookingMadeDate > :startDate  and b.bookingStage=com.intelli5.labourlink.entity.BookingStage.COMPLETED " +
-                    "group by dayname(b.bookingMadeDate), b.bookingMadeDate " +
-                    "order by field(dayname(b.bookingMadeDate), 'Sun', 'Mon', 'Tues', 'Wed', 'Thur' ,'Fri', 'Sat')"
+                    "where b.bookingMadeDate > :startDate and b.bookingStage = com.intelli5.labourlink.entity.BookingStage.COMPLETED " +
+                    "group by FORMAT(b.bookingMadeDate, 'dddd') " +
+                    "order by CASE " +
+                    "    WHEN FORMAT(b.bookingMadeDate, 'dddd') = 'Sunday' THEN 1 " +
+                    "    WHEN FORMAT(b.bookingMadeDate, 'dddd') = 'Monday' THEN 2 " +
+                    "    WHEN FORMAT(b.bookingMadeDate, 'dddd') = 'Tuesday' THEN 3 " +
+                    "    WHEN FORMAT(b.bookingMadeDate, 'dddd') = 'Wednesday' THEN 4 " +
+                    "    WHEN FORMAT(b.bookingMadeDate, 'dddd') = 'Thursday' THEN 5 " +
+                    "    WHEN FORMAT(b.bookingMadeDate, 'dddd') = 'Friday' THEN 6 " +
+                    "    WHEN FORMAT(b.bookingMadeDate, 'dddd') = 'Saturday' THEN 7 " +
+                    "END"
     )
     List<Object[]> findSuccessfulBookingWithDay(@Param("startDate") LocalDate startDate);
 
-    //------------------Booking count for each jobroles :According to the complete,accept,declined,pending------------------------
-    @Query(
-            "select  (b.jobRole ,COUNT(DISTINCT b.id)) " +
-            "from Booking b " +
-            "where b.bookingStage IN (com.intelli5.labourlink.entity.BookingStage .COMPLETED , com.intelli5.labourlink.entity.BookingStage .ACCEPTED ,com.intelli5.labourlink.entity.BookingStage .PENDING,com.intelli5.labourlink.entity.BookingStage .DECLINED )" +
-            "group by b.jobRole "
-    )
-    List<BookingCountDTO> getBookingCountWithJobRole();
-    //------------------Booking count for each jobroles : pending------------------------
-    @Query(
-            "select  (b.jobRole ,COUNT(DISTINCT b.id)) " +
-                    "from Booking b " +
-                    "where b.bookingStage IN (com.intelli5.labourlink.entity.BookingStage .PENDING )" +
-                    "group by b.jobRole "
-    )
-    List<BookingCountDTO> getPendingCountWithJob();
-    //------------------Booking count for each jobroles : declined------------------------
-    @Query(
-            "select  (b.jobRole ,COUNT(DISTINCT b.id)) " +
-                    "from Booking b " +
-                    "where b.bookingStage = com.intelli5.labourlink.entity.BookingStage .DECLINED " +
-                    "group by b.jobRole "
-    )
-    List<BookingCountDTO> getDeclinedCountWithJob();
 
-    //------------------Booking count for each jobroles : accept------------------------
-    @Query(
-            "select  (b.jobRole ,COUNT(DISTINCT b.id)) " +
-                    "from Booking b " +
-                    "where b.bookingStage = com.intelli5.labourlink.entity.BookingStage .ACCEPTED " +
-                    "group by b.jobRole "
-    )
-    List<BookingCountDTO> getAcceptCountWithJob();
 
-    //------------------Booking count for each jobroles : complete------------------------
-    @Query(
-            "select  (b.jobRole ,COUNT(DISTINCT b.id)) " +
-                    "from Booking b " +
-                    "where b.bookingStage = com.intelli5.labourlink.entity.BookingStage .COMPLETED " +
-                    "group by b.jobRole "
-    )
-    List<BookingCountDTO> getCompleteCountWithJob();
+//    //------------------Booking count for each jobroles :According to the complete,accept,declined,pending------------------------
+//    @Query(
+//            "select  (b.jobRole ,COUNT(DISTINCT b.id)) " +
+//            "from Booking b " +
+//            "where b.bookingStage IN (com.intelli5.labourlink.entity.BookingStage .COMPLETED , com.intelli5.labourlink.entity.BookingStage .ACCEPTED ,com.intelli5.labourlink.entity.BookingStage .PENDING,com.intelli5.labourlink.entity.BookingStage .DECLINED )" +
+//            "group by b.jobRole "
+//    )
+//    List<BookingCountDTO> getBookingCountWithJobRole();
+//    //------------------Booking count for each jobroles : pending------------------------
+//    @Query(
+//            "select  (b.jobRole ,COUNT(DISTINCT b.id)) " +
+//                    "from Booking b " +
+//                    "where b.bookingStage IN (com.intelli5.labourlink.entity.BookingStage .PENDING )" +
+//                    "group by b.jobRole "
+//    )
+//    List<BookingCountDTO> getPendingCountWithJob();
+//    //------------------Booking count for each jobroles : declined------------------------
+//    @Query(
+//            "select  (b.jobRole ,COUNT(DISTINCT b.id)) " +
+//                    "from Booking b " +
+//                    "where b.bookingStage = com.intelli5.labourlink.entity.BookingStage .DECLINED " +
+//                    "group by b.jobRole "
+//    )
+//    List<BookingCountDTO> getDeclinedCountWithJob();
+//
+//    //------------------Booking count for each jobroles : accept------------------------
+//    @Query(
+//            "select  (b.jobRole ,COUNT(DISTINCT b.id)) " +
+//                    "from Booking b " +
+//                    "where b.bookingStage = com.intelli5.labourlink.entity.BookingStage .ACCEPTED " +
+//                    "group by b.jobRole "
+//    )
+//    List<BookingCountDTO> getAcceptCountWithJob();
+//
+//    //------------------Booking count for each jobroles : complete------------------------
+//    @Query(
+//            "select  (b.jobRole ,COUNT(DISTINCT b.id)) " +
+//                    "from Booking b " +
+//                    "where b.bookingStage = com.intelli5.labourlink.entity.BookingStage .COMPLETED " +
+//                    "group by b.jobRole "
+//    )
+//    List<BookingCountDTO> getCompleteCountWithJob();
     //------------------Booking : High demand job role + ------------------------
     @Query(
             "select  (b.jobRole) " +

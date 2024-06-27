@@ -33,15 +33,14 @@ public class LabourServiceImpl implements LabourService {
     private LabourRepository labourRepository;
     @Autowired
     private final EmailService emailService;
-
-    public LabourServiceImpl(LabourRepository labourRepository, EmailService emailService) {
     @Autowired
     private LabourReviewService labourReviewService;
 
     @Autowired
     private ProfileImageService profileImageService;
 
-    public LabourServiceImpl(LabourRepository labourRepository) {
+    public LabourServiceImpl(LabourRepository labourRepository, EmailService emailService) {
+
         this.labourRepository = labourRepository;
         this.emailService = emailService;
     }
@@ -188,7 +187,7 @@ public class LabourServiceImpl implements LabourService {
         for (Object[] result : results) {
             JobRole jobRole = JobRole.valueOf((String) result[0]);
             if (jobRole != null) {
-                Long countLong = (Long) result[1]; // Assuming count is returned as Long
+                Long countLong = ((Number) result[1]).longValue(); // Cast to Number and get long value
                 Integer count = countLong != null ? countLong.intValue() : 0;
                 jobRoleCounts.put(jobRole, count);
             }

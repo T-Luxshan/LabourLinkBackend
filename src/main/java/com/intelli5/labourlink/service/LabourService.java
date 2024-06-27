@@ -42,5 +42,5 @@ public interface LabourService {
     Map<JobRole, Integer> countLaboursByJobRole();
     List<LabourCardDTO> findLabourByJobRole(JobRole jobRole);
 
-    void getLabourByIdForVerification(String email);
+   // void getLabourByIdForVerification(String email);
 }

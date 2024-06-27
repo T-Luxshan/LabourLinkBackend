@@ -1,6 +1,8 @@
 package com.intelli5.labourlink.service;
 
 import com.intelli5.labourlink.Exception.ResourceNotFoundException;
+import com.intelli5.labourlink.dto.LabourReviewAdminDTO;
+import com.intelli5.labourlink.dto.LabourReviewIndividualDTO;
 import com.intelli5.labourlink.dto.ReviewDTO;
 import com.intelli5.labourlink.entity.Customer;
 import com.intelli5.labourlink.entity.Labour;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class LabourReviewService {
@@ -184,25 +187,21 @@ public class LabourReviewService {
         }
     }
     //------------------------------------------++++++++++++++++++++++++++++++++++++++++++----------------------------
-    public List<ReviewDTO> getAllReviewsForAdmin() {
-        List<LabourReview> allReviews = labourReviewRepository.findAll(Sort.by(Sort.Direction.DESC, "reviewPostAt"));
-
-        List<ReviewDTO> allReviewDTO = new ArrayList<>();
-        for (LabourReview review: allReviews) {
-            allReviewDTO.add(
-                    ReviewDTO.builder()
-                            .Id(review.getId())
-                            .jobRole(review.getJobRole())
-                            .description(review.getDescription())
-                            .rating(review.getRating())
-                            .labourName(review.getLabour().getName())
-                            .customerName(review.getCustomer().getName())
-                            .customerEmail(review.getCustomer().getEmail())
-                            .reviewPostAt(review.getReviewPostAt())
-                            .build()
-            );
-        }
-        return allReviewDTO;
+    public List<LabourReviewAdminDTO> getAllReviewsForAdmin() {
+        return labourReviewRepository.findAll(Sort.by(Sort.Direction.DESC, "Id"))
+                .stream()
+                .filter(review -> review.getCustomer() != null && review.getLabour() != null)
+                .map(review -> LabourReviewAdminDTO.builder()
+                        .Id(review.getId())
+                        .jobRole(review.getJobRole())
+                        .description(review.getDescription())
+                        .rating(review.getRating())
+                        .labourName(review.getLabour().getName())
+                        .customerName(review.getCustomer().getName())
+                        .customerEmail(review.getCustomer().getEmail())
+                        .reviewPostAt(review.getReviewPostAt())
+                        .build())
+                .collect(Collectors.toList());
     }
 
     public void deleteReviewByAdmin(Integer id) {
