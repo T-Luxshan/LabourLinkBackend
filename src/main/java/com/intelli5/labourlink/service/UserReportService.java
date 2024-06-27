@@ -12,6 +12,7 @@ import com.intelli5.labourlink.utils.ReportRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -48,8 +49,8 @@ public class UserReportService {
         userReport = userReportRepository.save(userReport);
         // Notify the admin
         NotificationReportDTO notificationReport=new NotificationReportDTO();
-        notificationReport.setTitle(userReport.getTitle());
-        notificationReport.setReportedToId(userReport.getReportedTo().getEmail());
+        notificationReport.setTitle(reportRequest.getTitle());
+        notificationReport.setReportedToId(reportRequest.getReportedTo());
         notificationReport.setReportedByName(userReport.getReportedBy().getName());
         notificationReport.setId(userReport.getId());
 //        notificationReport.setReportedOn(LocalDateTime.now());
@@ -124,6 +125,24 @@ public class UserReportService {
                             .description(report.getDescription())
                             .ReportedByName(report.getReportedBy().getName())
                             .ReportedToName(report.getReportedTo().getName())
+                            .build()
+            );
+        }
+        return reportDTOs;
+    }
+    public List<ReportDTO> getAllReportsForAdmin() {
+        List<UserReport> allReports = userReportRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+
+        List<ReportDTO> reportDTOs = new ArrayList<>();
+        for (UserReport report:
+                allReports) {
+            reportDTOs.add(
+                    ReportDTO.builder()
+                            .id(report.getId())
+                            .title(report.getTitle())
+                            .description(report.getDescription())
+                            .ReportedByName(report.getReportedBy().getName())
+                            .ReportedToName(report.getReportedTo().getEmail())
                             .build()
             );
         }

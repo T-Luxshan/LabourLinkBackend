@@ -33,6 +33,6 @@ public class NotificationAdminService {
     }
 
     public List<NotificationAdmin>getAllNotifications() {
-        return notificationAdminRepository.findAll(Sort.by(Sort.Order.asc("joinDate")));
+        return notificationAdminRepository.findAll(Sort.by(Sort.Order.desc("id")));
     }
 }

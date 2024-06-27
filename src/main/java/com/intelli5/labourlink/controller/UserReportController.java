@@ -49,4 +49,8 @@ public class UserReportController {
     public ResponseEntity<List<ReportDTO>> getAllReports(){
         return ResponseEntity.ok(userReportService.getAllReports());
     }
+    @GetMapping("/allReports/admin")
+    public ResponseEntity<List<ReportDTO>> getAllReportsForAdmin(){
+        return ResponseEntity.ok(userReportService.getAllReportsForAdmin());
+    }
 }

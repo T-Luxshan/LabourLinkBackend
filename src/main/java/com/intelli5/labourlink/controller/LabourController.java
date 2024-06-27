@@ -68,6 +68,7 @@ public class LabourController {
     @PutMapping("/getLabour/{email}")
     public ResponseEntity<LabourNewlyVerifiedDTO> getLabourByForVerification(@PathVariable String email){
         LabourNewlyVerifiedDTO detail=  labourService.getLabourByIdForVerification(email);
+
         notificationHandler.verifiedLabourList(detail);
         return ResponseEntity.ok().build();
     }

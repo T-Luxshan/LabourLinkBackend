@@ -93,7 +93,7 @@ public class AuthService{
                userDetail.setDocumentUri(user.getDocumentUri());
                userDetail.setJobRole(user.getJobRole().toString());
                userDetail.setJoinDate(user.getJoinDate().toString());
-               userDetail.setVerified(userDetail.isVerified());
+              // userDetail.setVerified(userDetail.isVerified());
         notificationAdminService.notifyAdmin(userDetail);
         return AuthResponse.builder()
                 .accessToken(accessToken)

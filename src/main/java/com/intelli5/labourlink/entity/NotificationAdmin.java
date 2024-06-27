@@ -19,5 +19,5 @@ public class NotificationAdmin {
     private String documentUri;
     private String jobRole;
     private String joinDate;
-    private boolean isVerified;
+//    private boolean isVerified;
 }

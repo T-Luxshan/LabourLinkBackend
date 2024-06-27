@@ -3,11 +3,13 @@ package com.intelli5.labourlink.service.impl;
 import com.intelli5.labourlink.Exception.ResourceNotFoundException;
 import com.intelli5.labourlink.dto.LabourDTO;
 import com.intelli5.labourlink.dto.LabourNewlyVerifiedDTO;
+import com.intelli5.labourlink.dto.MailBody;
 import com.intelli5.labourlink.dto.UpdateLabourDTO;
 import com.intelli5.labourlink.entity.JobRole;
 import com.intelli5.labourlink.entity.Labour;
 import com.intelli5.labourlink.entity.User;
 import com.intelli5.labourlink.repository.LabourRepository;
+import com.intelli5.labourlink.service.EmailService;
 import com.intelli5.labourlink.service.LabourService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +25,12 @@ public class LabourServiceImpl implements LabourService {
 
     @Autowired
     private LabourRepository labourRepository;
+    @Autowired
+    private final EmailService emailService;
 
-    public LabourServiceImpl(LabourRepository labourRepository) {
+    public LabourServiceImpl(LabourRepository labourRepository, EmailService emailService) {
         this.labourRepository = labourRepository;
+        this.emailService = emailService;
     }
 
     @Override
@@ -126,9 +131,17 @@ public class LabourServiceImpl implements LabourService {
             User labour = optionalLabour.get();
             optionalLabour.get().setVerified(true);
             labourRepository.save(labour);
+
             LabourNewlyVerifiedDTO labourNewlyVerifiedDtos=new LabourNewlyVerifiedDTO();
             labourNewlyVerifiedDtos.setName(labour.getName());
             labourNewlyVerifiedDtos.setEmail(labour.getEmail());
+            // Send verification email
+            MailBody mailBody = MailBody.builder()
+                    .to(email)
+                    .text("Your account has been successfully verified.Now you connected with us.Enjoy your journey -Labour Link-")
+                    .subject("Account Verification")
+                    .build();
+            emailService.sendSimpleMessage(mailBody);
             return labourNewlyVerifiedDtos;
         } else {
             throw new ResourceNotFoundException("Labour not found with email: " + email);
