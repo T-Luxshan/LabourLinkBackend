@@ -68,6 +68,11 @@ public class LabourReviewController {
         }
     }
 
+    @GetMapping("/getLabourReviews/{email}")
+    public ResponseEntity<List<ReviewDTO>> getReviewsByLabour(@PathVariable String email){
+            return ResponseEntity.ok(labourReviewService.getMyReviews(email));
+    }
+
     @GetMapping("/getAllReview")
     public ResponseEntity<List<ReviewDTO>> getAllReviews(){
         return ResponseEntity.ok(labourReviewService.getAllReviews());

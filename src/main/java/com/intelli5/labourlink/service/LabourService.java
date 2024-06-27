@@ -1,9 +1,12 @@
 // Package definition for the service layer
 package com.intelli5.labourlink.service;
 
+import com.intelli5.labourlink.dto.LabourCardDTO;
 import com.intelli5.labourlink.dto.LabourDTO;
 import com.intelli5.labourlink.dto.LabourNewlyVerifiedDTO;
 import com.intelli5.labourlink.dto.UpdateLabourDTO;
+import com.intelli5.labourlink.entity.JobRole;
+
 import com.intelli5.labourlink.entity.JobRole;
 import com.intelli5.labourlink.entity.Labour;
 import com.intelli5.labourlink.entity.User;
@@ -37,4 +40,7 @@ public interface LabourService {
     Boolean isLabourVerified(String email);
 
     Map<JobRole, Integer> countLaboursByJobRole();
+    List<LabourCardDTO> findLabourByJobRole(JobRole jobRole);
+
+    void getLabourByIdForVerification(String email);
 }

@@ -1,5 +1,6 @@
 package com.intelli5.labourlink.controller;
 
+import com.intelli5.labourlink.dto.LabourCardDTO;
 import com.intelli5.labourlink.dto.LabourDTO;
 import com.intelli5.labourlink.dto.LabourNewlyVerifiedDTO;
 import com.intelli5.labourlink.dto.PasswordDTO;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.List;
 
 
 @CrossOrigin("*")
@@ -65,6 +67,12 @@ public class LabourController {
         return ResponseEntity.ok("Labour deleted successfully");
     }
 //***------------------------------Verified labour ----------------------------------------
+    @GetMapping("/getLabourByJobRole/{jobRole}")
+    public List<LabourCardDTO> getLabourByJobRole(@PathVariable JobRole jobRole){
+        return labourService.findLabourByJobRole(jobRole);
+
+    }
+
     @PutMapping("/getLabour/{email}")
     public ResponseEntity<LabourNewlyVerifiedDTO> getLabourByForVerification(@PathVariable String email){
         LabourNewlyVerifiedDTO detail=  labourService.getLabourByIdForVerification(email);

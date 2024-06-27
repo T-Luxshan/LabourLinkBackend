@@ -43,5 +43,6 @@ public class Booking {
 
     private LocalDate bookingMadeDate = LocalDate.now();
 
+    private float amount;
 
 }
