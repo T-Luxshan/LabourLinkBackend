@@ -3,13 +3,16 @@ package com.intelli5.labourlink.service;
 
 import com.intelli5.labourlink.dto.LabourCardDTO;
 import com.intelli5.labourlink.dto.LabourDTO;
+import com.intelli5.labourlink.dto.LabourNewlyVerifiedDTO;
 import com.intelli5.labourlink.dto.UpdateLabourDTO;
+import com.intelli5.labourlink.entity.JobRole;
 
 import com.intelli5.labourlink.entity.JobRole;
 import com.intelli5.labourlink.entity.Labour;
 import com.intelli5.labourlink.entity.User;
 
 import java.util.List;
+import java.util.Map;
 
 public interface LabourService {
     // Method to create a new Labour record
@@ -32,8 +35,12 @@ public interface LabourService {
 
     void updateLabourStatus(String email, Labour updatedLabour);
 
+    LabourNewlyVerifiedDTO getLabourByIdForVerification(String email);
+
+    Boolean isLabourVerified(String email);
+
+    Map<JobRole, Integer> countLaboursByJobRole();
     List<LabourCardDTO> findLabourByJobRole(JobRole jobRole);
 
-    void getLabourByIdForVerification(String email);
+   // void getLabourByIdForVerification(String email);
 }
-

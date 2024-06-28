@@ -46,4 +46,5 @@ public class Labour extends User{ //Defines the Labour class, which extends User
     @OneToOne(mappedBy = "labour", cascade = CascadeType.ALL, orphanRemoval = true)
     private LabourProfile labourProfile;
 
+
 }

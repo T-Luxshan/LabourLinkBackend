@@ -2,17 +2,21 @@ package com.intelli5.labourlink.controller;
 
 import com.intelli5.labourlink.dto.LabourCardDTO;
 import com.intelli5.labourlink.dto.LabourDTO;
+import com.intelli5.labourlink.dto.LabourNewlyVerifiedDTO;
 import com.intelli5.labourlink.dto.PasswordDTO;
 import com.intelli5.labourlink.dto.UpdateLabourDTO;
 import com.intelli5.labourlink.entity.JobRole;
 import com.intelli5.labourlink.entity.Labour;
 import com.intelli5.labourlink.service.LabourService;
+import com.intelli5.labourlink.utils.NotificationHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.List;
 
 
@@ -24,6 +28,7 @@ public class LabourController {
 
     private final LabourService labourService;
     private final PasswordEncoder passwordEncoder;
+    private final NotificationHandler notificationHandler;
 
     //Build Add Labour REST API//
     @PostMapping("/createLabour")
@@ -61,6 +66,7 @@ public class LabourController {
         labourService.deleteLabour(email);
         return ResponseEntity.ok("Labour deleted successfully");
     }
+//***------------------------------Verified labour ----------------------------------------
     @GetMapping("/getLabourByJobRole/{jobRole}")
     public List<LabourCardDTO> getLabourByJobRole(@PathVariable JobRole jobRole){
         return labourService.findLabourByJobRole(jobRole);
@@ -68,8 +74,23 @@ public class LabourController {
     }
 
     @PutMapping("/getLabour/{email}")
-    public ResponseEntity<Void> getLabourByForVerification(@PathVariable String email){
-        labourService.getLabourByIdForVerification(email);
+    public ResponseEntity<LabourNewlyVerifiedDTO> getLabourByForVerification(@PathVariable String email){
+        LabourNewlyVerifiedDTO detail=  labourService.getLabourByIdForVerification(email);
+
+        notificationHandler.verifiedLabourList(detail);
         return ResponseEntity.ok().build();
     }
+//------------------------------Is Verified labour ----------------------------------------
+    @GetMapping("/getLabour/{email}")
+    public ResponseEntity<Boolean>  isLabourVerified(@PathVariable String email){
+        Boolean response=labourService.isLabourVerified(email);
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
+//***-----------------------------Job: -count Labours By JobRole--------------------------------
+@GetMapping("/count")
+public ResponseEntity<Map<JobRole,Integer>> countLaboursByJobRole(){
+    Map<JobRole,Integer> count=labourService.countLaboursByJobRole();
+    return new ResponseEntity<>(count,HttpStatus.OK);
+}
+
 }

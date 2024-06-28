@@ -1,12 +1,10 @@
 package com.intelli5.labourlink.service;
 
 import com.intelli5.labourlink.Exception.CustomerRegistrationException;
-import com.intelli5.labourlink.dto.NotificationAdminDTO;
 import com.intelli5.labourlink.entity.*;
 import com.intelli5.labourlink.repository.AdminRepository;
 import com.intelli5.labourlink.repository.CustomerRepository;
 import com.intelli5.labourlink.repository.LabourRepository;
-import com.intelli5.labourlink.service.impl.NotificationAdminService;
 import com.intelli5.labourlink.utils.AuthResponse;
 import com.intelli5.labourlink.utils.LoginRequest;
 import com.intelli5.labourlink.utils.RegisterRequest;
@@ -20,9 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Optional;
 
 @Slf4j
@@ -53,7 +49,7 @@ public class AuthService{
             user.setRole(UserRole.CUSTOMER);
             user.setStatus(Status.OFFLINE);
             user.setJoinDate(LocalDate.now());
-            user.setJoinTime(LocalTime.now());
+            //user.setJoinTime(LocalTime.now());
 
             User savedUser = customerRepository.save(user);
             var accessToken = jwtService.generateToken(savedUser);
@@ -86,24 +82,18 @@ public class AuthService{
         user.setJobRole(registerRequest.getJobRole());
         user.setDocumentUri(registerRequest.getDocumentUri());
         user.setJoinDate(LocalDate.now());
-        user.setJoinTime(LocalTime.now());
+        //user.setJoinTime(LocalTime.now());
         User savedUser = labourRepository.save(user);
         var accessToken = jwtService.generateToken(savedUser);
         var refreshToken = refreshTokenService.createRefreshTokenCustomer(savedUser.getEmail());
             // Notify the admin
-//        NotificationAdminDTO userDetail =new NotificationAdminDTO(
-//                    user.getName(),
-//                    user.getEmail(),
-//                    user.getDocumentUri(),
-//                    user.getJobRole().toString(),
-//                    user.getJoinDate().toString()
-//        );
         NotificationAdmin userDetail =new NotificationAdmin();
                userDetail.setName(user.getName());
                userDetail.setEmail(user.getEmail());
                userDetail.setDocumentUri(user.getDocumentUri());
                userDetail.setJobRole(user.getJobRole().toString());
                userDetail.setJoinDate(user.getJoinDate().toString());
+              // userDetail.setVerified(userDetail.isVerified());
         notificationAdminService.notifyAdmin(userDetail);
         return AuthResponse.builder()
                 .accessToken(accessToken)

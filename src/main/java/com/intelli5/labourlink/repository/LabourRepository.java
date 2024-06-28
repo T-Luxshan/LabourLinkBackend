@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 @Qualifier("labourRepository")
@@ -21,6 +22,10 @@ public interface LabourRepository extends UserRepository{
     Labour findLabour(String email);
 
     List<Labour> findLabourByJobRole(JobRole jobRole);
+
+    @Query(value= " SELECT job_role AS jobRole, COUNT(labour_email) AS count FROM labour_job_role  GROUP BY job_role " , nativeQuery = true)
+    List<Object[]> countLaboursByJobRole();
+
 
 
 }

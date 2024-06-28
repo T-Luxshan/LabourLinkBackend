@@ -1,30 +1,26 @@
 package com.intelli5.labourlink.dto;
 
+import com.intelli5.labourlink.entity.Customer;
+import com.intelli5.labourlink.entity.Labour;
 import lombok.*;
+import org.springframework.web.bind.annotation.GetMapping;
 
-import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-//
-///**
-// * DTO for {@link com.intelli5.labourlink.entity.LabourReview}
-// */
-//@Value
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ReviewDTO implements Serializable {
+public class LabourReviewAdminDTO {
     Integer Id;
     String jobRole;
-//    String workTitle;
+    //    String workTitle;
     String description;
     Double rating;
     String labourName;
     String customerName;
     String customerEmail;
     private LocalDateTime reviewPostAt;
-
 
 }

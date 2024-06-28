@@ -10,7 +10,9 @@ import lombok.*;
 @Builder
 @Data
 public class LabourReviewIndividualDTO {
-    private Customer customer;
+    private String customerName;
+    private String customerEmail;
+    private String labourName;
     private String jobRole;
     private String description;
     private Double rating;

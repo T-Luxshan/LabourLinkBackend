@@ -16,7 +16,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @NoArgsConstructor
@@ -146,7 +145,7 @@ public class UserService {
 
     public List<UserDTO>getAllUser(){
         List <UserDTO> userDtos=new ArrayList<>();
-       List<User> users=userRepository.findAll(Sort.by(Sort.Order.desc("joinDate"), Sort.Order.desc("joinTime")));
+       List<User> users=userRepository.findAll(Sort.by(Sort.Order.desc("joinDate")));
         for(User user:users) {
             if ((user.getRole() == UserRole.CUSTOMER || user.getRole() == UserRole.LABOUR)&&(user.isAccountNonExpired())&&(user.isVerified())) {
             UserDTO userDto = new UserDTO();
@@ -154,6 +153,10 @@ public class UserService {
             userDto.setEmail(user.getEmail());
             userDto.setJoinDate(user.getJoinDate());
             userDto.setRole(user.getRole());
+            if(user.getRole()==UserRole.LABOUR) {
+            Labour labour=labourRepository.findLabour(user.getEmail());
+                userDto.setJobRole(labour.getJobRole());
+            }
             userDtos.add(userDto);
         }}
         return userDtos;
@@ -163,13 +166,32 @@ public class UserService {
 
     }
 
-    public Optional<User> findUserByEmail(String email) {
-        Optional<User> users=userRepository .findByEmail(email);
-        if(users.isPresent()&&(users.get().isAccountNonExpired())){
-            return users;
+    public Optional<UserAdminDTO> findUserByEmail(String email) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            UserAdminDTO userAdminDTO = new UserAdminDTO();
+            userAdminDTO.setEmail(user.getEmail());
+            userAdminDTO.setName(user.getName());
+            userAdminDTO.setMobileNumber(user.getMobileNumber());
+            userAdminDTO.setJoinDate(user.getJoinDate());
+            userAdminDTO.setRole(user.getRole());
+
+            if (user.getRole() == UserRole.LABOUR) {
+                Optional<Labour> labourOptional = Optional.ofNullable((Labour) user);
+                if (labourOptional.isPresent()) {
+                    Labour labour = labourOptional.get();
+                    userAdminDTO.setJobRole(labour.getJobRole());
+                }
+            }
+
+            return Optional.of(userAdminDTO);
         }
-        return null;
+        return Optional.empty();
     }
+
+
+
     @Transactional
     public void removeUserByEmail(String email,String removalPurpose) {
         Optional<User> targetUser = userRepository.findByEmail(email);
@@ -182,7 +204,7 @@ public class UserService {
             suspenduser.setMobileNumber(user.getMobileNumber());
             suspenduser.setRole(user.getRole());
             suspenduser.setJoinDate(user.getJoinDate());
-            suspenduser.setJoinTime(user.getJoinTime());
+            //suspenduser.setJoinTime(user.getJoinTime());
             suspenduser.setPresent(false);
             suspenduser.setVerified(true);
             suspenduser.setEnabled(true);
@@ -231,7 +253,9 @@ public class UserService {
         return null;
     }
 
-
+    public Optional<User> fetchProfileName(String email) {
+        return userRepository.findByEmail(email);
+    }
 
 
 //    public List<Appointment> get_UserBy_Email(String email) {
