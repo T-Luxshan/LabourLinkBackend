@@ -62,11 +62,11 @@ public  class User implements UserDetails {
     private ForgotPassword forgotPassword;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "ReportedBy", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "ReportedBy", cascade = CascadeType.DETACH, orphanRemoval = true)
     private List<UserReport> ReportedByUser = new ArrayList<>();;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "ReportedTo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "ReportedTo", cascade = CascadeType.DETACH, orphanRemoval = true)
     private List<UserReport> ReportedToUser = new ArrayList<>();
 
     private boolean isVerified = true;
