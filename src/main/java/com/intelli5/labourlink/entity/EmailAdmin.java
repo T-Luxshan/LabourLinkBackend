@@ -21,7 +21,6 @@ public class EmailAdmin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String recipientEmail;
     private String subject;
     private String body;
