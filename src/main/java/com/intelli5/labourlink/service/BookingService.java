@@ -132,6 +132,7 @@ public class BookingService {
                 .startTime(booking.getStartTime())
                 .bookingStage(booking.getBookingStage())
                 .jobDescription(booking.getJobDescription())
+                .labourId(booking.getLabour().getEmail())
                 .build();
     }
 
