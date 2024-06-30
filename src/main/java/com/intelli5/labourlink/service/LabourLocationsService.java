@@ -36,14 +36,16 @@ public class LabourLocationsService {
                 .build();
 
         try {
+            labour.setLabourLocations(labourLocations);
             labourLocations = labourLocationsRepository.save(labourLocations);
             return convertToDTO(labourLocations);
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             LabourLocations existingLocation = labourLocationsRepository.findByLabour(labour);
             return updateLabourLocation(existingLocation.getId(), labourLocationsDTO);
-        } catch (Exception e){
-            return new LabourLocationDTO();
         }
+//        catch (Exception e){
+//            return new LabourLocationDTO();
+//        }
     }
 
 
@@ -102,4 +104,8 @@ public class LabourLocationsService {
                 .labourId(labourLocations.getLabour().getEmail())
                 .build();
     }
+
+//    public LabourLocationDTO getLabourLocationByLabour(String email) {
+//        Labour labour = labourRepository.findLabour(email);
+//    }
 }

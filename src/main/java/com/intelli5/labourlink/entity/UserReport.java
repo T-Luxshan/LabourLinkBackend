@@ -19,11 +19,11 @@ public class UserReport {
 
     private String description;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "ReportedBy")
     private User ReportedBy;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "ReportedTo")
     private User ReportedTo;
 
