@@ -38,12 +38,13 @@ public class LabourLocationsService {
         try {
             labourLocations = labourLocationsRepository.save(labourLocations);
             return convertToDTO(labourLocations);
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             LabourLocations existingLocation = labourLocationsRepository.findByLabour(labour);
             return updateLabourLocation(existingLocation.getId(), labourLocationsDTO);
-        } catch (Exception e){
-            return new LabourLocationDTO();
         }
+//        catch (Exception e){
+//            return new LabourLocationDTO();
+//        }
     }
 
 
