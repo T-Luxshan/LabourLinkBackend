@@ -19,5 +19,5 @@ public class BookingDetailsForLabourDTO {
     private BookingStage bookingStage;
     private String jobDescription;
     private String customerEmail;
-
+    private String labourName;
 }
