@@ -20,4 +20,5 @@ public class BookingDetailsForLabourDTO {
     private String jobDescription;
     private String customerEmail;
     private String labourName;
+
 }
