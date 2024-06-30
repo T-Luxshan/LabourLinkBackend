@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -62,11 +63,11 @@ public  class User implements UserDetails {
 
     @JsonIgnore
     @OneToMany(mappedBy = "ReportedBy", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserReport> ReportedByUser;
+    private List<UserReport> ReportedByUser = new ArrayList<>();;
 
     @JsonIgnore
     @OneToMany(mappedBy = "ReportedTo", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserReport> ReportedToUser;
+    private List<UserReport> ReportedToUser = new ArrayList<>();
 
     private boolean isVerified = true;
     private boolean isEnabled = true;
