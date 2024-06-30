@@ -36,6 +36,7 @@ public class LabourLocationsService {
                 .build();
 
         try {
+            labour.setLabourLocations(labourLocations);
             labourLocations = labourLocationsRepository.save(labourLocations);
             return convertToDTO(labourLocations);
         } catch (Exception e) {
@@ -103,4 +104,8 @@ public class LabourLocationsService {
                 .labourId(labourLocations.getLabour().getEmail())
                 .build();
     }
+
+//    public LabourLocationDTO getLabourLocationByLabour(String email) {
+//        Labour labour = labourRepository.findLabour(email);
+//    }
 }

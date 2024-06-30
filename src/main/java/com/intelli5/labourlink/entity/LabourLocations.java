@@ -20,7 +20,7 @@ public class LabourLocations {
     private double latitude;
     private double longitude;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "labour_id")
     private Labour labour;
 }
