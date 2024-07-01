@@ -63,7 +63,8 @@ public class ChatMessageService {
     }
 
     public Integer unreadMessageCount(String senderId, String receiverId) {
-        List<ChatMessage> totalMessages =findChatMessages(senderId,receiverId);
+//        List<ChatMessage> totalMessages =findChatMessages(senderId,receiverId);
+        List<ChatMessage> totalMessages =repository.findChatMessagesBySenderIdAndReceiverId(senderId,receiverId);
         Integer count=0;
         for (ChatMessage chatMessage:totalMessages){
             if (!chatMessage.isRead()){
