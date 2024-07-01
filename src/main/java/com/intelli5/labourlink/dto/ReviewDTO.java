@@ -25,6 +25,16 @@ public class ReviewDTO implements Serializable {
     String customerName;
     String customerEmail;
     private LocalDateTime reviewPostAt;
+    String labourId;
 
-
+    public ReviewDTO(Integer id, String jobRole, String description, Double rating, String labourName, String customerName, String customerEmail, LocalDateTime reviewPostAt) {
+        Id = id;
+        this.jobRole = jobRole;
+        this.description = description;
+        this.rating = rating;
+        this.labourName = labourName;
+        this.customerName = customerName;
+        this.customerEmail = customerEmail;
+        this.reviewPostAt = reviewPostAt;
+    }
 }

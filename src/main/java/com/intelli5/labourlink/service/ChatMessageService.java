@@ -2,6 +2,8 @@ package com.intelli5.labourlink.service;
 
 import com.intelli5.labourlink.dto.ChatMessageDTO;
 import com.intelli5.labourlink.entity.ChatMessage;
+import com.intelli5.labourlink.entity.ChatRoom;
+import com.intelli5.labourlink.entity.User;
 import com.intelli5.labourlink.repository.ChatMessageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -47,5 +49,38 @@ public class ChatMessageService {
         repository.save(chatMessage);
         System.out.println("message is : " + chatMessage);
         return chatMessage;
+    }
+
+    public void markAsRead(String senderId, String receiverId) {
+        //should mark messages send by others as read so here sender is my message receiving person
+        List<ChatMessage> chatMessages=repository.findChatMessagesBySenderIdAndReceiverId(senderId,receiverId);
+
+        for (ChatMessage chatMessage:chatMessages){
+//            System.out.println(chatMessage.getContent());
+            chatMessage.setRead(true);
+            repository.save(chatMessage);
+        }
+    }
+
+    public Integer unreadMessageCount(String senderId, String receiverId) {
+        List<ChatMessage> totalMessages =repository.findChatMessagesBySenderIdAndReceiverId(senderId,receiverId);
+        Integer count=0;
+        for (ChatMessage chatMessage:totalMessages){
+            if (!chatMessage.isRead()){
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public Integer totalUnreadMessageCount(String receiverId) {
+        List<ChatMessage> totalMessages =repository.findChatMessagesByReceiverId(receiverId);
+        Integer count=0;
+        for (ChatMessage chatMessage:totalMessages){
+            if (!chatMessage.isRead()){
+                count++;
+            }
+        }
+        return count;
     }
 }
