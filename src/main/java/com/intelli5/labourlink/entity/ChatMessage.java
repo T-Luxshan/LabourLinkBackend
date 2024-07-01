@@ -1,9 +1,6 @@
 package com.intelli5.labourlink.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,4 +22,7 @@ public class ChatMessage {
     private String recipientId;
     private String content;
     private Date timestamp;
+
+    @Column(name = "message_read", columnDefinition = "BIT DEFAULT 0")
+    private boolean read;
 }

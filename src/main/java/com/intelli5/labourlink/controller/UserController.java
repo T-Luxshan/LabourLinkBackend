@@ -66,28 +66,46 @@ public class UserController {
     }
 
 
-    @GetMapping("/connectedCustomers")
-    public ResponseEntity<List<ConnectedUsersDTO>> findConnectedCustomers() {
-        // Retrieve connected users from the customer repository
-        List<User> customerUsers = userService.findConnectedCustomers();
+//    @GetMapping("/connectedCustomers")
+//    public ResponseEntity<List<ConnectedUsersDTO>> findConnectedCustomers() {
+//        // Retrieve connected users from the customer repository
+//        List<User> customerUsers = userService.findConnectedCustomers();
+//
+//        // Convert User entities to ConnectedUsersDTOs
+//        List<ConnectedUsersDTO> connectedUsersDTOs = customerUsers.stream()
+//                .map(user -> ConnectedUsersDTO.builder()
+//                        .name(user.getName())
+//                        .email(user.getEmail())
+//                        .mobileNumber(user.getMobileNumber())
+//                        .status(user.getStatus())
+//                        .build())
+//                .collect(Collectors.toList());
+//
+//        return ResponseEntity.ok(connectedUsersDTOs);
+//    }
 
-        // Convert User entities to ConnectedUsersDTOs
-        List<ConnectedUsersDTO> connectedUsersDTOs = customerUsers.stream()
-                .map(user -> ConnectedUsersDTO.builder()
-                        .name(user.getName())
-                        .email(user.getEmail())
-                        .mobileNumber(user.getMobileNumber())
-                        .status(user.getStatus())
-                        .build())
-                .collect(Collectors.toList());
+//    @GetMapping("/connectedLabours")
+//    public ResponseEntity<List<ConnectedUsersDTO>> findConnectedLabours() {
+//        // Retrieve connected users from the labor repository
+//        List<User> laborUsers = userService.findConnectedLabours();
+//
+//        // Convert User entities to ConnectedUsersDTOs
+//        List<ConnectedUsersDTO> connectedUsersDTOs = laborUsers.stream()
+//                .map(user -> ConnectedUsersDTO.builder()
+//                        .name(user.getName())
+//                        .email(user.getEmail())
+//                        .mobileNumber(user.getMobileNumber())
+//                        .status(user.getStatus())
+//                        .build())
+//                .collect(Collectors.toList());
+//
+//        return ResponseEntity.ok(connectedUsersDTOs);
+//    }
 
-        return ResponseEntity.ok(connectedUsersDTOs);
-    }
-
-    @GetMapping("/connectedLabours")
-    public ResponseEntity<List<ConnectedUsersDTO>> findConnectedLabours() {
+    @GetMapping("/connectedUsers/{senderId}")
+    public ResponseEntity<List<ConnectedUsersDTO>> findConnectedUsers(@PathVariable String senderId) {
         // Retrieve connected users from the labor repository
-        List<User> laborUsers = userService.findConnectedLabours();
+        List<User> laborUsers = userService.findConnectedUsers(senderId);
 
         // Convert User entities to ConnectedUsersDTOs
         List<ConnectedUsersDTO> connectedUsersDTOs = laborUsers.stream()

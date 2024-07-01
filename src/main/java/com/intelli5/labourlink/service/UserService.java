@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @NoArgsConstructor
@@ -27,6 +28,9 @@ public class UserService {
 
     @Autowired
     private LabourRepository labourRepository;
+
+    @Autowired
+    private ChatRoomRepository chatRoomRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -54,13 +58,33 @@ public class UserService {
         }
     }
 
-    public List<User> findConnectedCustomers() {
-        return customerRepository.findAllByStatusAndRole(Status.ONLINE, UserRole.CUSTOMER);
+//    public List<User> findConnectedCustomers() {
+//        return customerRepository.findAllByStatusAndRole(Status.ONLINE, UserRole.CUSTOMER);
+//    }
+
+//    public List<User> findConnectedLabours() {
+//        return labourRepository.findAllByStatusAndRole(Status.ONLINE, UserRole.LABOUR);
+//    }
+
+
+    public List<User> findConnectedUsers(String senderId) {
+        // Fetch all ChatRooms associated with the senderId
+        List<ChatRoom> chatRooms = chatRoomRepository.findBySenderId(senderId);
+        List<User> connectedLabours = new ArrayList<>();
+
+        for (ChatRoom chatRoom : chatRooms) {
+            String recipientId = chatRoom.getRecipientId();
+            Optional<User> userOptional = userRepository.findByEmail(recipientId);
+
+            if (userOptional.isPresent()) {
+                connectedLabours.add(userOptional.get()); // Extract User from Optional and add to list
+            }
+        }
+
+        return connectedLabours;
     }
 
-    public List<User> findConnectedLabours() {
-        return labourRepository.findAllByStatusAndRole(Status.ONLINE, UserRole.LABOUR);
-    }
+
 
     public User getCustomerById(String email) {
         // Try to find the user in the customer repository
@@ -256,6 +280,7 @@ public class UserService {
     public Optional<User> fetchProfileName(String email) {
         return userRepository.findByEmail(email);
     }
+
 
 
 //    public List<Appointment> get_UserBy_Email(String email) {
