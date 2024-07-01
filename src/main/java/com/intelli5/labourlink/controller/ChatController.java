@@ -73,5 +73,8 @@ public class ChatController {
     }
 
 
+    @PatchMapping("/markAsRead/{}")
+
+
 
 }
