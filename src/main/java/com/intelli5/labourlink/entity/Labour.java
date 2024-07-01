@@ -32,7 +32,7 @@ public class Labour extends User{ //Defines the Labour class, which extends User
     @Enumerated(EnumType.STRING) // Specify the enum type
     private List<JobRole> jobRole;
 
-    @OneToOne(mappedBy = "labour", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "labour", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private LabourLocations labourLocations;
 
     @OneToMany(mappedBy = "labour", cascade = CascadeType.ALL, orphanRemoval = true)
