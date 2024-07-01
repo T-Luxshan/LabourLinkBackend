@@ -58,16 +58,16 @@ public class UserService {
         }
     }
 
-    public List<User> findConnectedCustomers() {
-        return customerRepository.findAllByStatusAndRole(Status.ONLINE, UserRole.CUSTOMER);
-    }
+//    public List<User> findConnectedCustomers() {
+//        return customerRepository.findAllByStatusAndRole(Status.ONLINE, UserRole.CUSTOMER);
+//    }
 
 //    public List<User> findConnectedLabours() {
 //        return labourRepository.findAllByStatusAndRole(Status.ONLINE, UserRole.LABOUR);
 //    }
 
 
-    public List<User> findConnectedLabours(String senderId) {
+    public List<User> findConnectedUsers(String senderId) {
         // Fetch all ChatRooms associated with the senderId
         List<ChatRoom> chatRooms = chatRoomRepository.findBySenderId(senderId);
         List<User> connectedLabours = new ArrayList<>();
