@@ -120,6 +120,7 @@ public class UserController {
         return ResponseEntity.ok(connectedUsersDTOs);
     }
 
+
     @GetMapping("{email}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable("email") String email) {
         try {
