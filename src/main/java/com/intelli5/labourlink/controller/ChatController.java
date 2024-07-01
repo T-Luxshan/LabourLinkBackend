@@ -73,7 +73,14 @@ public class ChatController {
     }
 
 
-    @PatchMapping("/markAsRead/{}")
+    @PostMapping("/markAsRead/{senderId}/{receiverId}")
+    public void markAsRead(@PathVariable String senderId,@PathVariable String receiverId){
+        try {
+            chatMessageService.markAsRead(senderId,receiverId);
+        }catch (Exception e){
+
+        }
+    }
 
 
 
