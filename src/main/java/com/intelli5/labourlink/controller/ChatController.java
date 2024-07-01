@@ -91,9 +91,9 @@ public class ChatController {
         return ResponseEntity.ok(count);
     }
 
-    @GetMapping("totalUnreadMessageCount/{senderId}")
-    public ResponseEntity<Integer> totalUnreadMessageCount(@PathVariable String senderId){
-        Integer count = chatMessageService.totalUnreadMessageCount(senderId);
+    @GetMapping("totalUnreadMessageCount/{receiverId}")
+    public ResponseEntity<Integer> totalUnreadMessageCount(@PathVariable String receiverId){
+        Integer count = chatMessageService.totalUnreadMessageCount(receiverId);
         return ResponseEntity.ok(count);
     }
 
