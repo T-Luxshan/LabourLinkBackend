@@ -1,9 +1,6 @@
 package com.intelli5.labourlink.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +20,8 @@ public class EmailAdmin {
     private Long id;
     private String recipientEmail;
     private String subject;
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String body;
     private LocalDate sentDate;
 }
