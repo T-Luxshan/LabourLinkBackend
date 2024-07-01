@@ -51,4 +51,9 @@ public class ProfileImageController {
 
         return ResponseEntity.ok(profileImageService.getProfile(currentPrincipalName));
     }
+
+    @GetMapping("{email}")
+    public ResponseEntity<ProfileImgDTO> getProfilePhotoByEmail(@PathVariable String email) {
+        return ResponseEntity.ok(profileImageService.getProfile(email));
+    }
 }
