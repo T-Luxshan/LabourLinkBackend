@@ -74,13 +74,16 @@ public class ChatController {
 
 
     @PostMapping("/markAsRead/{senderId}/{receiverId}")
-    public void markAsRead(@PathVariable String senderId,@PathVariable String receiverId){
+    public ResponseEntity<Void> markAsRead(@PathVariable String senderId, @PathVariable String receiverId) {
         try {
-            chatMessageService.markAsRead(senderId,receiverId);
-        }catch (Exception e){
-
+            chatMessageService.markAsRead(senderId, receiverId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            // Handle exceptions appropriately, e.g., log them
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
 
     @GetMapping("unreadMessageCount/{senderId}/{receiverId}")
     public ResponseEntity<Integer> unreadMessageCount(@PathVariable String senderId,@PathVariable String receiverId){
