@@ -61,4 +61,15 @@ public class ChatMessageService {
             repository.save(chatMessage);
         }
     }
+
+    public Integer unreadMessageCount(String senderId, String receiverId) {
+        List<ChatMessage> totalMessages =findChatMessages(senderId,receiverId);
+        Integer count=0;
+        for (ChatMessage chatMessage:totalMessages){
+            if (!chatMessage.isRead()){
+                count++;
+            }
+        }
+        return count;
+    }
 }
