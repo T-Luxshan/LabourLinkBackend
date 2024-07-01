@@ -53,7 +53,7 @@ public class ChatMessageService {
 
     public void markAsRead(String senderId, String receiverId) {
         //should mark messages send by others as read so here sender is my message receiving person
-        List<ChatMessage> chatMessages=findChatMessages(receiverId,senderId);
+        List<ChatMessage> chatMessages=repository.findChatMessagesBySenderIdAndReceiverId(senderId,receiverId);
 
         for (ChatMessage chatMessage:chatMessages){
 //            System.out.println(chatMessage.getContent());
@@ -63,7 +63,6 @@ public class ChatMessageService {
     }
 
     public Integer unreadMessageCount(String senderId, String receiverId) {
-//        List<ChatMessage> totalMessages =findChatMessages(senderId,receiverId);
         List<ChatMessage> totalMessages =repository.findChatMessagesBySenderIdAndReceiverId(senderId,receiverId);
         Integer count=0;
         for (ChatMessage chatMessage:totalMessages){
