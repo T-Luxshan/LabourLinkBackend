@@ -1,27 +1,23 @@
-package com.intelli5.labourlink.entity;
+package com.intelli5.labourlink.dto;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-public class EmailAdmin {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
+public class MailAdminDTO {
+    private Long Id;
     private String recipientEmail;
     private String subject;
-    @Lob
-    @Column(columnDefinition = "TEXT")
     private String body;
     private LocalDate sentDate;
+
 }

@@ -31,6 +31,11 @@ public class AnniversaryScheduler {
 
         for (User user : users) {
             LocalDate joinDate = user.getJoinDate();
+//            long period=ChronoUnit.DAYS.between(joinDate,today);
+//            if (period ==1 || period>1) {
+//                emailService.sendAnniversaryEmail(user.getEmail(), "1 day Anniversary", "Happy Anniversary to Us !"+ user.getName() + ",\n\nCongratulations on your anniversary with us! Thank you for being a part of our company.\n\nBest regards,\n-Labour Link-");
+//                emailService.sendAnniversaryEmail(user.getEmail(), "Anniversary", "Happy Anniversary to Us !"+ user.getName() + ",\n\nCongratulations on your anniversary with us! Thank you for being a part of our company.\n\nBest regards,\n-Labour Link-");
+
             long yearsSinceJoining = ChronoUnit.YEARS.between(joinDate, today);
 
             // Check if the years since joining is a whole number and greater than 0
