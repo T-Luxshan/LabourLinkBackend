@@ -39,6 +39,7 @@ public class BookingService {
                     .bookingStage(bookingRequestDTO.getBookingStage())
                     .jobDescription(bookingRequestDTO.getJobDescription())
                     .jobRole(bookingRequestDTO.getJobRole())
+                    .bookingMadeDate(LocalDate.now())
                     .build();
 
             Booking savedBooking = bookingRepository.save(booking);
