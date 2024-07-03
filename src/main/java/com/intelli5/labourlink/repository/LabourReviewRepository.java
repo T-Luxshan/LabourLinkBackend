@@ -4,6 +4,7 @@ import com.intelli5.labourlink.entity.Labour;
 import com.intelli5.labourlink.entity.LabourReview;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface LabourReviewRepository extends JpaRepository<LabourReview, Inte
     Double getRating(Labour labour);
 
 //    List<LabourReview> findAllByEmail(Labour labour);
+@Query("SELECT lr FROM LabourReview lr WHERE lr.customer.email = :email OR lr.labour.email = :email")
+List<LabourReview> findByCustomerOrLabourEmail(@Param("email") String email);
 }

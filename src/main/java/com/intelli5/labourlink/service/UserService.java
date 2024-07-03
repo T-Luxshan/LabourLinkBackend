@@ -40,6 +40,8 @@ public class UserService {
     private RefreshTokenRepository refreshTokenRepository;
     @Autowired
     private BookingRepository bookingRepository;
+    @Autowired
+    private EmailService emailService;
     public void saveUser(User user, CustomerRepository customerRepository) {
         user.setStatus(Status.ONLINE);
         customerRepository.save(user);
@@ -239,6 +241,13 @@ public class UserService {
             suspenduser.setReason(removalPurpose);
             suspenduser.setSuspendedDate(LocalDate.now());
             suspendUserRepository.save(suspenduser);
+            // Send verification email
+            MailBody mailBody = MailBody.builder()
+                    .to(suspenduser.getEmail())
+                    .text("Your account has been suspended.We already inform you about your behaviour.Sorry for the loss -Labour Link-")
+                    .subject("Account Suspended")
+                    .build();
+            emailService.sendSimpleMessage(mailBody);
             refreshTokenRepository.deleteByUserEmail(email);
             userRepository.delete(user);
         } else {

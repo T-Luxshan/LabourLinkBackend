@@ -112,4 +112,6 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     )
     List<Object[]> countBookingByJobRole();
 
+@Query("SELECT b from Booking b where b.customer.email = :email or b.labour.email = :email")
+    List<Booking> findByLabourEmailorCustomer(String email);
 }

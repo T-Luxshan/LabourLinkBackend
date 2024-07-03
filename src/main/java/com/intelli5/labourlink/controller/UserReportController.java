@@ -1,13 +1,18 @@
 package com.intelli5.labourlink.controller;
 
 import com.intelli5.labourlink.dto.ReportDTO;
+import com.intelli5.labourlink.entity.NotificationAdmin;
+import com.intelli5.labourlink.entity.UserReport;
 import com.intelli5.labourlink.service.UserReportService;
 import com.intelli5.labourlink.utils.ReportRequest;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
 
@@ -53,4 +58,18 @@ public class UserReportController {
     public ResponseEntity<List<ReportDTO>> getAllReportsForAdmin(){
         return ResponseEntity.ok(userReportService.getAllReportsForAdmin());
     }
+
+    @GetMapping("/individual/{email}")
+    public ResponseEntity<List <ReportDTO>> getReportByEmail(@PathVariable String email){
+        return ResponseEntity.ok(userReportService.getReportByEmail(email));
+    }
+//    @PostMapping("/send")
+//    public void sendReport(@RequestBody UserReport notificationReport) {
+//        userReportService.sendNotification(notificationReport);
+//    }
+//    @GetMapping(value = "/api/v1/report/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+//    public SseEmitter streamReport() {
+//        return userReportService.createEmitter();
+//    }
+
 }

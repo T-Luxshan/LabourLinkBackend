@@ -166,7 +166,7 @@ public class LabourServiceImpl implements LabourService {
             // Send verification email
             MailBody mailBody = MailBody.builder()
                     .to(email)
-                    .text("Your account has been successfully verified.Now you connected with us.Enjoy your journey -Labour Link-")
+                    .text("Your account has been successfully verified.Now you connected with us.Enjoy your journey, Our team will Contact you via Phone call for the further inquiries  -Labour Link-")
                     .subject("Account Verification")
                     .build();
             emailService.sendSimpleMessage(mailBody);

@@ -325,7 +325,7 @@ public class BookingService {
         return bookingRepository.findSuccessfulBookingWithDay(startDate);
     }
     public List<BookingIndividualDTO> findBookingById(String email) {
-        List<Booking> bookings = bookingRepository.findByLabourEmail(email);
+        List<Booking> bookings = bookingRepository.findByLabourEmailorCustomer(email);
 
         return bookings.stream()
                 .filter(booking -> booking.getBookingStage() == BookingStage.COMPLETED)
@@ -335,7 +335,9 @@ public class BookingService {
     private BookingIndividualDTO mapToBookingIndividualDTO(Booking booking) {
         BookingIndividualDTO dto = BookingIndividualDTO.builder()
                 .customer(booking.getCustomer().getEmail())
+                .labour(booking.getLabour().getEmail())
                 .jobRole(booking.getJobRole())
+                .bookingStage(booking.getBookingStage())
                 .jobDescription(booking.getJobDescription())
                 .date(booking.getDate())
                 .startTime(booking.getStartTime())

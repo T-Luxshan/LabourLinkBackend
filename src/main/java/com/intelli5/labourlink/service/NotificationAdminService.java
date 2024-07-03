@@ -8,7 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -17,9 +19,13 @@ public class NotificationAdminService {
     private final NotificationHandler notificationHandler;
     @Autowired
     private final NotificationAdminRepository notificationAdminRepository;
-
+    private SseEmitter emitter;
     private static final Logger logger = LoggerFactory.getLogger(NotificationService.class);
 
+    public SseEmitter createEmitter() {
+        this.emitter = new SseEmitter(Long.MAX_VALUE);
+        return this.emitter;
+    }
     public NotificationAdminService(NotificationHandler notificationHandler, NotificationAdminRepository notificationAdminRepository) {
         this.notificationHandler = notificationHandler;
         this.notificationAdminRepository = notificationAdminRepository;
@@ -35,4 +41,14 @@ public class NotificationAdminService {
     public List<NotificationAdmin>getAllNotifications() {
         return notificationAdminRepository.findAll(Sort.by(Sort.Order.desc("id")));
     }
+
+//    public void sendNotification(NotificationAdmin userDetail) {
+//        if (this.emitter != null) {
+//            try {
+//                this.emitter.send(userDetail);
+//            } catch (IOException e) {
+//                this.emitter.completeWithError(e);
+//            }
+//        }
+//    }
 }
