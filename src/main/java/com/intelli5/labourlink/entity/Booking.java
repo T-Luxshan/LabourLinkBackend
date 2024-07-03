@@ -41,7 +41,7 @@ public class Booking {
 
     private JobRole jobRole;
 
-    private LocalDate bookingMadeDate = LocalDate.now();
+    private LocalDate bookingMadeDate =LocalDate.now();
 
     private float amount;
 

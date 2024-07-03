@@ -18,5 +18,6 @@ public class Todo {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String title;
-
+    private String adminEmail;
+    private Boolean isDone=false;
 }
