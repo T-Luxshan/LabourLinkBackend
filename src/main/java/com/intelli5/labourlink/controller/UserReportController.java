@@ -67,8 +67,8 @@ public class UserReportController {
         return ResponseEntity.ok(userReportService.getReportByEmail(email));
     }
     @GetMapping("/poll")
-    public ResponseEntity<List<UserReport>> pollForNewUserReport(@RequestParam(required = false) Integer lastCheckedId) {
-        List<UserReport> reports = notificationPollingService.pollForNewUserReport(lastCheckedId);
+    public ResponseEntity<List<ReportDTO>> pollForNewUserReport(@RequestParam(required = false) Integer lastCheckedReportedId) {
+        List<ReportDTO> reports = notificationPollingService.pollForNewUserReport(lastCheckedReportedId);
         return ResponseEntity.ok(reports);
     }
 
