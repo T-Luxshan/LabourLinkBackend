@@ -1,4 +1,4 @@
-package com.intelli5.labourlink.service.impl;
+package com.intelli5.labourlink.service;
 
 import com.intelli5.labourlink.entity.Todo;
 import com.intelli5.labourlink.repository.ToDoRepo;

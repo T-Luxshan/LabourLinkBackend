@@ -7,17 +7,19 @@ import com.intelli5.labourlink.dto.ReviewDTO;
 import com.intelli5.labourlink.entity.Customer;
 import com.intelli5.labourlink.entity.Labour;
 import com.intelli5.labourlink.entity.LabourReview;
+import com.intelli5.labourlink.entity.User;
 import com.intelli5.labourlink.repository.CustomerRepository;
 import com.intelli5.labourlink.repository.LabourRepository;
 import com.intelli5.labourlink.repository.LabourReviewRepository;
+import com.intelli5.labourlink.repository.UserRepository;
 import com.intelli5.labourlink.utils.ReviewRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,13 +28,15 @@ public class LabourReviewService {
     private final CustomerRepository customerRepository;
     private final LabourRepository labourRepository;
     private final LabourReviewRepository labourReviewRepository;
+    private final UserRepository userRepository;
 
     public LabourReviewService(CustomerRepository customerRepository,
                                LabourRepository labourRepository,
-                               LabourReviewRepository labourReviewRepository) {
+                               LabourReviewRepository labourReviewRepository, UserRepository userRepository) {
         this.customerRepository = customerRepository;
         this.labourRepository = labourRepository;
         this.labourReviewRepository = labourReviewRepository;
+        this.userRepository = userRepository;
     }
 
 
@@ -214,10 +218,13 @@ public class LabourReviewService {
     }
     //------------------------------------------++++++++++++++++++++++++++++++++++++++++++----------------------------
 public List<LabourReviewIndividualDTO> getReviewAdmin(String email){
-       Labour labour= labourRepository.findLabour(email);
-       List<LabourReview> labourReviews = labourReviewRepository.findByLabour(labour);
+//       Labour labour= labourRepository.findLabour(email);
+//       User  user =userRepository.findByEmail(email);
+//       List<LabourReview> labourReviews = labourReviewRepository.findByLabour(user);
+       List<LabourReview> reviews = labourReviewRepository.findByCustomerOrLabourEmail(email);
 
-    return labourReviews.stream()
+
+    return reviews.stream()
                 .map(this::mapToLabourReviewIndividualDTO)
                 .collect(Collectors.toList());
 }

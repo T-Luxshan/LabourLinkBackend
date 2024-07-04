@@ -16,9 +16,11 @@ import java.time.LocalTime;
 @Builder
 public class BookingIndividualDTO {
     private String customer;
+    private String labour;
     private JobRole jobRole;
     private String jobDescription;
     private LocalDate date;
     private LocalTime startTime;
+    private BookingStage bookingStage;
 
 }
