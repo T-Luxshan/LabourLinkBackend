@@ -7,6 +7,7 @@ import com.intelli5.labourlink.repository.CustomerRepository;
 import com.intelli5.labourlink.repository.LabourRepository;
 import com.intelli5.labourlink.utils.AuthResponse;
 import com.intelli5.labourlink.utils.LoginRequest;
+import com.intelli5.labourlink.utils.NotificationHandler;
 import com.intelli5.labourlink.utils.RegisterRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,7 @@ public class AuthService{
     private final SuspendUserService suspendUserService;
     @Autowired
     private final NotificationAdminService notificationAdminService;
+    private final NotificationHandler notificationHandler;
 
     public AuthResponse registerCustomer(RegisterRequest registerRequest) throws CustomerRegistrationException {
         Optional<SuspendUser> suspendedUser=suspendUserService.findByEmail(registerRequest.getEmail());
@@ -94,7 +96,8 @@ public class AuthService{
                userDetail.setJobRole(user.getJobRole().toString());
                userDetail.setJoinDate(user.getJoinDate().toString());
               // userDetail.setVerified(userDetail.isVerified());
-        notificationAdminService.notifyAdmin(userDetail);
+            notificationHandler.sendNotification(userDetail);
+            notificationAdminService.notifyAdmin(userDetail);
         return AuthResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken.getRefreshToken())
