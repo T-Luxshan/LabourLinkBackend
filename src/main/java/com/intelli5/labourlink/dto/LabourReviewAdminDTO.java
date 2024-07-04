@@ -22,5 +22,7 @@ public class LabourReviewAdminDTO {
     String customerName;
     String customerEmail;
     private LocalDateTime reviewPostAt;
+    private String customerImage;
+
 
 }

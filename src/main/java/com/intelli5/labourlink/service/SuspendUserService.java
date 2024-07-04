@@ -4,6 +4,7 @@ import com.intelli5.labourlink.dto.SuspendUserDTO;
 import com.intelli5.labourlink.entity.SuspendUser;
 import com.intelli5.labourlink.repository.SuspendUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ private SuspendUserRepository suspendUserRepository;
     public List<SuspendUserDTO> getAllUser() {
             List <SuspendUserDTO> suspendUserDtos=new ArrayList<>();
            // List<SuspendUser> suspendUsers=suspendUserRepository.findAll(Sort.by(Sort.Order.desc("joinDate"), Sort.Order.desc("joinTime")));
-            List<SuspendUser> suspendUsers=suspendUserRepository.findAll();
+            List<SuspendUser> suspendUsers=suspendUserRepository.findAll(Sort.by(Sort.Direction.DESC, "Id"));
             for(SuspendUser suspendUser:suspendUsers) {
                 SuspendUserDTO suspendUserDto = new SuspendUserDTO();
                 suspendUserDto.setName(suspendUser.getName());
