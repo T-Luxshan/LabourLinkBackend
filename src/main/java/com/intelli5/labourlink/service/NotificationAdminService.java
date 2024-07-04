@@ -32,9 +32,10 @@ public class NotificationAdminService {
     }
     //--------------------Register Labour notification ----------------------------------------------
     public void notifyAdmin(NotificationAdmin userDetail) {
-        logger.info("Sending notification: {}", userDetail);
-        notificationAdminRepository.save(userDetail);
+//        logger.info("Sending notification: {}", userDetail);
 //        notificationHandler.sendNotification(savedNotification);
+        notificationAdminRepository.save(userDetail);
+
 
     }
 

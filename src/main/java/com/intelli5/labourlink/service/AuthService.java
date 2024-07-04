@@ -96,7 +96,7 @@ public class AuthService{
                userDetail.setJobRole(user.getJobRole().toString());
                userDetail.setJoinDate(user.getJoinDate().toString());
               // userDetail.setVerified(userDetail.isVerified());
-            notificationHandler.sendNotification(userDetail);
+//            notificationHandler.sendNotification(userDetail);
             notificationAdminService.notifyAdmin(userDetail);
         return AuthResponse.builder()
                 .accessToken(accessToken)

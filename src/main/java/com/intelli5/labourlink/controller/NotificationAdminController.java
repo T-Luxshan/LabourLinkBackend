@@ -2,10 +2,9 @@ package com.intelli5.labourlink.controller;
 
 import com.intelli5.labourlink.entity.NotificationAdmin;
 import com.intelli5.labourlink.service.NotificationAdminService;
-import org.springframework.http.MediaType;
+import com.intelli5.labourlink.service.NotificationPollingService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
 
@@ -13,14 +12,21 @@ import java.util.List;
 @RequestMapping("/api/adminnotification")
 public class NotificationAdminController {
     private final NotificationAdminService notificationAdminService;
-
-    public NotificationAdminController(NotificationAdminService notificationAdminService) {
+    private final NotificationPollingService notificationPollingService;
+    public NotificationAdminController(NotificationAdminService notificationAdminService, NotificationPollingService notificationPollingService) {
         this.notificationAdminService = notificationAdminService;
+        this.notificationPollingService = notificationPollingService;
     }
 
     @GetMapping
     public ResponseEntity<List<NotificationAdmin>> getAllNotifications() {
         return ResponseEntity.ok(notificationAdminService.getAllNotifications());
+    }
+
+    @GetMapping("/poll")
+    public ResponseEntity<List<NotificationAdmin>> getNotifications(@RequestParam(required = false) Long lastCheckedId) {
+        List<NotificationAdmin> newNotifications = notificationPollingService.pollForNewNotifications(lastCheckedId);
+        return ResponseEntity.ok(newNotifications);
     }
 
 //    @PostMapping("/send")

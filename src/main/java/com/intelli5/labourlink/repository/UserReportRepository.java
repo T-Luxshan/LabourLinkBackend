@@ -12,4 +12,6 @@ import java.util.List;
 public interface UserReportRepository extends JpaRepository<UserReport, Integer> {
 @Query("select ur from UserReport ur where ur.ReportedBy.email = :email or ur.ReportedTo.email = :email")
     List<UserReport> findByLabourOrCustomer(String email);
+
+    List<UserReport> findByIdGreaterThan(Integer id);
 }
