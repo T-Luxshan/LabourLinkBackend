@@ -19,8 +19,10 @@ import java.time.LocalTime;
 @Getter
 @Setter
 public class SuspendUser  {
-
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer Id;
+
     @NotNull
     @Email(message = "Please enter valid email")
     private String email;

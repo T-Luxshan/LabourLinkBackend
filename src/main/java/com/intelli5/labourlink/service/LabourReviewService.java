@@ -4,20 +4,18 @@ import com.intelli5.labourlink.Exception.ResourceNotFoundException;
 import com.intelli5.labourlink.dto.LabourReviewAdminDTO;
 import com.intelli5.labourlink.dto.LabourReviewIndividualDTO;
 import com.intelli5.labourlink.dto.ReviewDTO;
-import com.intelli5.labourlink.entity.Customer;
-import com.intelli5.labourlink.entity.Labour;
-import com.intelli5.labourlink.entity.LabourReview;
-import com.intelli5.labourlink.entity.User;
-import com.intelli5.labourlink.repository.CustomerRepository;
-import com.intelli5.labourlink.repository.LabourRepository;
-import com.intelli5.labourlink.repository.LabourReviewRepository;
-import com.intelli5.labourlink.repository.UserRepository;
+import com.intelli5.labourlink.entity.*;
+import com.intelli5.labourlink.repository.*;
 import com.intelli5.labourlink.utils.ReviewRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,14 +27,16 @@ public class LabourReviewService {
     private final LabourRepository labourRepository;
     private final LabourReviewRepository labourReviewRepository;
     private final UserRepository userRepository;
+    private final ImageRepository imageRepository;
 
     public LabourReviewService(CustomerRepository customerRepository,
                                LabourRepository labourRepository,
-                               LabourReviewRepository labourReviewRepository, UserRepository userRepository) {
+                               LabourReviewRepository labourReviewRepository, UserRepository userRepository, ImageRepository imageRepository) {
         this.customerRepository = customerRepository;
         this.labourRepository = labourRepository;
         this.labourReviewRepository = labourReviewRepository;
         this.userRepository = userRepository;
+        this.imageRepository = imageRepository;
     }
 
 
@@ -196,17 +196,36 @@ public class LabourReviewService {
         return labourReviewRepository.findAll(Sort.by(Sort.Direction.DESC, "Id"))
                 .stream()
                 .filter(review -> review.getCustomer() != null && review.getLabour() != null)
-                .map(review -> LabourReviewAdminDTO.builder()
-                        .Id(review.getId())
-                        .jobRole(review.getJobRole())
-                        .description(review.getDescription())
-                        .rating(review.getRating())
-                        .labourName(review.getLabour().getName())
-                        .customerName(review.getCustomer().getName())
-                        .customerEmail(review.getCustomer().getEmail())
-                        .reviewPostAt(review.getReviewPostAt())
-                        .build())
+                .map(review -> {
+                    String customerImageBase64 = getCustomerImageBase64(review.getCustomer());
+                    return LabourReviewAdminDTO.builder()
+                            .Id(review.getId())
+                            .jobRole(review.getJobRole())
+                            .description(review.getDescription())
+                            .rating(review.getRating())
+                            .labourName(review.getLabour().getName())
+                            .customerName(review.getCustomer().getName())
+                            .customerEmail(review.getCustomer().getEmail())
+                            .reviewPostAt(review.getReviewPostAt())
+                            .customerImage(customerImageBase64)
+                            .build();
+                })
                 .collect(Collectors.toList());
+    }
+
+    private String getCustomerImageBase64(User customer) {
+        try {
+            Optional<Image> customerImageOpt = imageRepository.findByUser(customer);
+            if (customerImageOpt.isPresent() && customerImageOpt.get().getImage() != null) {
+                Blob imageBlob = customerImageOpt.get().getImage();
+                return Base64.getEncoder().encodeToString(
+                        imageBlob.getBytes(1, (int) imageBlob.length()));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to fetch image for customer: " + customer.getEmail(), e);
+        }
+        return "";
     }
 
     public void deleteReviewByAdmin(Integer id) {
@@ -216,8 +235,7 @@ public class LabourReviewService {
             throw new RuntimeException("id doesn't exist");
         }
     }
-    //------------------------------------------++++++++++++++++++++++++++++++++++++++++++----------------------------
-public List<LabourReviewIndividualDTO> getReviewAdmin(String email){
+   public List<LabourReviewIndividualDTO> getReviewAdmin(String email){
 //       Labour labour= labourRepository.findLabour(email);
 //       User  user =userRepository.findByEmail(email);
 //       List<LabourReview> labourReviews = labourReviewRepository.findByLabour(user);

@@ -194,6 +194,7 @@ public class UserService {
 
     public Optional<UserAdminDTO> findUserByEmail(String email) {
         Optional<User> userOptional = userRepository.findByEmail(email);
+
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             UserAdminDTO userAdminDTO = new UserAdminDTO();
