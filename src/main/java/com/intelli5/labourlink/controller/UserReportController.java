@@ -3,6 +3,8 @@ package com.intelli5.labourlink.controller;
 import com.intelli5.labourlink.dto.ReportDTO;
 import com.intelli5.labourlink.entity.NotificationAdmin;
 import com.intelli5.labourlink.entity.UserReport;
+import com.intelli5.labourlink.repository.UserReportRepository;
+import com.intelli5.labourlink.service.NotificationPollingService;
 import com.intelli5.labourlink.service.UserReportService;
 import com.intelli5.labourlink.utils.ReportRequest;
 import org.apache.catalina.User;
@@ -22,7 +24,8 @@ public class UserReportController {
 
     @Autowired
     UserReportService userReportService;
-
+    @Autowired
+    NotificationPollingService notificationPollingService;
     @PostMapping("/user")
     public ResponseEntity<ReportDTO> reportUser(@RequestBody ReportRequest reportRequest){
         try {
@@ -63,6 +66,12 @@ public class UserReportController {
     public ResponseEntity<List <ReportDTO>> getReportByEmail(@PathVariable String email){
         return ResponseEntity.ok(userReportService.getReportByEmail(email));
     }
+    @GetMapping("/poll")
+    public ResponseEntity<List<ReportDTO>> pollForNewUserReport(@RequestParam(required = false) Integer lastCheckedReportedId) {
+        List<ReportDTO> reports = notificationPollingService.pollForNewUserReport(lastCheckedReportedId);
+        return ResponseEntity.ok(reports);
+    }
+
 //    @PostMapping("/send")
 //    public void sendReport(@RequestBody UserReport notificationReport) {
 //        userReportService.sendNotification(notificationReport);

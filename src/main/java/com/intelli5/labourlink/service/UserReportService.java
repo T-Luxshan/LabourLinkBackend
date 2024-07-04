@@ -66,16 +66,8 @@ public class UserReportService {
         notificationReport.setReportedByName(userReport.getReportedBy().getName());
         notificationReport.setId(userReport.getId());
 //        notificationReport.setReportedOn(LocalDateTime.now());
-        notificationHandler.sendReportNotification(notificationReport);
-
-        // Notify the admin
-//        NotificationReportDTO notificationReport=new NotificationReportDTO();
-//        notificationReport.setTitle(reportRequest.getTitle());
-//        notificationReport.setReportedToId(reportRequest.getReportedTo());
-//        notificationReport.setReportedByName(userReport.getReportedBy().getName());
-//        notificationReport.setId(userReport.getId());
-//        restTemplate.postForObject("http://localhost:8080/report/send", notificationReport, Void.class);
-
+//        notificationHandler.sendReportNotification(notificationReport);
+//
         return ReportDTO.builder()
                 .id(userReport.getId())
                 .title(userReport.getTitle())
@@ -182,14 +174,14 @@ public class UserReportService {
        return list;
     }
 
-    public void sendNotification(UserReport notificationReport) {
-        if (this.emitter != null) {
-            try {
-                this.emitter.send(notificationReport);
-            } catch (IOException e) {
-                this.emitter.completeWithError(e);
-            }
-        }
-    }
+//    public void sendNotification(UserReport notificationReport) {
+//        if (this.emitter != null) {
+//            try {
+//                this.emitter.send(notificationReport);
+//            } catch (IOException e) {
+//                this.emitter.completeWithError(e);
+//            }
+//        }
+//    }
 
 }
