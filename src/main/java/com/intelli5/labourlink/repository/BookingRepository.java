@@ -58,12 +58,12 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     //**--Dashboard graph :2 ----------------------------
     @Query(
-            "select FORMAT(b.date, 'dddd') AS day_of_week, count(b.labour) AS total_labour " +
+            "select FORMAT(b.bookingMadeDate, 'dddd') AS day_of_week, count(b.labour) AS total_labour " +
                     "from Booking b " +
-                    "where b.date > :startDate and b.bookingStage = com.intelli5.labourlink.entity.BookingStage.ACCEPTED " +
-                    "group by FORMAT(b.date, 'dddd') " +
+                    "where b.bookingMadeDate > :startDate and b.bookingStage = com.intelli5.labourlink.entity.BookingStage.COMPLETED " +
+                    "group by FORMAT(b.bookingMadeDate, 'dddd') "  +
                     "order by " +
-                    "CASE FORMAT(b.date, 'dddd') " +
+                    "CASE FORMAT(b.bookingMadeDate, 'dddd') " +
                     "    WHEN 'Sunday' THEN 1 " +
                     "    WHEN 'Monday' THEN 2 " +
                     "    WHEN 'Tuesday' THEN 3 " +

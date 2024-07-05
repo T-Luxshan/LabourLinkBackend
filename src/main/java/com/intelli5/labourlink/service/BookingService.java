@@ -310,8 +310,8 @@ public class BookingService {
         }
         return formattedResults;
     }
-    public List<Object[]> findActiveCustomerCount(LocalDate startDate) {
-
+    public List<Object[]> findActiveCustomerCount() {
+        LocalDate startDate = LocalDate.now().minusDays(7);
         return bookingRepository.findActiveCustomerCount(startDate);
     }
 

@@ -163,8 +163,8 @@ public class BookingController {
     //***------------------------------------Dashboard -graph  : - Active customer vs day-------------------------------
     @GetMapping("/dashboard/g_active")
     public List<Object[]> findActiveCustomerCount() {
-        LocalDate startDate = LocalDate.now().minusDays(7);
-        return bookingService.findActiveCustomerCount(startDate);
+//        LocalDate startDate = LocalDate.now().minusDays(7);
+        return bookingService.findActiveCustomerCount();
     }
 
     //***------------------------------------Dashboard -graph  : - Active labour vs day-------------------------------
