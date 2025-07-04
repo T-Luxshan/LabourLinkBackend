@@ -1,3 +1,4 @@
+
 # LABOURLINKBACKEND
 
 *Empowering Seamless Workforce Solutions at Scale*
@@ -34,11 +35,11 @@ Designed for developers, it simplifies building feature-rich, secure, and real-t
 
 This project empowers you to develop secure, scalable, and real-time workforce solutions. The core features include:
 
--  **Security & Authentication**: Implements JWT-based security and role-based access control for safe user management.
--  **Real-Time Communication**: Supports WebSocket-enabled chat and notifications for instant user interactions.
--  **Rich Data Models**: Extensive entities like Labour, Booking, Review, and User facilitate comprehensive workforce management.
--  **CI/CD Automation**: Automated build and deployment pipelines ensure reliable, continuous delivery.
--  **Modular Architecture**: Microservices design supports scalability and easy maintenance.
+- **Security & Authentication**: Implements JWT-based security and role-based access control for safe user management.
+- **Real-Time Communication**: Supports WebSocket-enabled chat and notifications for instant user interactions.
+- **Rich Data Models**: Extensive entities like Labour, Booking, Review, and User facilitate comprehensive workforce management.
+- **CI/CD Automation**: Automated build and deployment pipelines ensure reliable, continuous delivery.
+- **Modular Architecture**: Microservices design supports scalability and easy maintenance.
 
 ---
 
@@ -48,7 +49,7 @@ This project empowers you to develop secure, scalable, and real-time workforce s
 
 This project requires the following dependencies:
 
-- **Programming Language**: Java
+- **Programming Language**: Java  
 - **Package Manager**: Maven
 
 ---
@@ -58,28 +59,39 @@ This project requires the following dependencies:
 Build LabourLinkBackend from the source and install dependencies:
 
 1. **Clone the repository:**
-   
+
    ```bash
    git clone https://github.com/T-Luxshan/LabourLinkBackend
-    ```
-2.**Navigate to the project directory:**
-   
+   ```
+
+2. **Navigate to the project directory:**
+
    ```bash
-  cd LabourLinkBackend  
-  ```
-3.Install the dependencies:(usign maven)
-```mvn install```
+   cd LabourLinkBackend
+   ```
+
+3. **Install the dependencies** (using Maven):
+
+   ```bash
+   mvn install
+   ```
+
+---
 
 ### Usage
-Run the project with (using maven):  
-```
+
+Run the project with (using Maven):
+
+```bash
 mvn exec:java
 ```
+
+---
+
 ### Testing
-LabourLinkBackend uses the {test_framework} test framework. Run the test suite with:  
 
+LabourLinkBackend uses the **{test_framework}** test framework. Run the test suite with:
 
- ```bash
-  mvn test
-    
-
+```bash
+mvn test
+```
